@@ -4,8 +4,9 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
+import CodeScanner from '../screens/CodeScanner';
 import SettingsScreen from '../screens/SettingsScreen';
+import LoginScreen from '../screens/AuthStack/Login';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -25,12 +26,13 @@ HomeStack.navigationOptions = {
   ),
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
+
+const ScanStack = createStackNavigator({
+  ScanStack: CodeScanner,
 });
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+ScanStack.navigationOptions = {
+  tabBarLabel: 'Scan Code',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -44,7 +46,7 @@ const SettingsStack = createStackNavigator({
 });
 
 SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
+  tabBarLabel: 'Explore',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -54,7 +56,9 @@ SettingsStack.navigationOptions = {
 };
 
 export default createBottomTabNavigator({
-  HomeStack,
-  LinksStack,
-  SettingsStack,
+  HomeStack: HomeStack,
+  ScanStack: ScanStack,
+  SettingsStack: SettingsStack,
+},{
+  initialRouteName: 'ScanStack'
 });
