@@ -74,8 +74,6 @@ class SettingsScreen extends Component {
       return(
         <MapView
           style={{ flex: 1 }}
-          // region={this.state.location}
-          // onRegionChange={() => this._handleRegionChange}
           showUserLocation={true}
           followsUserLocation={true}
           initialRegion={{
@@ -84,7 +82,6 @@ class SettingsScreen extends Component {
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}>
-            {() => this.findResteraunts()}
           </MapView>
       )
     } else {

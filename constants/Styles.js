@@ -5,10 +5,10 @@ import {
 const {width, height} = Dimensions.get('window');
 
 const appStyles = {
-topNavIcon: {
+topNavIconRight: {
     height: 20,
     width: 20,
-    padding: 10
+    marginRight: 15
 }
 }
 

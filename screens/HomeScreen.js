@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { module as UserModule } from '../Store/user.js';
+import { connectStore } from 'redux-box';
 import images from '../assets/Images.js';
 import appStyles from '../constants/Styles.js';
 
@@ -16,7 +18,7 @@ export default class HomeScreen extends React.Component {
     headerTitle: 'Welcome Home',
     headerRight: (
       <TouchableOpacity>
-        <Image style={appStyles.topNavIcon} source={images.plus}/>
+        <Image style={appStyles.topNavIconRight} source={images.plus}/>
       </TouchableOpacity>
     )
   };
