@@ -1,4 +1,6 @@
 // ./store/user.js
+import UserLocation from '../Service/Location.js';
+import {Permissions, Location} from 'expo';
 import { 
     createSagas, 
     createContainer,
@@ -18,20 +20,27 @@ import {
   })
 
   const mutations = {
-      UPDATE_USER: (state, payload) => {
+      UPDATE_USER: (state, {payload}) => {
         Object.entries(payload).forEach(([k,v]) => state[k] = v);
       },
   }
 
   const sagas = createSagas({
-      SYNC_FROM_DB: function*(){
-          try{
+      SYNC_FROM_DB: function*() {
+          try {
+            // Need to figure out why this isn't firing
+            const userLocation = yield(UserLocation.getLocation());
 
-          } catch(e){
-              console.log(e)
+            const updateObj = {
+                location: userLocation
+            }
+            // Updates the store with computed values
+            yield put(actions.updateUser(updateObj));
+
+          } catch (e) {
+              console.log(e);
           }
       },
-
   })
 
   export const module = {

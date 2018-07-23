@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import UserLocation from '../Service/Location.js';
 import ResterauntAPI from '../Service/YelpAPI.js';
+import {module as userModule} from '../Store/user.js';
+import { module as resterauntModule } from '../Store/resteraunt.js';
+import { connectStore } from 'redux-box';
 import { MapView } from 'expo';
+import { Marker } from 'react-native-maps';
 import {
   View,
   StyleSheet,
@@ -9,6 +13,10 @@ import {
   ActivityIndicator
 } from 'react-native';
 
+@connectStore({
+  user: userModule,
+  resteraunt: resterauntModule
+})
 class SettingsScreen extends Component {
   constructor(props){
     super(props);
@@ -21,12 +29,9 @@ class SettingsScreen extends Component {
   };
 
   componentDidMount(){
-    this.getUsersLocation();
+    this.findResteraunts();
   }
 
-  componentDidUpdate(){
-    console.log("State", this.state);
-  }
   alertIfRemoteNotificationsDisabledAsync = async () => {
     const { status } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
     if (status !== 'granted') {
@@ -34,54 +39,48 @@ class SettingsScreen extends Component {
     }
   }
 
-  getUsersLocation = async () => {
-    const location =  await UserLocation.getLocation();
-    console.log(JSON.stringify(location, null, 2));
-    this.setState({location});
-  }
-
   _handleRegionChange(region){
     this.setState({location: region});
   }
 
-  findResteraunts = async() => {
-    const lat = this.state.location.coords.latitude;
-    const long = this.state.location.coords.longitude;
-    const resteraunts = await ResterauntAPI.findResteraunts(lat, long);
-    await console.log('Resteraunts', resteraunts);
-    await this.renderMarkers(resteraunts);
-  }
+  findResteraunts = async () => {
+    const lat = this.props.user.location.coords.latitude;
+    const long = this.props.user.location.coords.longitude;
+    const list = await ResterauntAPI.findResteraunts(lat, long);
+    // Update the store with the list of resteraunts
+    this.props.resteraunt.updateResteraunt({
+      resterauntNearby: list
+    });
 
-  renderMarkers = (resteraunts) => {
-    if(resteraunts === undefined) return;
-    resteraunts.map(marker => {
-      let latlong = {
-        latitude: marker.restaurant.location.latitude, 
-        longitude: marker.restaurant.location.latitude
-      }
-      return(
-        <Marker
-          coordinate={latlong}
-          title={marker.restaurant.name}
-        />
-      )
+    this.props.resteraunt.resterauntNearby.map(x => {
+      console.log(x);
     })
   }
 
-
   render() {
-    if(this.state.location !== null){
+    if(this.props.user.location !== null && this.props.resteraunt.resterauntNearby !== 0 || undefined){
       return(
         <MapView
           style={{ flex: 1 }}
           showUserLocation={true}
           followsUserLocation={true}
           initialRegion={{
-            latitude: this.state.location.coords.latitude,
-            longitude: this.state.location.coords.longitude,
+            latitude: this.props.user.location.coords.latitude,
+            longitude: this.props.user.location.coords.longitude,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}>
+          {this.props.resteraunt.resterauntNearby.map((marker, i) => (
+            <Marker
+               key={i}
+              coordinate={{
+                latitude: parseInt(marker.restaurant.location.latitude),
+                longitude: parseInt(marker.restaurant.location.longitude)
+                }}
+              title={marker.restaurant.title}
+              description={marker.restaurant.description}
+            />
+          ))}
           </MapView>
       )
     } else {

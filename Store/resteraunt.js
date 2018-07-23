@@ -4,8 +4,8 @@ import {
     createContainer,
     createActions, 
     using } from "redux-box";
-    
-  import { call, put } from "redux-saga/effects";
+import { module as userModule } from './user.js';    
+import { call, put } from "redux-saga/effects";
 
   const state = {
       resterauntNearby: [],
@@ -17,7 +17,7 @@ import {
   })
 
   const mutations = {
-    UPDATE_RESTERAUNT: (state, payload) => {
+    UPDATE_RESTERAUNT: (state, {payload}) => {
         Object.entries(payload).forEach(([k,v]) => state[k] = v);
       },
   }
@@ -25,7 +25,8 @@ import {
   const sagas = createSagas({
       SYNC_FROM_DB: function*(){
           try{
-
+            console.log("state", state);
+            console.log("User State", userModule);
           } catch(e){
               console.log(e)
           }

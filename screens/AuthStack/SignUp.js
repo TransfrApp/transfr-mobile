@@ -23,13 +23,7 @@ class CreateAccount extends Component {
     render(){
         return(
             <View style={styles.container}>
-                <Text>Welcome to the Sign Up Page</Text>
-                <TouchableOpacity onPress={() => alert("To the Login")}>
-                    <Text>Go to Login</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => alert("To Sign Up")}>
-                    <Text>Go to Sign Up</Text>
-                </TouchableOpacity>
+                <Text>Welcome to the Sign Up Screen</Text>
             </View>
         )
     }
