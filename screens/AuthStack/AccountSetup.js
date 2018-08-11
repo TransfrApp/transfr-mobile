@@ -19,8 +19,11 @@ import FullButton from '../../components/FullButton.js';
 const { height, width } = Dimensions.get('window');
 
 class AccountSetup extends Component {
-    static navigationOptions = {
-        header: null,
+    static navigationOptions = ({navigation}) => {
+        const params = navigation.state.params || {};
+        return {
+            headerTitle: 'Select Account Type'
+        }
     }
     constructor(props) {
         super(props);
@@ -28,7 +31,7 @@ class AccountSetup extends Component {
             email: '',
             password: '',
             name: '',
-            businessType: 0
+            businessType: '',
         }
     }
     handleSubmit = () => {
@@ -36,6 +39,10 @@ class AccountSetup extends Component {
         // Insert Login Logic here
         // =========================
         this.props.navigation.navigate('Main');
+    }
+
+    handleSelectBusiness(){
+
     }
 
     render() {
@@ -50,16 +57,12 @@ class AccountSetup extends Component {
                 <View style={styles.container}>
                     <View style={styles.window}>
                         <Text style={[appStyles.title, { marginBottom: 10, marginTop: 15 }]}>Select Account Type</Text>
-                        <View>
-                        <RadioGroup onSelect={(index, value) => this.onSelect(index, value)}>
-                            <RadioButton style={styles.radio} value={'item1'} >
-                                <Text>This is item #1</Text>
-                            </RadioButton>
-                            <RadioButton style={styles.radio} value={'item2'}>
-                                <Text>This is item #2</Text>
-                            </RadioButton>
-                        </RadioGroup>
-                        </View>
+                       <TouchableOpacity onPress={() => this.setState({businessType: 'merchant'})} style={this.state.businessType === "merchant" ? styles.active :styles.radio}>
+                            <Text style={this.state.businessType === 'merchant' ? styles.activeText : styles.label}>Merchant</Text>
+                       </TouchableOpacity>
+                       <TouchableOpacity onPress={() => this.setState({businessType: 'consumer'})} style={this.state.businessType === "consumer" ? styles.active :styles.radio}>
+                            <Text style={this.state.businessType === 'consumer' ? styles.activeText : styles.label}>Consumer</Text>
+                       </TouchableOpacity>
                         <View style={{ height: 100, marginBottom: 15, justifyContent: 'flex-end' }}>
                             <TouchableOpacity onPress={() => this.handleSubmit()} style={appStyles.login}>
                                 <Text style={appStyles.buttonText}>Sign Up</Text>
@@ -92,17 +95,36 @@ const styles = StyleSheet.create({
         marginBottom: 5
     },
     radio: {
-        borderWidth: 1,
+        height: height * 0.08,
+        width: width * 0.25,
+        borderWidth: 3,
         borderColor: '#979797',
         borderRadius: 9,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 10,
+        marginTop: 30,
         flexDirection: 'row'
     },
     label: {
         fontSize: 20,
-        color: '#6D708A'
+        color: '#6D708A',
+        fontWeight: '600'
+    },
+    active: {
+        height: height * 0.08,
+        width: width * 0.25,
+        borderWidth: 3,
+        borderColor: '#693CB7',
+        borderRadius: 9,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 30,
+        flexDirection: 'row'
+    },
+    activeText: {
+        fontSize: 20,
+        fontWeight: '600',
+        color: '#693CB7'
     }
 })
 

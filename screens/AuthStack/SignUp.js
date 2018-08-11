@@ -18,8 +18,11 @@ import FullButton from '../../components/FullButton.js';
 const { height, width } = Dimensions.get('window');
 
 class CreateAccount extends Component {
-    static navigationOptions = {
-        header: null,
+    static navigationOptions = ({navigation}) => {
+        const params = navigation.state.params || {};
+        return {
+            headerTitle: 'Sign Up',
+        }
     }
     constructor(props) {
         super(props);
@@ -33,7 +36,7 @@ class CreateAccount extends Component {
         // =========================
         // Insert Login Logic here
         // =========================
-        this.props.navigation.navigate('Main');
+        this.props.navigation.navigate('AccountSetup');
     }
 
     render() {

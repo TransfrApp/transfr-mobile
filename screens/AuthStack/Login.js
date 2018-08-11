@@ -15,17 +15,11 @@ import {
 const { width, height } = Dimensions.get('window');
 
 class LoginScreen extends Component {
-    static navigationOptions = {
-        header: null,
-        // headerTitle: 'Sign In',
-        // headerStyle: { backgroundColor: '#6532BD', borderColor: 'transparent' },
-        // headerTitleStyle: {
-        //     flex: 1,
-        //     textAlign: 'center',
-        //     alignSelf: 'center',
-        //     fontWeight: '500'
-        // },
-        // headerTintColor: 'white',
+    static navigationOptions = ({navigation}) => {
+        const params = navigation.state.params || {};
+        return {
+            headerTitle: 'Sign In',
+        }
     }
     constructor(props) {
         super(props);
