@@ -13,7 +13,7 @@ import { module as UserModule } from '../Store/user.js';
 import { connectStore } from 'redux-box';
 import images from '../assets/Images.js';
 import appStyles from '../constants/Styles.js';
-
+import AddInfo from '../components/AddProduct/AddInfo';
 const {width, height} = Dimensions.get('window');
 
 export default class HomeScreen extends React.Component {
@@ -30,6 +30,42 @@ export default class HomeScreen extends React.Component {
     super(props);
     this.state = {
       drawerActive: false,
+      products: [],
+      addingProd: true
+    }
+  }
+
+  checkoutList(){
+    if (this.state.products.length === 0){
+      return (
+        <View style={{justifyContent: 'center', alignContent: 'center', alignItems: 'center', paddingTop: height * .3}}>
+          <Text style={[styles.mainText]}>No Product Selected</Text>
+          <Text style={[styles.mainText, {paddingLeft: 10, paddingRight: 10, textAlign: 'center'}]}>Please select from the product list</Text>
+        </View>
+      )
+    } else {
+      return;
+    }
+  }
+
+  addProduct(){
+    if(!this.state.addingProd){
+      return(
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <Text style={styles.mainText}>You have no Products</Text>
+          <Text style={styles.text}>Click "Add Product" below to get started</Text>
+          <TouchableOpacity onPress={() => this.setState({addingProd: !this.state.addingProd})} style={styles.addProduct}>
+           <Text style={{fontSize:93, color: '#B1B5C2'}}>+</Text>
+           <Text style={styles.mainText}>Add Product</Text>
+          </TouchableOpacity>
+        </View>
+      )
+    } else {
+        return(
+          <View>
+            <AddInfo/>
+          </View>
+        )
     }
   }
 
@@ -37,20 +73,12 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.products}>
-          <Text style={styles.mainText}>You have no Products</Text>
-          <Text style={styles.text}>Click "Add Product" below to get started</Text>
-          <TouchableOpacity style={styles.addProduct}>
-           <Text style={{fontSize:93, color: '#B1B5C2'}}>+</Text>
-           <Text style={styles.mainText}>Add Product</Text>
-          </TouchableOpacity>
+          {this.addProduct()}
         </View>
         <View style={styles.checkout}>
           <View style={styles.checkoutContainer}>
             <Text style={styles.checkoutTitle}>Current Checkout</Text>
-            <View style={{justifyContent: 'center', alignContent: 'center', alignItems: 'center', paddingTop: height * .3}}>
-              <Text style={styles.mainText}>No Product Selected</Text>
-              <Text style={styles.mainText}>Please select from the product list</Text>
-            </View>
+           {this.checkoutList()}
           </View>
         </View>
       </View>
@@ -98,8 +126,8 @@ const styles = StyleSheet.create({
   },
   checkoutContainer: {
     backgroundColor: 'white',
-    height: height * .87,
-    width: width * .3,
+    height: height * .85,
+    width: width * .32,
     flexDirection: 'column'
   },
   checkoutTitle: {
