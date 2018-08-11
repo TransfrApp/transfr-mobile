@@ -9,6 +9,14 @@ topNavIconRight: {
     height: 20,
     width: 20,
     marginRight: 15
+},
+textInput: {
+    width: width * .5,
+    borderColor: 'transparent',
+    borderBottomColor: 'black',
+    borderBottomWidth: 2,
+    justifyContent: 'center',
+    alignItems: 'center'
 }
 }
 
