@@ -1,5 +1,5 @@
 import React from 'react';
-import { createSwitchNavigator } from 'react-navigation';
+import { createSwitchNavigator, createDrawerNavigator } from 'react-navigation';
 
 import MainTabNavigator from './MainTabNavigator';
 import AuthStack from './MainStackNavigator';
@@ -9,5 +9,5 @@ export default createSwitchNavigator({
   Main: MainTabNavigator,
 },
 {
-  initialRouteName: 'Auth',
+  initialRouteName: 'Main',
 });
