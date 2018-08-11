@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import {
-    Image,
-    Platform,
-    ScrollView,
     TextInput,
     StyleSheet,
     Dimensions,
@@ -14,12 +11,13 @@ import {
 
 const { width, height } = Dimensions.get('window');
 
+import { observer, inject } from 'mobx-react';
+
+@inject('store')
+@observer
 class LoginScreen extends Component {
-    static navigationOptions = ({navigation}) => {
-        const params = navigation.state.params || {};
-        return {
-            headerTitle: 'Sign In',
-        }
+    static navigationOptions = {
+        header: null,
     }
     constructor(props) {
         super(props);

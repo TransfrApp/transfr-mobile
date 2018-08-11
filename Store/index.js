@@ -1,8 +1,6 @@
-import { createStore } from 'redux-box';
-import { module as UserModule } from './user.js';
-import { module as ResterauntModule } from './resteraunt.js';
+import UserStore from "./user"
+const stores = {
+    UserStore
+}
 
-export default createStore([
-    UserModule,
-    ResterauntModule
-]);
+export default stores
