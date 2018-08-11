@@ -12,7 +12,7 @@ import {
     View,
 } from 'react-native';
 import appStyles from '../../Styles/authStyles';
-import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
+import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
 // import appStyles from '../../constants/Styles.js';
 import FullButton from '../../components/FullButton.js';
 
@@ -41,26 +41,30 @@ class AccountSetup extends Component {
     render() {
 
         var radio_props = [
-            {label: 'Consumer', value: 'consumer' },
-            {label: 'Merchant', value: 'merchant' }
-          ];
+            { label: 'Consumer', value: 'consumer' },
+            { label: 'Merchant', value: 'merchant' }
+        ];
 
         return (
             <ImageBackground source={require('../../assets/images/background.png')} style={{ height: '100%', width: '100%' }}>
                 <View style={styles.container}>
                     <View style={styles.window}>
-                        <Text style={[appStyles.title, {marginBottom: 10, marginTop: 15}]}>Welcome</Text>
-                        <RadioForm
-                            radio_props={radio_props}
-                            buttonColor={'#693CB7'}
-                            initial={this.state.businessType}
-                            onPress={(value) => {this.setState({businessType: value})}}
-                            />
-                      <View style={{height: 100, marginBottom: 15, justifyContent: 'flex-end'}}>
-                      <TouchableOpacity onPress={() => this.handleSubmit()} style={appStyles.login}>
-                            <Text style={appStyles.buttonText}>Sign Up</Text>
-                       </TouchableOpacity>
-                      </View>
+                        <Text style={[appStyles.title, { marginBottom: 10, marginTop: 15 }]}>Select Account Type</Text>
+                        <View>
+                        <RadioGroup onSelect={(index, value) => this.onSelect(index, value)}>
+                            <RadioButton style={styles.radio} value={'item1'} >
+                                <Text>This is item #1</Text>
+                            </RadioButton>
+                            <RadioButton style={styles.radio} value={'item2'}>
+                                <Text>This is item #2</Text>
+                            </RadioButton>
+                        </RadioGroup>
+                        </View>
+                        <View style={{ height: 100, marginBottom: 15, justifyContent: 'flex-end' }}>
+                            <TouchableOpacity onPress={() => this.handleSubmit()} style={appStyles.login}>
+                                <Text style={appStyles.buttonText}>Sign Up</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </ImageBackground>
@@ -86,6 +90,19 @@ const styles = StyleSheet.create({
     input: {
         marginTop: 5,
         marginBottom: 5
+    },
+    radio: {
+        borderWidth: 1,
+        borderColor: '#979797',
+        borderRadius: 9,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 10,
+        flexDirection: 'row'
+    },
+    label: {
+        fontSize: 20,
+        color: '#6D708A'
     }
 })
 
