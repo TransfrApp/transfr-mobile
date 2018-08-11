@@ -8,13 +8,17 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { module as UserModule } from '../Store/user.js';
+import { connectStore } from 'redux-box';
+import images from '../assets/Images.js';
+import appStyles from '../constants/Styles.js';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     headerTitle: 'Welcome Home',
     headerRight: (
       <TouchableOpacity>
-        <Image source="../assets/images/plus-icon.png"/>
+        <Image style={appStyles.topNavIconRight} source={images.plus}/>
       </TouchableOpacity>
     )
   };
@@ -29,6 +33,7 @@ export default class HomeScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  ...appStyles,
   container: {
     flex: 1,
     justifyContent: 'center',
