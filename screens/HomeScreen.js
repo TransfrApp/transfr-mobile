@@ -12,6 +12,7 @@ import {
 import images from '../assets/Images.js';
 import appStyles from '../constants/Styles.js';
 import AddInfo from '../components/AddProduct/AddInfo';
+import AddPhoto from '../components/AddProduct/AddPhoto';
 const {width, height} = Dimensions.get('window');
 
 import { observer, inject } from 'mobx-react';
@@ -35,7 +36,7 @@ export default class HomeScreen extends React.Component {
       products: [],
     }
   }
-  
+
   checkoutList(){
     if (this.state.products.length === 0){
       return (
@@ -68,8 +69,12 @@ export default class HomeScreen extends React.Component {
           </View>
         )
     }
-    else if(business.addingProduct === 3){
-      return;
+    else if(business.addingProduct === 2){
+      return(
+        <View>
+          <AddPhoto/>
+        </View>
+      )
     }
   }
 
