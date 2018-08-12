@@ -1,10 +1,10 @@
-import {observable} from 'mobx';
+import { observable, action } from 'mobx';
 
 class BusinessStore {
     @observable business = {
         products: [],
         checkoutItems: [],
-        addingProduct: 2, // 0 -> no products being added // 1 -> adding name and category // 2 -> adding image
+        addingProduct: 0, // 0 -> no products being added // 1 -> adding name and category // 2 -> adding image
         productCategories: [
             {name: 'Hot Category', id: 'hotfood'},
             {name: 'Dresses', id: 'dress'},
@@ -20,13 +20,16 @@ class BusinessStore {
         newProductName: '',
     }
     addProductCateogry(categories){
-        this.newProductCategories = categories
+        this.business.newProductCategories = categories
     }
     addNewProductName(name){
-        this.newProductName = name;
+        this.business.newProductName = name;
     }
     changeAddingProductWindow(screen){
-        this.addingProduct = screen;
+        this.business.addingProduct = screen;
+    }
+    addProduct(product){
+        this.business.products = this.business.products.push(product);
     }
 }
 

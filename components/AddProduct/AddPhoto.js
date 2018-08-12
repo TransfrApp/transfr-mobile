@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import authStyles from '../../Styles/authStyles';
 import { observer, inject } from 'mobx-react';
-import Modal from 'react-native-modal';
+import { ImagePicker } from 'expo'
 const { height, width } = Dimensions.get('window');
 
 @inject('store')
@@ -25,6 +25,31 @@ class AddProductPhoto extends Component {
         }
     }
 
+    _pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          allowsEditing: true,
+          aspect: [4, 3],
+        });
+    
+        console.log(result);
+    
+        if (!result.cancelled) {
+          this.setState({ image: result.uri });
+        }
+      };
+
+      handleSubmit(){
+        const image = 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=74ac7c1aa35dc36f50cc1ac7517c70a7&auto=format&fit=crop&w=1350&q=80'
+        const name = this.props.store.BusinessStore.business.newProductName;
+          const item = {
+              image,
+              name,
+              price: 0,
+          }
+
+          this.props.store.BusinessStore.addProduct(item);
+      }
+
     render() {
         return (
             <View style={styles.container}>
@@ -32,8 +57,15 @@ class AddProductPhoto extends Component {
                     <Text style={styles.mainText}>Add a Photo</Text>
                     <Text style={styles.text}>3/3</Text>
                 </View>
-                <View>
-                    <Image source={require('../../assets/images/image-archive.png')}/>
+                <View style={styles.imageContainer}>
+                    <TouchableOpacity onPress={() => this._pickImage()}>
+                        <Image style={styles.image} source={require('../../assets/images/image-archive.png')} />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity onPress={() => this.handleSubmit()} style={authStyles.login}>
+                        <Text style={authStyles.buttonText}>Submit</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         )
@@ -42,7 +74,7 @@ class AddProductPhoto extends Component {
 const styles = StyleSheet.create({
     container: {
         justifyContent: 'flex-start',
-        minHeight: height * .55,
+        minHeight: height * .35,
         width: width * .35,
         backgroundColor: '#FFF',
         borderRadius: 19,
@@ -56,5 +88,22 @@ const styles = StyleSheet.create({
         color: '#B1B5C2',
         paddingRight: 20
     },
+    imageContainer: {
+        minHeight: height * .2,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    image: {
+        marginTop: 30,
+        height: 100,
+        width: 100,
+    },
+    buttonContainer:{
+        height: height * .12,
+        justifyContent: 'flex-end',
+        alignItems:'center',
+        marginBottom: 20
+
+    }
 })
 export default AddProductPhoto;

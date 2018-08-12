@@ -58,7 +58,7 @@ class AddProductInfo extends Component {
   handleNext(){
     const BusinessStore = this.props.store.BusinessStore;
     BusinessStore.addNewProductName(this.state.prodName);
-    BusinessStore.business.addingProduct = 2;
+    BusinessStore.changeAddingProductWindow(2);
     console.log("Business Store", BusinessStore.business);
   }
 

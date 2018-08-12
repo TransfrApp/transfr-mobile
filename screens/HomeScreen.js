@@ -51,12 +51,14 @@ export default class HomeScreen extends React.Component {
   }
 
   addProduct(business){
+    const BusinessStore = this.props.store.BusinessStore;
+
     if(business.addingProduct === 0){
       return(
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
           <Text style={styles.mainText}>You have no Products</Text>
           <Text style={styles.text}>Click "Add Product" below to get started</Text>
-          <TouchableOpacity onPress={() => business.addingProduct = 1} style={styles.addProduct}>
+          <TouchableOpacity onPress={() => BusinessStore.changeAddingProductWindow(1)} style={styles.addProduct}>
            <Text style={{fontSize:93, color: '#B1B5C2'}}>+</Text>
            <Text style={styles.mainText}>Add Product</Text>
           </TouchableOpacity>
