@@ -8,6 +8,8 @@ import CodeScanner from '../screens/CodeScanner';
 import SettingsScreen from '../screens/SettingsScreen';
 import LoginScreen from '../screens/AuthStack/Login';
 
+import MetricsMainPage from "../screens/MetricsDash/MetricsMainPage"
+
 
 const drawer  = createDrawerNavigator ({
   HomeScreen:{
@@ -15,7 +17,12 @@ const drawer  = createDrawerNavigator ({
   },
   CodeScanner: {
     screen: CodeScanner,
+  },
+  MetricsMainPage: {
+    screen: MetricsMainPage
   }
+},{
+  initialRouteName: 'HomeScreen'
 });
 
 const mainNavigation = createStackNavigator({
