@@ -9,13 +9,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { module as UserModule } from '../Store/user.js';
-import { connectStore } from 'redux-box';
 import images from '../assets/Images.js';
 import appStyles from '../constants/Styles.js';
 import AddInfo from '../components/AddProduct/AddInfo';
 const {width, height} = Dimensions.get('window');
 
+import { observer, inject } from 'mobx-react';
+
+@inject('store')
+@observer
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     headerTitle: 'Welcome Home',
@@ -31,10 +33,9 @@ export default class HomeScreen extends React.Component {
     this.state = {
       drawerActive: false,
       products: [],
-      addingProd: true
     }
   }
-
+  
   checkoutList(){
     if (this.state.products.length === 0){
       return (
@@ -48,32 +49,37 @@ export default class HomeScreen extends React.Component {
     }
   }
 
-  addProduct(){
-    if(!this.state.addingProd){
+  addProduct(business){
+    if(business.addingProduct === 0){
       return(
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
           <Text style={styles.mainText}>You have no Products</Text>
           <Text style={styles.text}>Click "Add Product" below to get started</Text>
-          <TouchableOpacity onPress={() => this.setState({addingProd: !this.state.addingProd})} style={styles.addProduct}>
+          <TouchableOpacity onPress={() => business.addingProduct = 1} style={styles.addProduct}>
            <Text style={{fontSize:93, color: '#B1B5C2'}}>+</Text>
            <Text style={styles.mainText}>Add Product</Text>
           </TouchableOpacity>
         </View>
       )
-    } else {
+    } else if (business.addingProduct === 1) {
         return(
           <View>
             <AddInfo/>
           </View>
         )
     }
+    else if(business.addingProduct === 3){
+      return;
+    }
   }
 
   render() {
+    const business = this.props.store.BusinessStore.business;
+
     return (
       <View style={styles.container}>
         <View style={styles.products}>
-          {this.addProduct()}
+          {this.addProduct(business)}
         </View>
         <View style={styles.checkout}>
           <View style={styles.checkoutContainer}>

@@ -22,8 +22,13 @@ class LoginScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            username: '',
+            password: ''
         }
+    }
+
+    componentDidMount(){
+        console.log("Store", this.props.store);
     }
 
     render() {
@@ -34,10 +39,14 @@ class LoginScreen extends Component {
                         <Text style={styles.title}>Welcome Back!</Text>
                         <TextInput
                             underlineColorAndroid={'transparent'}
+                            value={this.state.username}
+                            onChangeText={(username) => this.setState({username})}
                             placeholder="User Name"
                             style={styles.textInput} />
                         <TextInput
                             underlineColorAndroid={'transparent'}
+                            value={this.state.password}
+                            onChangeText={(password) => this.setState({password})}
                             secureTextEntry={true}
                             placeholder="Password"
                             style={styles.textInput} />

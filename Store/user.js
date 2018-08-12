@@ -3,7 +3,11 @@ import {observable} from 'mobx';
 class UserStore {
 	@observable user = {
         email: "test@test.com",
-        password: "",
+		password: "test",
+		businessName: '',
+		username: '',
+		confirmPassword: '',
+		accountType: '',
     }
 
 	login(user) {

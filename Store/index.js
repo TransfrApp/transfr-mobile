@@ -1,6 +1,8 @@
 import UserStore from "./user"
+import BusinessStore from './business';
 const stores = {
-    UserStore
+    UserStore,
+    BusinessStore
 }
 
 export default stores

@@ -12,12 +12,12 @@ import {
     View,
 } from 'react-native';
 import appStyles from '../../Styles/authStyles';
-import { RadioGroup, RadioButton } from 'react-native-flexi-radio-button'
-// import appStyles from '../../constants/Styles.js';
-import FullButton from '../../components/FullButton.js';
+import {observer, inject} from 'mobx-react';
 
 const { height, width } = Dimensions.get('window');
 
+@inject('store')
+@observer
 class AccountSetup extends Component {
     static navigationOptions = ({navigation}) => {
         const params = navigation.state.params || {};
@@ -28,21 +28,14 @@ class AccountSetup extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: '',
-            password: '',
-            name: '',
             businessType: '',
         }
     }
     handleSubmit = () => {
-        // =========================
-        // Insert Login Logic here
-        // =========================
+        const user = this.props.store.UserStore.user;
+
+        user.accountType = this.state.businessType;
         this.props.navigation.navigate('Main');
-    }
-
-    handleSelectBusiness(){
-
     }
 
     render() {

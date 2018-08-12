@@ -12,11 +12,12 @@ import {
     View,
 } from 'react-native';
 import appStyles from '../../Styles/authStyles';
-// import appStyles from '../../constants/Styles.js';
-import FullButton from '../../components/FullButton.js';
+import { observer, inject } from 'mobx-react';
 
 const { height, width } = Dimensions.get('window');
 
+@inject('store')
+@observer
 class CreateAccount extends Component {
     static navigationOptions = ({navigation}) => {
         const params = navigation.state.params || {};
@@ -28,14 +29,23 @@ class CreateAccount extends Component {
         super(props);
         this.state = {
             email: '',
+            businessName: '',
+            username: '',
             password: '',
-            name: ''
+            confirmPassword: '',
         }
     }
     handleSubmit = () => {
-        // =========================
-        // Insert Login Logic here
-        // =========================
+        const user = this.props.store.UserStore.user;
+
+        // How would we pattern match this shit to make it less fugly?
+        user.businessName = this.state.businessName;
+        user.confirmPassword = this.state.confirmPassword;
+        user.email = this.state.email;
+        user.password = this.state.password;
+        user.confirmPassword = this.state.confirmPassword;
+        user.username = this.state.username;
+
         this.props.navigation.navigate('AccountSetup');
     }
 
@@ -48,28 +58,35 @@ class CreateAccount extends Component {
                         <TextInput
                             style={[appStyles.textInput, styles.input]}
                             placeholder={'Business Name'}
-                            underlineColorAndroid={'transparent'}
-                            value={this.state.name} />
+                            value={this.state.businessName}
+                            onChangeText={(businessName => this.setState({businessName}))}
+                            underlineColorAndroid={'transparent'} />
                         <TextInput
                             style={[appStyles.textInput, styles.input]}
                             underlineColorAndroid={'transparent'}
-                            placeholder={'Username'}
-                            value={this.state.email} />
+                            value={this.state.username}
+                            onChangeText={(username) => this.setState({username})}
+                            placeholder={'Username'}/>
+                        <TextInput
+                            style={[appStyles.textInput, styles.input]}
+                            value={this.state.email}
+                            onChangeText={(email) => this.setState({email})}
+                            underlineColorAndroid={'transparent'}
+                            placeholder={'Email'}/>
                         <TextInput
                             style={[appStyles.textInput, styles.input]}
                             underlineColorAndroid={'transparent'}
-                            placeholder={'Email'}
-                            value={this.state.password} />
-                        <TextInput
-                            style={[appStyles.textInput, styles.input]}
-                            underlineColorAndroid={'transparent'}
+                            secureTextEntry={true}
                             placeholder={'Password'}
-                            value={this.state.password} />
+                            value={this.state.password}
+                            onChangeText={(password) => this.setState({password})}/>
                         <TextInput
                             style={[appStyles.textInput, styles.input]}
                             underlineColorAndroid={'transparent'}
                             placeholder={'Confirm Password'}
-                            value={this.state.password} />
+                            value={this.state.confirmPassword}
+                            secureTextEntry={true}
+                            onChangeText={(confirmPassword) => this.setState({confirmPassword})}/>
                       <View style={{height: 100, marginBottom: 15, justifyContent: 'flex-end'}}>
                       <TouchableOpacity onPress={() => this.handleSubmit()} style={appStyles.login}>
                             <Text style={appStyles.buttonText}>Sign Up</Text>
