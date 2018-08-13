@@ -116,6 +116,11 @@ class CheckoutList extends Component {
         }
     }
 
+    cancelPaymentModal(){
+        this.props.store.BusinessStore.setSelectedCoin("");
+        this.setState({displayPaymentModal: false})
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -151,8 +156,16 @@ class CheckoutList extends Component {
                 {this.discountModal()}
                 <Modal style={{ justifyContent: 'center', alignItems: 'center' }} isVisible={this.state.displayPaymentModal}>
                     <View style={styles.modal}>
-                        <Text>Select Payment Method Modal</Text>
+                        <Text style={{fontSize: 20, paddingTop: 10, paddingBottom: 30}}>Select Payment Method Modal</Text>
                         {this.selectPaymentModal()}
+                        <View style={styles.center}>
+                            <TouchableOpacity onPress={() => this.setState({displayPaymentModal: false})} style={[styles.checkoutButton, {marginBottom: 10}]}>
+                                <Text style={{fontSize: 16, color: 'white'}}>Show QR Code</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => this.cancelPaymentModal()} style={{paddingBottom: 20}}>
+                                <Text style={{ color: '#6532BD' }}>Cancel</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </Modal>
             </View>
@@ -195,7 +208,7 @@ class CheckoutList extends Component {
                     onPress={() => BusinessStore.setSelectedCoin(coin.name)} 
                     style={business.selectedCoin === coin.name ? styles.selectedCoinContainer : styles.coinContainer}>
                     <Image style={{height: 25, width: 25}} source={coin.image}/>
-                    <Text>{coin.name}</Text>
+                    <Text style={business.selectedCoin === coin.name ? styles.activeText : styles.text}>{coin.name}</Text>
                 </TouchableOpacity>
             )
         })
@@ -205,6 +218,10 @@ class CheckoutList extends Component {
 const styles = StyleSheet.create({
     container: {
         height: height * .8
+    },
+    center: {
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     list: {
         marginTop: 10,
@@ -232,6 +249,12 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 16,
+        fontWeight: '500'
+    },
+    activeText: {
+        fontSize: 16,
+        color: '#6532BD',
+        fontWeight: '500'
     },
     smallText: {
         fontSize: 12,
@@ -260,7 +283,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     modal: {
-        height: 400,
+        minHeight: 400,
         width: width * .4,
         backgroundColor: 'white',
         borderRadius: 37,
@@ -274,7 +297,7 @@ const styles = StyleSheet.create({
     coinContainer: {
         flexDirection: 'row',
         width: width * .2,
-        borderWidth: 2,
+        borderWidth: 3,
         borderColor: '#CBCBCB',
         borderRadius: 15,
         justifyContent: 'space-around',
@@ -286,7 +309,7 @@ const styles = StyleSheet.create({
     selectedCoinContainer: {
         flexDirection: 'row',
         width: width * .2,
-        borderWidth: 2,
+        borderWidth: 3,
         borderColor: '#6532BD',
         borderRadius: 15,
         justifyContent: 'space-around',
