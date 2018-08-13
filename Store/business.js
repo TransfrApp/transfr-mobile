@@ -2,7 +2,21 @@ import { observable, action } from 'mobx';
 
 class BusinessStore {
     @observable business = {
-        products: [],
+        products: [
+            {
+                name: 'Pizza',
+                image: 'https://images.unsplash.com/photo-1506354666786-959d6d497f1a?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=86c8c1fd5e9e5b384696472a095c42ac&auto=format&fit=crop&w=1500&q=80',
+                price: 20
+            }, {
+                name: 'Coffee',
+                image: 'https://images.unsplash.com/photo-1504630083234-14187a9df0f5?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=c29572a9d10e1903398a9448e1e962ed&auto=format&fit=crop&w=1500&q=80',
+                price: 5,
+            }, {
+                name: 'Dessert',
+                image: 'https://images.unsplash.com/photo-1505418640699-b8e61c7273af?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=e3ee68f6a29882dc092879cd68cb6f12&auto=format&fit=crop&w=1225&q=80',
+                price: 7,
+            }
+        ],
         checkoutItems: [],
         addingProduct: 0, // 0 -> no products being added // 1 -> adding name and category // 2 -> adding image
         productCategories: [

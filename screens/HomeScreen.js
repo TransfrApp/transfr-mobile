@@ -13,6 +13,8 @@ import images from '../assets/Images.js';
 import appStyles from '../constants/Styles.js';
 import AddInfo from '../components/AddProduct/AddInfo';
 import AddPhoto from '../components/AddProduct/AddPhoto';
+import ProductCard from './ProductCards';
+
 const {width, height} = Dimensions.get('window');
 
 import { observer, inject } from 'mobx-react';
@@ -53,7 +55,14 @@ export default class HomeScreen extends React.Component {
   addProduct(business){
     const BusinessStore = this.props.store.BusinessStore;
 
-    if(business.addingProduct === 0){
+    if(BusinessStore.business.products.length > 0){
+      return (
+        <View style={styles.activeProduct}>
+           <ProductCard/>
+        </View>
+      )
+    }
+    else if(business.addingProduct === 0 && BusinessStore.business.products.length === 0){
       return(
         <View style={{justifyContent: 'center', alignItems: 'center'}}>
           <Text style={styles.mainText}>You have no Products</Text>
@@ -82,7 +91,7 @@ export default class HomeScreen extends React.Component {
 
   render() {
     const business = this.props.store.BusinessStore.business;
-
+    const productList = this.props.store.BusinessStore.business.products.length;
     return (
       <View style={styles.container}>
         <View style={styles.products}>
@@ -110,9 +119,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F9FB'
   },
   products: {
-    width: width *.65,
+    width: width * .65,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    flexDirection: 'row'
+  },
+  activeProduct: {
+    width: width * .65,
+    height: height * .85,
+
   },
   addProduct: {
     height: 200,
