@@ -40,6 +40,14 @@ class BusinessStore {
             {name: 'Skirts', id: 'skirts'},
             {name: 'Leggings', id: 'leggings'}
         ],
+        paymentMethods: [
+            {name: 'REQ', image: '../assets/cryptoIcons/REQ.png'},
+            {name: 'ETH', image: '../assets/cryptoIcons/ETH.png'},
+            {name: 'KNC', image: '../assets/cryptoIcons/KNC.png'},
+            {name: 'DGX', image: '../assets/cryptoIcons/DGX.png'},
+            {name: 'DAI', image: '../assets/cryptoIcons/DAI.png'},
+            {name: 'NEO', image: '../assets/cryptoIcons/NEO.png'}
+        ],
         newProductCategories: [],
         newProductName: '',
     }
