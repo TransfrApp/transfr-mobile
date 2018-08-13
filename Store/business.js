@@ -43,7 +43,12 @@ class BusinessStore {
         this.business.addingProduct = screen;
     }
     addProduct(product){
-        this.business.products = this.business.products.push(product);
+        console.log("Product from Mobx Store",product);
+        this.business.products = this.business.products.concat(product);
+    }
+    itemToCheckoutQue(item){
+        console.log("Item from Mobx Store", item);
+        this.business.checkoutItems = this.business.checkoutItems.concat(item);
     }
 }
 
