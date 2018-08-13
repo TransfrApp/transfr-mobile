@@ -187,12 +187,16 @@ class CheckoutList extends Component {
 
     selectPaymentModal() {
         const business = this.props.store.BusinessStore.business;
-       return business.paymentMethods.map(coin => {
+        const BusinessStore = this.props.store.BusinessStore;
+
+       return business.paymentMethods.map((coin, index) => {
             return(
-                <View style={styles.coinContainer}>
-                    <Image style={{height: 50, width: 50}} source={require(coin.image)}/>
+                <TouchableOpacity 
+                    onPress={() => BusinessStore.setSelectedCoin(coin.name)} 
+                    style={business.selectedCoin === coin.name ? styles.selectedCoinContainer : styles.coinContainer}>
+                    <Image style={{height: 25, width: 25}} source={coin.image}/>
                     <Text>{coin.name}</Text>
-                </View>
+                </TouchableOpacity>
             )
         })
     }
@@ -268,7 +272,28 @@ const styles = StyleSheet.create({
         marginBottom: 40,
     },
     coinContainer: {
-
+        flexDirection: 'row',
+        width: width * .2,
+        borderWidth: 2,
+        borderColor: '#CBCBCB',
+        borderRadius: 15,
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        marginTop: 5,
+        marginBottom: 5,
+        height: 50
+    },
+    selectedCoinContainer: {
+        flexDirection: 'row',
+        width: width * .2,
+        borderWidth: 2,
+        borderColor: '#6532BD',
+        borderRadius: 15,
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        marginTop: 5,
+        marginBottom: 5,
+        height: 50
     }
 })
 

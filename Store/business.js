@@ -41,13 +41,14 @@ class BusinessStore {
             {name: 'Leggings', id: 'leggings'}
         ],
         paymentMethods: [
-            {name: 'REQ', image: '../assets/cryptoIcons/REQ.png'},
-            {name: 'ETH', image: '../assets/cryptoIcons/ETH.png'},
-            {name: 'KNC', image: '../assets/cryptoIcons/KNC.png'},
-            {name: 'DGX', image: '../assets/cryptoIcons/DGX.png'},
-            {name: 'DAI', image: '../assets/cryptoIcons/DAI.png'},
-            {name: 'NEO', image: '../assets/cryptoIcons/NEO.png'}
+            {name: 'REQ', image: require('../assets/cryptoIcons/REQ.png')},
+            {name: 'ETH', image: require('../assets/cryptoIcons/ETH.png')},
+            {name: 'KNC', image: require('../assets/cryptoIcons/KNC.png')},
+            {name: 'DGX', image: require('../assets/cryptoIcons/DGX.png')},
+            {name: 'DAI', image: require('../assets/cryptoIcons/DAI.png')},
+            {name: 'NEO', image: require('../assets/cryptoIcons/NEO.png')}
         ],
+        selectedCoin: '',
         newProductCategories: [],
         newProductName: '',
     }
@@ -72,6 +73,9 @@ class BusinessStore {
         const item = this.business.checkoutItems.concat();
         item.splice(index, 1);
         this.business.checkoutItems = item;
+    }
+    setSelectedCoin(coin){
+        this.business.selectedCoin = coin;
     }
 }
 
