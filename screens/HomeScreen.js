@@ -14,6 +14,7 @@ import appStyles from '../constants/Styles.js';
 import AddInfo from '../components/AddProduct/AddInfo';
 import AddPhoto from '../components/AddProduct/AddPhoto';
 import ProductCard from './ProductCards';
+import CheckoutList from './CheckoutList';
 
 const {width, height} = Dimensions.get('window');
 
@@ -40,7 +41,8 @@ export default class HomeScreen extends React.Component {
   }
 
   checkoutList(){
-    if (this.state.products.length === 0){
+    const business = this.props.store.BusinessStore.business;
+    if (business.checkoutItems.length === 0){
       return (
         <View style={{justifyContent: 'center', alignContent: 'center', alignItems: 'center', paddingTop: height * .3}}>
           <Text style={[styles.mainText]}>No Product Selected</Text>
@@ -48,7 +50,11 @@ export default class HomeScreen extends React.Component {
         </View>
       )
     } else {
-      return;
+      return(
+        <View>
+          <CheckoutList/>
+        </View>
+      )
     }
   }
 
