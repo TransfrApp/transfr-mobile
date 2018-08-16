@@ -1,5 +1,6 @@
 import React from 'react';
 import { Platform } from 'react-native';
+import images from '../assets/Images';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 import LoginScreen from '../screens/AuthStack/Login.js';
@@ -16,6 +17,7 @@ const commonNavigationOptions = {
         right: 0, 
         borderBottomWidth: 0 
     },
+    headerTitle: 'Testing the Header Title',
     headerTitleStyle: {
         flex: 1,
         textAlign: 'center',
