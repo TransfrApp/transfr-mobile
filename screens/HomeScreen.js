@@ -15,6 +15,7 @@ import AddInfo from '../components/AddProduct/AddInfo';
 import AddPhoto from '../components/AddProduct/AddPhoto';
 import ProductCard from './ProductCards';
 import CheckoutList from './CheckoutList';
+import AddProductButton from '../navigation/Components/AddProductButton';
 
 const {width, height} = Dimensions.get('window');
 
@@ -23,13 +24,12 @@ import { observer, inject } from 'mobx-react';
 @inject('store')
 @observer
 export default class HomeScreen extends React.Component {
-  static navigationOptions = {
-    headerTitle: 'Welcome Home',
-    headerRight: (
-      <TouchableOpacity>
-        <Image style={appStyles.topNavIconRight} source={images.plus}/>
-      </TouchableOpacity>
-    )
+  static navigationOptions = ({navigation}) => {
+    const params = navigation.state.params || {};
+    return{
+      headerTitle: 'Welcome Home',
+      headerRight: <AddProductButton/>,
+    }
   };
 
   constructor(props){

@@ -30,16 +30,16 @@ const drawer  = createDrawerNavigator ({
 });
 
 const mainNavigation = createStackNavigator({
-  DrawerNavigation: {screen: drawer},
+  DrawerNavigation: {screen: drawer}
 }, {
   navigationOptions: ({navigation}) => ({
     headerTitle: <SearchBar/>,
+    headerRight: <AddProductButton/>, // This needs to functionality tweaks
     headerLeft: (
       <TouchableOpacity onPress={() => navigation.toggleDrawer()} style={{marginLeft: 15}}>
-       <Image style={{height: 22, width: 32}} source={images.headerLeft}/>
+        <Image style={{height: 22, width: 32}} source={images.headerLeft}/>
       </TouchableOpacity>
     ),
-    headerRight: <AddProductButton/>,
     headerStyle: {
       backgroundColor: '#693CB7',
     }
