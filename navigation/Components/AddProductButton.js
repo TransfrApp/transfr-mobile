@@ -11,7 +11,7 @@ import AddPhoto from '../../components/AddProduct/AddPhoto';
 import { observer, inject } from 'mobx-react';
 import images from '../../assets/Images';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 @inject('store')
 @observer
@@ -26,37 +26,15 @@ class AddProductButton extends Component {
     componentDidMount() {
         console.log("Props", this.props);
     }
-
-    addProduct() {
-        const BusinessStore = this.props.store.BusinessStore;
-        const business = this.props.store.BusinessStore.business;
-        if (business.addingProduct === 1) {
-            return (
-                <View style={styles.center}>
-                    <AddInfo />
-                </View>
-            )
-        }
-        else if (business.addingProduct === 2) {
-            return (
-                <View style={styles.center}>
-                    <AddPhoto />
-                </View>
-            )
-        }
-    }
-
+    
     render() {
         return (
-            <View>
-                <TouchableOpacity
-                    onPress={() => this.props.store.BusinessStore.changeAddingProductWindow(1)}
-                    style={styles.container}>
-                    <Text style={styles.plus}>+ </Text>
-                    <Text style={styles.text}>Add Product</Text>
-                </TouchableOpacity>
-                {this.addProduct()}
-            </View>
+            <TouchableOpacity
+                onPress={() => this.props.store.BusinessStore.changeAddingProductWindow(1)}
+                style={styles.container}>
+                <Text style={styles.plus}>+ </Text>
+                <Text style={styles.text}>Add Product</Text>
+            </TouchableOpacity>
         )
     }
 }

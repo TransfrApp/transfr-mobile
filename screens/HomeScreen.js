@@ -60,8 +60,8 @@ export default class HomeScreen extends React.Component {
 
   addProduct(business){
     const BusinessStore = this.props.store.BusinessStore;
-
-    if(BusinessStore.business.products.length > 0){
+    const addProduct = BusinessStore.business.addingProduct;
+    if(BusinessStore.business.products.length > 0 && addProduct === 0){
       return (
         <View style={styles.activeProduct}>
            <ProductCard/>
