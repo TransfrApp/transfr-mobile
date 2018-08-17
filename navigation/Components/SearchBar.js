@@ -7,31 +7,40 @@ import {
     Dimensions,
     StyleSheet,
 } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 import { observer, inject } from 'mobx-react';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 @inject('store')
 @observer
 class SearchBar extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             searchValue: null,
         }
     }
 
-    render(){
-        return(
+    handleSearch(){
+        alert("Need to wire in the search");
+    }
+
+    render() {
+        return (
             <View style={styles.container}>
                 <TouchableOpacity style={styles.button}>
                     <Text>Categories</Text>
                 </TouchableOpacity>
-                <TextInput
-                    placeholder={"Search Products"}
-                    onChangeText={(searchValue) => this.setState({searchValue})}
-                    style={styles.input}
-                />
+                <View style={[styles.input, { flexDirection: 'row', alignItems: 'center' }]}>
+                    <TextInput
+                        style={{ width: width * .25 }}
+                        placeholder={"Search Products"}
+                        onChangeText={(searchValue) => this.setState({ searchValue })} />
+                    <TouchableOpacity onPress={() => this.handleSearch()}>
+                        <FontAwesome name="search" size={20} color="grey" />
+                    </TouchableOpacity>
+                </View>
             </View>
         )
     }
@@ -43,7 +52,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row'
     },
-    input:{
+    input: {
         height: 36,
         width: width * .3,
         borderTopRightRadius: 18,
