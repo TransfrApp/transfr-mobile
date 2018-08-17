@@ -5,7 +5,7 @@ class UserStore {
         email: "test@test.com",
 		password: "test",
 		businessName: '',
-		username: '',
+		username: 'Test User',
 		confirmPassword: '',
 		accountType: '',
     }

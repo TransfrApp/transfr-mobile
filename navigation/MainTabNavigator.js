@@ -4,34 +4,24 @@ import { createStackNavigator, createDrawerNavigator, DrawerItems } from 'react-
 import images from '../assets/Images';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import CodeScanner from '../screens/CodeScanner';
 import SettingsScreen from '../screens/SettingsScreen';
 import LoginScreen from '../screens/AuthStack/Login';
 // Components
 import SearchBar from './Components/SearchBar';
 import AddProductButton from './Components/AddProductButton';
+import DrawerHeader from './Components/DrawerHeader';
 
 
 import MetricsMainPage from "../screens/MetricsDash/MetricsMainPage"
 
 
 const CustomDrawerContentComponent = (props) => (
-  <View>
-    <ImageBackground
-      style={{ height: 150, width: 320, justifyContent: 'center', alignItems: 'center' }}
-      source={require('../assets/images/headerBackground.png')}>
-      <Text>Testing the Custom Drawer</Text>
-    </ImageBackground>
-    <DrawerItems {...props} />
-  </View>
+ <DrawerHeader drawerProps={props}/>
 )
 
 const drawer = createDrawerNavigator({
   HomeScreen: {
     screen: HomeScreen,
-  },
-  CodeScanner: {
-    screen: CodeScanner,
   },
   MetricsMainPage: {
     screen: MetricsMainPage
