@@ -131,9 +131,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   activeProduct: {
+    alignItems: 'flex-start',
     width: width * .65,
     height: height * .85,
-
+    flexWrap: 'wrap',
   },
   addProduct: {
     height: 200,

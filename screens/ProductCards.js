@@ -49,9 +49,9 @@ class ProductCards extends Component {
 
     render(){
         return (
-            <View style={{height: height * .85, width: width * .6, paddingLeft: 20}}>
+            <View style={{height: height * .85, width: width * .64, paddingLeft: 20}}>
                 <Text style={styles.title}>All Products</Text>
-                <View style={{flexDirection: 'row'}}>
+                <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
                     {this.displayProducts()}
                 </View>
             </View>
@@ -65,7 +65,8 @@ const styles = StyleSheet.create({
         height: 167, 
         width: 130, 
         marginLeft: 10,
-        marginRight: 10
+        marginRight: 10,
+        marginBottom: 20
     },
     title: {
         fontSize: 20,
