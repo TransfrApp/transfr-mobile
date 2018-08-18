@@ -46,7 +46,7 @@ export default class HomeScreen extends React.Component {
     if (business.checkoutItems.length === 0) {
       return (
         <View style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center', paddingTop: height * .3 }}>
-          <Text style={{height: 209, width: 209}}>No Product Selected</Text>
+          <Text  style={[styles.mainText, {paddingLeft: 10, paddingRight: 10, textAlign: 'center'}]}>No Product Selected</Text>
           <Text style={[styles.mainText, { paddingLeft: 10, paddingRight: 10, textAlign: 'center' }]}>Please select from the product list</Text>
         </View>
       )
