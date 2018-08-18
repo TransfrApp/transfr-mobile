@@ -48,6 +48,7 @@ class BusinessStore {
             {name: 'DAI', image: require('../assets/cryptoIcons/DAI.png')},
             {name: 'NEO', image: require('../assets/cryptoIcons/NEO.png')}
         ],
+
         selectedCoin: '',
         newProductCategories: [],
         newProductName: '',
@@ -58,6 +59,7 @@ class BusinessStore {
         tax: 0,
         discount: null,
         total: 0,
+        soldItems: []
     }
     addProductCateogry(categories){
         this.business.newProductCategories = categories
@@ -95,6 +97,7 @@ class BusinessStore {
 
         setTimeout(() => { 
             this.business.checkout = '';
+            this.sale.soldItems = this.sale.soldItems.concat(this.business.checkoutItems);
             this.business.checkoutItems = [];
          }, 15000);
 
