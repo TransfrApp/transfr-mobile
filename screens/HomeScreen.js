@@ -16,23 +16,24 @@ import AddPhoto from '../components/AddProduct/AddPhoto';
 import ProductCard from './ProductCards';
 import CheckoutList from './CheckoutList';
 import AddProductButton from '../navigation/Components/AddProductButton';
+import { FontAwesome } from '@expo/vector-icons';
 
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 import { observer, inject } from 'mobx-react';
 
 @inject('store')
 @observer
 export default class HomeScreen extends React.Component {
-  static navigationOptions = ({navigation}) => {
+  static navigationOptions = ({ navigation }) => {
     const params = navigation.state.params || {};
-    return{
+    return {
       headerTitle: 'Welcome Home',
-      headerRight: <AddProductButton/>,
+      headerRight: <AddProductButton />,
     }
   };
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       drawerActive: false,
@@ -40,57 +41,84 @@ export default class HomeScreen extends React.Component {
     }
   }
 
-  checkoutList(){
+  checkoutList() {
     const business = this.props.store.BusinessStore.business;
-    if (business.checkoutItems.length === 0){
+    if (business.checkoutItems.length === 0) {
       return (
-        <View style={{justifyContent: 'center', alignContent: 'center', alignItems: 'center', paddingTop: height * .3}}>
-          <Text style={[styles.mainText]}>No Product Selected</Text>
-          <Text style={[styles.mainText, {paddingLeft: 10, paddingRight: 10, textAlign: 'center'}]}>Please select from the product list</Text>
+        <View style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center', paddingTop: height * .3 }}>
+          <Text style={{height: 209, width: 209}}>No Product Selected</Text>
+          <Text style={[styles.mainText, { paddingLeft: 10, paddingRight: 10, textAlign: 'center' }]}>Please select from the product list</Text>
         </View>
       )
-    } else {
-      return(
+    } if (business.checkout === 'QR') {
+      return (
+        <View style={{ justifyContent: 'space-between', alignItems: 'center', paddingTop: height * .2 }}>
+          <Image style={{height: 209, width: 209}} source={require('../assets/images/qrCode.png')}/>
+          <Text style={[styles.mainText, {marginTop: 60, paddingLeft: 10, paddingRight: 10, textAlign: 'center' }]}>Show the customer the QR code so they can complete the payment</Text>
+        </View>
+      )
+    }
+    else {
+      return (
         <View>
-          <CheckoutList/>
+          <CheckoutList />
         </View>
       )
     }
   }
 
-  addProduct(business){
+  addProduct(business) {
     const BusinessStore = this.props.store.BusinessStore;
     const addProduct = BusinessStore.business.addingProduct;
-    if(BusinessStore.business.products.length > 0 && addProduct === 0){
+    if (BusinessStore.business.products.length > 0 && addProduct === 0) {
       return (
         <View style={styles.activeProduct}>
-           <ProductCard/>
+          <ProductCard />
         </View>
       )
     }
-    else if(business.addingProduct === 0 && BusinessStore.business.products.length === 0){
-      return(
-        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+    else if (business.addingProduct === 0 && BusinessStore.business.products.length === 0) {
+      return (
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <Text style={styles.mainText}>You have no Products</Text>
           <Text style={styles.text}>Click "Add Product" below to get started</Text>
           <TouchableOpacity onPress={() => BusinessStore.changeAddingProductWindow(1)} style={styles.addProduct}>
-           <Text style={{fontSize:93, color: '#B1B5C2'}}>+</Text>
-           <Text style={styles.mainText}>Add Product</Text>
+            <Text style={{ fontSize: 93, color: '#B1B5C2' }}>+</Text>
+            <Text style={styles.mainText}>Add Product</Text>
           </TouchableOpacity>
         </View>
       )
     } else if (business.addingProduct === 1) {
-        return(
-          <View>
-            <AddInfo/>
-          </View>
-        )
-    }
-    else if(business.addingProduct === 2){
-      return(
+      return (
         <View>
-          <AddPhoto/>
+          <AddInfo />
         </View>
+      )
+    }
+    else if (business.addingProduct === 2) {
+      return (
+        <View>
+          <AddPhoto />
+        </View>
+      )
+    }
+  }
+
+  handleTitleSwitch(business){
+    if(business.checkout === 'complete'){
+      return(
+        <View style={{flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', marginTop: 10}}>
+          <FontAwesome name="check-circle" size={40} color="#5AC93F" />
+          <View style={{justifyContent: 'center', alignContent: 'center'}}>
+            <Text style={styles.completedTitle}>Great Success</Text>
+            <Text style={styles.completedText}>You're payment went through</Text>
+            <Text style={styles.completedText}>without a hitch!</Text>
+          </View>
+        </View>
+      )
+    } else{
+      return(
+        <Text style={styles.checkoutTitle}>Current Checkout</Text>
       )
     }
   }
@@ -105,8 +133,8 @@ export default class HomeScreen extends React.Component {
         </View>
         <View style={styles.checkout}>
           <View style={styles.checkoutContainer}>
-            <Text style={styles.checkoutTitle}>Current Checkout</Text>
-           {this.checkoutList()}
+           {this.handleTitleSwitch(business)}
+            {this.checkoutList()}
           </View>
         </View>
       </View>
@@ -156,7 +184,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 20,
   },
-  checkout:{
+  checkout: {
     width: width * .35,
   },
   checkoutContainer: {
@@ -166,10 +194,19 @@ const styles = StyleSheet.create({
     flexDirection: 'column'
   },
   checkoutTitle: {
-    textAlign: 'center', 
-    fontSize: 19, 
+    textAlign: 'center',
+    fontSize: 19,
     justifyContent: 'flex-start',
     paddingTop: 10,
     color: '#6D708A',
+  },
+  completedText: {
+    color: '#5AC93F',
+    fontSize: 15,
+    flexWrap: 'wrap'
+  },
+  completedTitle: {
+    color: '#5AC93F',
+    fontSize: 20
   }
 });

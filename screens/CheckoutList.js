@@ -116,9 +116,37 @@ class CheckoutList extends Component {
         }
     }
 
-    cancelPaymentModal(){
+    cancelPaymentModal() {
         this.props.store.BusinessStore.setSelectedCoin("");
-        this.setState({displayPaymentModal: false})
+        this.setState({ displayPaymentModal: false })
+    }
+
+    handleShowQRCode() {
+        const business = this.props.store.BusinessStore;
+        business.updateCheckoutFlow('QR');
+        this.setState({ displayPaymentModal: false })
+    }
+
+    handleButtonUISwap() {
+        const business = this.props.store.BusinessStore.business;
+        if (business.checkout === 'complete') {
+            return (
+                <TouchableOpacity style={styles.checkoutButton}>
+                    <Text style={{fontSize: 16, color: 'white'}}>Cancel Payment</Text>
+                </TouchableOpacity>
+            )
+        } else {
+            return (
+                <View>
+                    <TouchableOpacity onPress={() => this.setState({ displayModal: true })} style={styles.discountButton}>
+                        <Text style={{ fontSize: 16, color: '#6532BD' }}>Discount</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.setState({ displayPaymentModal: true })} style={styles.checkoutButton}>
+                        <Text style={{ fontSize: 16, color: 'white' }}>Select Payment Method</Text>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
     }
 
     render() {
@@ -146,23 +174,18 @@ class CheckoutList extends Component {
                     <Text style={styles.text}>{`$${(this.state.total).toFixed(2)}`}</Text>
                 </View>
                 <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 10 }}>
-                    <TouchableOpacity onPress={() => this.setState({ displayModal: true })} style={styles.discountButton}>
-                        <Text style={{ fontSize: 16, color: '#6532BD' }}>Discount</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.setState({ displayPaymentModal: true })} style={styles.checkoutButton}>
-                        <Text style={{ fontSize: 16, color: 'white' }}>Select Payment Method</Text>
-                    </TouchableOpacity>
+                    {this.handleButtonUISwap()}
                 </View>
                 {this.discountModal()}
                 <Modal style={{ justifyContent: 'center', alignItems: 'center' }} isVisible={this.state.displayPaymentModal}>
                     <View style={styles.modal}>
-                        <Text style={{fontSize: 20, paddingTop: 10, paddingBottom: 30}}>Select Payment Method Modal</Text>
+                        <Text style={{ fontSize: 20, paddingTop: 10, paddingBottom: 30 }}>Select Payment Method</Text>
                         {this.selectPaymentModal()}
                         <View style={styles.center}>
-                            <TouchableOpacity onPress={() => this.setState({displayPaymentModal: false})} style={[styles.checkoutButton, {marginBottom: 10}]}>
-                                <Text style={{fontSize: 16, color: 'white'}}>Show QR Code</Text>
+                            <TouchableOpacity onPress={() => this.handleShowQRCode()} style={[styles.checkoutButton, { marginBottom: 10 }]}>
+                                <Text style={{ fontSize: 16, color: 'white' }}>Show QR Code</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.cancelPaymentModal()} style={{paddingBottom: 20}}>
+                            <TouchableOpacity onPress={() => this.cancelPaymentModal()} style={{ paddingBottom: 20 }}>
                                 <Text style={{ color: '#6532BD' }}>Cancel</Text>
                             </TouchableOpacity>
                         </View>
@@ -202,12 +225,12 @@ class CheckoutList extends Component {
         const business = this.props.store.BusinessStore.business;
         const BusinessStore = this.props.store.BusinessStore;
 
-       return business.paymentMethods.map((coin, index) => {
-            return(
-                <TouchableOpacity 
-                    onPress={() => BusinessStore.setSelectedCoin(coin.name)} 
+        return business.paymentMethods.map((coin, index) => {
+            return (
+                <TouchableOpacity
+                    onPress={() => BusinessStore.setSelectedCoin(coin.name)}
                     style={business.selectedCoin === coin.name ? styles.selectedCoinContainer : styles.coinContainer}>
-                    <Image style={{height: 25, width: 25}} source={coin.image}/>
+                    <Image style={{ height: 25, width: 25 }} source={coin.image} />
                     <Text style={business.selectedCoin === coin.name ? styles.activeText : styles.text}>{coin.name}</Text>
                 </TouchableOpacity>
             )

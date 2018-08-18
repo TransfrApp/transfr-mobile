@@ -51,6 +51,7 @@ class BusinessStore {
         selectedCoin: '',
         newProductCategories: [],
         newProductName: '',
+        checkout: 'complete', // QR showes the QR screen, "complete" shows the completed Screen
     }
     addProductCateogry(categories){
         this.business.newProductCategories = categories
@@ -76,6 +77,9 @@ class BusinessStore {
     }
     setSelectedCoin(coin){
         this.business.selectedCoin = coin;
+    }
+    updateCheckoutFlow(phase){
+        this.business.checkout = phase;
     }
 }
 
