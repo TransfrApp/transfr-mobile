@@ -49,14 +49,28 @@ class ProductCards extends Component {
         })
     }
 
+    toggleIcon() {
+        if (!this.state.listView) {
+            return (
+                <TouchableOpacity onPress={() => this.setState({ listView: !this.state.listView })}>
+                    <FontAwesome style={{ marginRight: 40 }} name="bars" size={20} color="grey" />
+                </TouchableOpacity>
+            )
+        } else {
+            return (
+                <TouchableOpacity onPress={() => this.setState({ listView: !this.state.listView })}>
+                    <FontAwesome style={{ marginRight: 40 }} name="th-large" size={20} color="grey" />
+                </TouchableOpacity>
+            )
+        }
+    }
+
     render() {
         return (
             <View style={{ height: height * .85, width: width * .64, paddingLeft: 20 }}>
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Text style={styles.title}>All Products</Text>
-                    <TouchableOpacity onPress={() => this.setState({listView: !this.state.listView})}>
-                        <FontAwesome style={{marginRight: 40}} name="bars" size={20} color="grey" />
-                    </TouchableOpacity>
+                    {this.toggleIcon()}
                 </View>
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                     {this.displayProducts()}
@@ -75,7 +89,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
         marginBottom: 20,
         shadowColor: '#000000',
-        shadowOffset: {width: 0, height: 3 },
+        shadowOffset: { width: 0, height: 3 },
         shadowRadius: 5,
         shadowOpacity: .7
     },
@@ -89,7 +103,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         shadowColor: '#000000',
-        shadowOffset: {width: 0, height: 3 },
+        shadowOffset: { width: 0, height: 3 },
         flexDirection: 'row',
         shadowRadius: 5,
         shadowOpacity: .7
@@ -110,8 +124,8 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start'
     },
     cardImage: {
-        width: 130, 
-        height: 106 
+        width: 130,
+        height: 106
     },
     wideCardImage: {
         height: 75,
