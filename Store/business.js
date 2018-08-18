@@ -15,7 +15,7 @@ class BusinessStore {
                 name: 'Dessert',
                 image: 'https://images.unsplash.com/photo-1505418640699-b8e61c7273af?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=e3ee68f6a29882dc092879cd68cb6f12&auto=format&fit=crop&w=1225&q=80',
                 price: 7,
-            }
+            },
         ],
         checkoutItems: [
             {
@@ -26,7 +26,7 @@ class BusinessStore {
                 name: 'Dessert',
                 image: 'https://images.unsplash.com/photo-1505418640699-b8e61c7273af?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=e3ee68f6a29882dc092879cd68cb6f12&auto=format&fit=crop&w=1225&q=80',
                 price: 7,
-            }
+            },
         ],
         addingProduct: 0, // 0 -> no products being added // 1 -> adding name and category // 2 -> adding image
         productCategories: [

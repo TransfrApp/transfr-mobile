@@ -14,7 +14,7 @@ import appStyles from '../constants/Styles.js';
 import AddInfo from '../components/AddProduct/AddInfo';
 import AddPhoto from '../components/AddProduct/AddPhoto';
 const { width, height } = Dimensions.get('window');
-
+import { FontAwesome } from '@expo/vector-icons';
 import { observer, inject } from 'mobx-react';
 
 @inject('store')
@@ -23,7 +23,7 @@ class ProductCards extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            listView: false,
         }
     }
 
@@ -34,15 +34,16 @@ class ProductCards extends Component {
     }
 
     displayProducts() {
+        const list = this.state.listView;
         const products = this.props.store.BusinessStore.business.products;
         return this.props.store.BusinessStore.business.products.map((item, index) => {
             return (
-                <TouchableOpacity key={index} onPress={() => this.handleCardClick(products, index)} style={styles.card}>
+                <TouchableOpacity key={index} onPress={() => this.handleCardClick(products, index)} style={list ? styles.wideCard : styles.card}>
                     <Image
-                        style={{ width: 130, height: 106 }}
+                        style={list ? styles.wideCardImage : styles.cardImage}
                         source={{ uri: item.image }} />
-                    <Text style={styles.prodName}>{item.name}</Text>
-                    <Text style={styles.price}>{`$${item.price}.00`}</Text>
+                    <Text style={list ? styles.prodNameWideCard : styles.prodName}>{item.name}</Text>
+                    <Text style={list ? styles.priceWideCard : styles.price}>{`$${item.price}.00`}</Text>
                 </TouchableOpacity>
             )
         })
@@ -51,7 +52,12 @@ class ProductCards extends Component {
     render() {
         return (
             <View style={{ height: height * .85, width: width * .64, paddingLeft: 20 }}>
-                <Text style={styles.title}>All Products</Text>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                    <Text style={styles.title}>All Products</Text>
+                    <TouchableOpacity onPress={() => this.setState({listView: !this.state.listView})}>
+                        <FontAwesome style={{marginRight: 40}} name="bars" size={20} color="grey" />
+                    </TouchableOpacity>
+                </View>
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                     {this.displayProducts()}
                 </View>
@@ -72,6 +78,45 @@ const styles = StyleSheet.create({
         shadowOffset: {width: 0, height: 3 },
         shadowRadius: 5,
         shadowOpacity: .7
+    },
+    wideCard: {
+        backgroundColor: 'white',
+        height: 75,
+        width: width * .57,
+        marginLeft: 10,
+        marginRight: 10,
+        marginBottom: 20,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        shadowColor: '#000000',
+        shadowOffset: {width: 0, height: 3 },
+        flexDirection: 'row',
+        shadowRadius: 5,
+        shadowOpacity: .7
+    },
+    prodNameWideCard: {
+        fontSize: 16,
+        color: '#35313A',
+        marginRight: width * .20,
+        width: 200,
+        textAlign: 'left',
+        justifyContent: 'flex-start'
+    },
+    priceWideCard: {
+        fontSize: 14,
+        marginTop: 10,
+        marginRight: 10,
+        textAlign: 'left',
+        justifyContent: 'flex-start'
+    },
+    cardImage: {
+        width: 130, 
+        height: 106 
+    },
+    wideCardImage: {
+        height: 75,
+        width: 75,
+        justifyContent: 'flex-start'
     },
     title: {
         fontSize: 20,

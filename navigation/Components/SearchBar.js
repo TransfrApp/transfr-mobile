@@ -30,11 +30,13 @@ class SearchBar extends Component {
         return (
             <View style={styles.container}>
                 <TouchableOpacity style={styles.button}>
-                    <Text>Categories</Text>
+                    <Text>Categories </Text>
+                    <FontAwesome name="angle-down" size={20} color="black" />
                 </TouchableOpacity>
                 <View style={[styles.input, { flexDirection: 'row', alignItems: 'center' }]}>
                     <TextInput
                         style={{ width: width * .25 }}
+                        underlineColorAndroid={'transparent'}
                         placeholder={"Search Products"}
                         onChangeText={(searchValue) => this.setState({ searchValue })} />
                     <TouchableOpacity onPress={() => this.handleSearch()}>
@@ -50,7 +52,8 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
         alignItems: 'center',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        width: width * 0.90
     },
     input: {
         height: 36,
@@ -68,6 +71,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: 5,
+        flexDirection: 'row',
         backgroundColor: '#E5E0EE',
     }
 })

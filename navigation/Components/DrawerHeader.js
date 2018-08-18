@@ -24,6 +24,10 @@ class DrawerHeader extends Component {
         }
     }
 
+    componentDidMount(){
+        console.log("Props", this.props);
+    }
+
     render() {
         const drawerProps = this.props.drawerProps;
         const iconFill = this.props.store.UserStore.user.username.split('')[0];
@@ -44,7 +48,7 @@ class DrawerHeader extends Component {
                 </ImageBackground>
                 <DrawerItems {...drawerProps} />
                 <View style={{justifyContent: 'flex-end', alignItems: 'center', height: height * .5,}}>
-                    <TouchableOpacity style={authStyles.login}>
+                    <TouchableOpacity onPress={() => this.props.drawerProps.navigation.navigate('Auth')} style={authStyles.login}>
                         <View style={{ flexDirection: 'row', height: 100, width: 187, justifyContent: 'center', alignItems: 'center' }}>
                             <Image style={{height: 23, width: 30, marginRight: 10}} source={require('../../assets/images/logoutIcon.png')} />
                             <Text style={{fontSize: 20, color: 'white', fontWeight: '300'}}> Log Out</Text>
