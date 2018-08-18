@@ -24,6 +24,7 @@ class AddProductInfo extends Component {
       modalDisplay: false,
       prodCategory: [],
       prodName: '',
+      prodPrice: null,
     }
   }
   static navigationOptions = {
@@ -58,6 +59,7 @@ class AddProductInfo extends Component {
   handleNext(){
     const BusinessStore = this.props.store.BusinessStore;
     BusinessStore.addNewProductName(this.state.prodName);
+    BusinessStore.addNewProductPrice(this.state.prodPrice);
     BusinessStore.changeAddingProductWindow(2);
     console.log("Business Store", BusinessStore.business);
   }
@@ -77,6 +79,12 @@ class AddProductInfo extends Component {
             underlineColorAndroid={'transparent'}
             onChangeText={(name) => this.setState({prodName: name})}
             style={authStyles.textInput} />
+          <TextInput
+            placeholder="$15"
+            value={this.state.prodPrice}
+            underlineColorAndroid={'transparent'}
+            onChangeText={(name) => this.setState({prodPrice: name})}
+            style={[authStyles.textInput, {marginTop: 10}]} />
           <View style={{ flexDirection: 'row', width: 300, justifyContent: 'center', alignItems: 'center'}}>
               {this.ifCategoriesExist(business)}
           </View>

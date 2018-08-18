@@ -28,10 +28,12 @@ class AddProductPhoto extends Component {
       handleSubmit(){
         const image = 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=74ac7c1aa35dc36f50cc1ac7517c70a7&auto=format&fit=crop&w=1350&q=80'
         const name = this.props.store.BusinessStore.business.newProductName;
+        const price = this.props.store.BusinessStore.business.newProductPrice;
           const item = {
               image,
               name,
-              price: 0,
+              quantity: 1,
+              price,
           }
           this.props.store.BusinessStore.addProduct(item);
           this.props.store.BusinessStore.changeAddingProductWindow(0);
