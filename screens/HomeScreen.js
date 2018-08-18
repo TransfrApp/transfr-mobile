@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5F9FB'
+    backgroundColor: '#F5F9FB',
   },
   products: {
     width: width * .65,
@@ -190,9 +190,22 @@ const styles = StyleSheet.create({
   },
   checkoutContainer: {
     backgroundColor: 'white',
-    height: height * .85,
+    minHeight: height * .85,
     width: width * .32,
-    flexDirection: 'column'
+    flexDirection: 'column',
+    shadowColor: "#000",
+    shadowOffset: {
+        width: 0,
+        height: 6,
+    },
+    shadowOpacity: 0.37,
+    shadowRadius: 7.49,
+
+    elevation: 12,
+    // shadowColor: '#000000',
+    // shadowOffset: {width: 0, height: 6 },
+    // shadowRadius: 5,
+    // shadowOpacity: .37
   },
   checkoutTitle: {
     textAlign: 'center',

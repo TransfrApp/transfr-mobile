@@ -142,7 +142,7 @@ class CheckoutList extends Component {
                     <TouchableOpacity onPress={() => this.setState({ displayModal: true })} style={styles.discountButton}>
                         <Text style={{ fontSize: 16, color: '#6532BD' }}>Discount</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.setState({ displayPaymentModal: true })} style={styles.checkoutButton}>
+                    <TouchableOpacity onPress={() => this.setState({ displayPaymentModal: true })} style={[styles.checkoutButton, {marginBottom: 10}]}>
                         <Text style={{ fontSize: 16, color: 'white' }}>Select Payment Method</Text>
                     </TouchableOpacity>
                 </View>
@@ -242,7 +242,7 @@ class CheckoutList extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        minHeight: height * .8
+        minHeight: height * .8,
     },
     center: {
         justifyContent: 'center',
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
         borderColor: '#6532BD',
         borderRadius: 10,
         backgroundColor: '#6532BD',
-        marginTop: 10,
+        marginTop: 10
     },
     modal: {
         minHeight: 400,

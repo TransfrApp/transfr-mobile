@@ -97,6 +97,7 @@ class BusinessStore {
 
         setTimeout(() => { 
             this.business.checkout = '';
+            this.business.selectedCoin = '';
             this.sale.soldItems = this.sale.soldItems.concat(this.business.checkoutItems);
             this.business.checkoutItems = [];
          }, 15000);

@@ -1,46 +1,46 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Dimensions,
-  Text,
-  TouchableOpacity,
-  View,
+    Image,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Dimensions,
+    Text,
+    TouchableOpacity,
+    View,
 } from 'react-native';
 import images from '../assets/Images.js';
 import appStyles from '../constants/Styles.js';
 import AddInfo from '../components/AddProduct/AddInfo';
 import AddPhoto from '../components/AddProduct/AddPhoto';
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 import { observer, inject } from 'mobx-react';
 
 @inject('store')
 @observer
 class ProductCards extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
 
         }
     }
 
-    handleCardClick(products, index){
+    handleCardClick(products, index) {
         const business = this.props.store.BusinessStore;
         business.itemToCheckoutQue(products[index]);
         this.props.store.BusinessStore.total();
     }
 
-    displayProducts(){
+    displayProducts() {
         const products = this.props.store.BusinessStore.business.products;
-       return this.props.store.BusinessStore.business.products.map((item, index) => {
-            return(
+        return this.props.store.BusinessStore.business.products.map((item, index) => {
+            return (
                 <TouchableOpacity key={index} onPress={() => this.handleCardClick(products, index)} style={styles.card}>
-                    <Image 
-                        style={{width: 130, height: 106}}
-                        source={{uri: item.image}}/>
+                    <Image
+                        style={{ width: 130, height: 106 }}
+                        source={{ uri: item.image }} />
                     <Text style={styles.prodName}>{item.name}</Text>
                     <Text style={styles.price}>{`$${item.price}.00`}</Text>
                 </TouchableOpacity>
@@ -48,11 +48,11 @@ class ProductCards extends Component {
         })
     }
 
-    render(){
+    render() {
         return (
-            <View style={{height: height * .85, width: width * .64, paddingLeft: 20}}>
+            <View style={{ height: height * .85, width: width * .64, paddingLeft: 20 }}>
                 <Text style={styles.title}>All Products</Text>
-                <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                     {this.displayProducts()}
                 </View>
             </View>
@@ -61,13 +61,17 @@ class ProductCards extends Component {
 }
 
 const styles = StyleSheet.create({
-    card:{
-        backgroundColor: 'white', 
-        height: 167, 
-        width: 130, 
+    card: {
+        backgroundColor: 'white',
+        height: 167,
+        width: 130,
         marginLeft: 10,
         marginRight: 10,
-        marginBottom: 20
+        marginBottom: 20,
+        shadowColor: '#000000',
+        shadowOffset: {width: 0, height: 3 },
+        shadowRadius: 5,
+        shadowOpacity: .7
     },
     title: {
         fontSize: 20,
