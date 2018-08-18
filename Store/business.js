@@ -70,6 +70,10 @@ class BusinessStore {
     addProductCateogry(categories){
         this.business.newProductCategories = categories
     }
+    updateCheckoutItems(index, item){
+        // Uh, not super sure why this works but it does
+        this.business.checkoutItems.concat().splice(index, 1, item);
+    }
     addNewProductName(name){
         this.business.newProductName = name;
     }
@@ -116,9 +120,9 @@ class BusinessStore {
     total(){
         if(this.business.checkoutItems.length > 0){
             const price = this.business.checkoutItems.reduce((accum, value) => {
-                return accum + value.price;
+                return parseFloat(accum) + (parseFloat(value.price) * parseInt(value.quantity));
             }, 0);
-            const tax = price * 0.08;
+            const tax = parseFloat(price) * 0.08;
             const total = (parseFloat(price) + parseFloat(tax)) - (this.sale.discount !== null ? parseFloat(this.sale.discount) : 0.00);
 
             this.sale.price = price;

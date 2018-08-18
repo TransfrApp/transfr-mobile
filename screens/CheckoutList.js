@@ -73,6 +73,22 @@ class CheckoutList extends Component {
         }
     }
 
+    handleDownQuantity(item, index){
+       if(item.quantity <= 1) return;
+       else{
+        item.quantity = item.quantity - 1;
+    
+        this.props.store.BusinessStore.updateCheckoutItems(index, item)
+        this.props.store.BusinessStore.total();
+       }
+    }
+    handleUpQuantity(item, index){
+        item.quantity = item.quantity + 1;
+    
+        this.props.store.BusinessStore.updateCheckoutItems(index, item)
+        this.props.store.BusinessStore.total();
+    }
+
     renderCheckoutList() {
         const business = this.props.store.BusinessStore.business;
 
@@ -90,11 +106,11 @@ class CheckoutList extends Component {
                         <View style={{ justifyContent: 'space-around', alignItems: 'center', marginLeft: 10 }}>
                             <Text style={{ fontSize: 14 }}>{item.name}</Text>
                             <View style={{ flexDirection: 'row', justifyContent: 'center', alignContent: 'center' }}>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={() => this.handleDownQuantity(item, index)}>
                                     <FontAwesome style={{ marginRight: 20 }} name="minus-square-o" size={20} color="grey" />
                                 </TouchableOpacity>
                                 <Text>{item.quantity}</Text>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={() => this.handleUpQuantity(item, index)}>
                                     <FontAwesome style={{ marginLeft: 20 }} name="plus-square-o" size={20} color="grey" />
                                 </TouchableOpacity>
                             </View>
