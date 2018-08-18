@@ -34,13 +34,13 @@ class CheckoutList extends Component {
     }
 
     componentDidMount() {
-        this.reducePrices();
+        this.props.store.BusinessStore.total();
     }
 
     removeItem(index) {
         const BusinessStore = this.props.store.BusinessStore;
         BusinessStore.removeItemFromCheckoutList(index);
-        this.reducePrices();
+        this.props.store.BusinessStore.total();
     }
     divider() {
         return (
@@ -51,7 +51,8 @@ class CheckoutList extends Component {
     }
 
     addDiscount() {
-        this.reducePrices();
+        this.props.store.BusinessStore.addSaleDiscount(this.state.discount);
+        this.props.store.BusinessStore.total();
         this.setState({ displayModal: false })
     }
 
@@ -81,7 +82,7 @@ class CheckoutList extends Component {
                 scrollEnabled={true}
                 keyExtractor={(item, index) => index}
                 renderItem={({ item, index }) => (
-                    <View style={styles.listItem}>
+                    <View key={index} style={styles.listItem}>
                         <Image
                             style={{ height: 60, width: 72 }}
                             source={{ uri: item.image }} />
@@ -105,14 +106,14 @@ class CheckoutList extends Component {
         )
     }
 
-    displayDiscount() {
-        if (this.state.discount !== null) {
-            return <Text style={[styles.text, styles.pricePadding]}>Discount</Text>
+    displayDiscount(business) {
+        if (business.sale.discount !== null) {
+            return <Text style={[styles.smallText, styles.pricePadding]}>Discount</Text>
         }
     }
-    displayDiscountValue() {
-        if (this.state.discount !== null) {
-            return <Text style={styles.text}>{`-$${this.state.discount}`}</Text>
+    displayDiscountValue(business) {
+        if (business.sale.discount !== null) {
+            return <Text style={styles.smallText}>{`-$${business.sale.discount}`}</Text>
         }
     }
 
@@ -150,6 +151,7 @@ class CheckoutList extends Component {
     }
 
     render() {
+        const business = this.props.store.BusinessStore;
         return (
             <View style={styles.container}>
                 <View style={styles.list}>
@@ -159,19 +161,19 @@ class CheckoutList extends Component {
                 <View style={styles.totals}>
                     <View>
                         <Text style={[styles.text, styles.pricePadding]}>Subtotal</Text>
-                        {this.displayDiscount()}
+                        {this.displayDiscount(business)}
                         <Text style={[styles.smallText, styles.pricePadding]}>Tax</Text>
                     </View>
                     <View>
-                        <Text style={styles.text}>{`$${this.state.price}.00`}</Text>
-                        {this.displayDiscountValue()}
-                        <Text style={[styles.smallText, { textAlign: 'right' }]}>{`$${this.state.tax}`}</Text>
+                        <Text style={styles.text}>{`$${business.sale.price}.00`}</Text>
+                        {this.displayDiscountValue(business)}
+                        <Text style={[styles.smallText, { textAlign: 'right' }]}>{`$${business.sale.tax}`}</Text>
                     </View>
                 </View>
                 {this.divider()}
                 <View style={styles.totals}>
                     <Text style={[styles.text, { paddingRight: 40 }]}>Total</Text>
-                    <Text style={styles.text}>{`$${(this.state.total).toFixed(2)}`}</Text>
+                    <Text style={styles.text}>{`$${(business.sale.total).toFixed(2)}`}</Text>
                 </View>
                 <View style={{ alignItems: 'center', justifyContent: 'center', paddingTop: 10 }}>
                     {this.handleButtonUISwap()}
@@ -240,7 +242,7 @@ class CheckoutList extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        height: height * .8
+        minHeight: height * .8
     },
     center: {
         justifyContent: 'center',

@@ -17,6 +17,7 @@ import ProductCard from './ProductCards';
 import CheckoutList from './CheckoutList';
 import AddProductButton from '../navigation/Components/AddProductButton';
 import { FontAwesome } from '@expo/vector-icons';
+import SearchBar from '../navigation/Components/SearchBar';
 
 const { width, height } = Dimensions.get('window');
 
@@ -28,7 +29,7 @@ export default class HomeScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     const params = navigation.state.params || {};
     return {
-      headerTitle: 'Welcome Home',
+      headerTitle: <SearchBar/>,
       headerRight: <AddProductButton />,
     }
   };

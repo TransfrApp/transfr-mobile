@@ -10,6 +10,7 @@ import LoginScreen from '../screens/AuthStack/Login';
 import SearchBar from './Components/SearchBar';
 import AddProductButton from './Components/AddProductButton';
 import DrawerHeader from './Components/DrawerHeader';
+import OrderHistory from '../screens/PreviousPayments/OrderHistory';
 
 
 import MetricsMainPage from "../screens/MetricsDash/MetricsMainPage"
@@ -25,6 +26,9 @@ const drawer = createDrawerNavigator({
   },
   MetricsMainPage: {
     screen: MetricsMainPage
+  },
+  OrderHistory: {
+    screen: OrderHistory
   }
 }, {
     initialRouteName: 'HomeScreen',
@@ -32,11 +36,11 @@ const drawer = createDrawerNavigator({
   });
 
 const mainNavigation = createStackNavigator({
-  DrawerNavigation: { screen: drawer }
+  DrawerNavigation: { screen: drawer },
 }, {
     navigationOptions: ({ navigation }) => ({
       headerTitle: <SearchBar />,
-      headerRight: <AddProductButton />, // This needs some functionality tweaks
+      headerRight: <AddProductButton />, 
       headerLeft: (
         <TouchableOpacity onPress={() => navigation.toggleDrawer()} style={{ marginLeft: 15 }}>
           <Image style={{ height: 22, width: 32 }} source={images.headerLeft} />

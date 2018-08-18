@@ -1,4 +1,4 @@
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 
 class BusinessStore {
     @observable business = {
@@ -53,6 +53,12 @@ class BusinessStore {
         newProductName: '',
         checkout: '', // QR showes the QR screen, "complete" shows the completed Screen
     }
+    @observable sale = {
+        price: 0,
+        tax: 0,
+        discount: null,
+        total: 0,
+    }
     addProductCateogry(categories){
         this.business.newProductCategories = categories
     }
@@ -78,6 +84,9 @@ class BusinessStore {
     setSelectedCoin(coin){
         this.business.selectedCoin = coin;
     }
+    addSaleDiscount(discount){
+        this.sale.discount = discount;
+    }
     updateCheckoutFlow(phase){
         this.business.checkout = phase;
         setTimeout(() => { 
@@ -89,6 +98,20 @@ class BusinessStore {
             this.business.checkoutItems = [];
          }, 15000);
 
+    }
+   
+    total(){
+        if(this.business.checkoutItems.length > 0){
+            const price = this.business.checkoutItems.reduce((accum, value) => {
+                return accum + value.price;
+            }, 0);
+            const tax = price * 0.08;
+            const total = (parseFloat(price) + parseFloat(tax)) - (this.sale.discount !== null ? parseFloat(this.sale.discount) : 0.00);
+
+            this.sale.price = price;
+            this.sale.tax = tax;
+            this.sale.total = total;
+        }
     }
 }
 

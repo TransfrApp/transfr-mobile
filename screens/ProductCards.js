@@ -30,13 +30,14 @@ class ProductCards extends Component {
     handleCardClick(products, index){
         const business = this.props.store.BusinessStore;
         business.itemToCheckoutQue(products[index]);
+        this.props.store.BusinessStore.total();
     }
 
     displayProducts(){
         const products = this.props.store.BusinessStore.business.products;
        return this.props.store.BusinessStore.business.products.map((item, index) => {
             return(
-                <TouchableOpacity onPress={() => this.handleCardClick(products, index)} style={styles.card}>
+                <TouchableOpacity key={index} onPress={() => this.handleCardClick(products, index)} style={styles.card}>
                     <Image 
                         style={{width: 130, height: 106}}
                         source={{uri: item.image}}/>
