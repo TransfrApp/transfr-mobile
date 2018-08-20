@@ -31,7 +31,7 @@ const drawer = createDrawerNavigator({
     screen: OrderHistory
   }
 }, {
-    initialRouteName: 'HomeScreen',
+    initialRouteName: 'OrderHistory',
     contentComponent: CustomDrawerContentComponent
   });
 
