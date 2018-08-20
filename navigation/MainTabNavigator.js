@@ -3,7 +3,7 @@ import { Platform, TouchableOpacity, ImageBackground, View, StyleSheet, Text, Im
 import { createStackNavigator, createDrawerNavigator, DrawerItems } from 'react-navigation';
 import images from '../assets/Images';
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
+import HomeScreen from '../screens/MainDash/HomeScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import LoginScreen from '../screens/AuthStack/Login';
 // Components
@@ -40,7 +40,7 @@ const drawer = createDrawerNavigator({
     }
   }
 }, {
-    initialRouteName: 'HomeScreen',
+    initialRouteName: 'MetricsMainPage',
     contentComponent: CustomDrawerContentComponent
   });
 

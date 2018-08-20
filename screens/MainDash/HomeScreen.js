@@ -9,15 +9,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import images from '../assets/Images.js';
-import appStyles from '../constants/Styles.js';
-import AddInfo from '../components/AddProduct/AddInfo';
-import AddPhoto from '../components/AddProduct/AddPhoto';
-import ProductCard from './ProductCards';
-import CheckoutList from './CheckoutList';
-import AddProductButton from '../navigation/Components/AddProductButton';
+import images from '../../assets/Images.js';
+import appStyles from '../../constants/Styles.js';
+import AddInfo from '../../components/AddProduct/AddInfo.js';
+import AddPhoto from '../../components/AddProduct/AddPhoto.js';
+import ProductCard from './ProductCards.js';
+import CheckoutList from './CheckoutList.js';
+import AddProductButton from '../../navigation/Components/AddProductButton.js';
 import { FontAwesome } from '@expo/vector-icons';
-import SearchBar from '../navigation/Components/SearchBar';
+import SearchBar from '../../navigation/Components/SearchBar.js';
 
 const { width, height } = Dimensions.get('window');
 
@@ -54,7 +54,7 @@ export default class HomeScreen extends React.Component {
     } if (business.checkout === 'QR') {
       return (
         <View style={{ justifyContent: 'space-between', alignItems: 'center', paddingTop: height * .2 }}>
-          <Image style={{height: 209, width: 209}} source={require('../assets/images/qrCode.png')}/>
+          <Image style={{height: 209, width: 209}} source={require('../../assets/images/qrCode.png')}/>
           <Text style={[styles.mainText, {marginTop: 60, paddingLeft: 10, paddingRight: 10, textAlign: 'center' }]}>Show the customer the QR code so they can complete the payment</Text>
         </View>
       )

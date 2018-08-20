@@ -10,12 +10,12 @@ import {
   View,
 } from 'react-native';
 import { VictoryChart, VictoryLine, VictoryAxis, VictoryBar } from "victory-native"
+import { BoxShadow } from "expo-react-native-shadow"
 import images from '../../assets/Images.js';
 import appStyles from '../../constants/Styles.js';
 const {width, height} = Dimensions.get('window');
 
 import { observer, inject } from 'mobx-react';
-import victoryAxis from 'victory-native/lib/components/victory-axis';
 
 @inject('store')
 @observer
@@ -46,23 +46,107 @@ export default class MetricsMainPage extends React.Component {
     const cardWidth = cardContainerWidth * 0.80
     const cardHeight = chartContainerHeight * 0.45
 
+    const shadowOpt = {
+      width: cardWidth,
+      height: cardHeight,
+      color: "#af62f4",
+      border: 2,
+      radius: 12,
+      opacity: 0.8,
+      x: 0,
+      y: 3,
+      style: { marginVertical: 5 }
+  }
+
+    const productHeaders = [
+      {
+        text: "Product Name",
+        property: "name",
+      },
+      {
+        text: "Regular Price",
+        property: "price",
+      },
+      {
+        text: "Total Sales",
+        property: "totalSales",
+      },
+      {
+        text: "Revenue",
+        property: "revenue",
+      },
+    ]
+    const products = [
+      {
+        name: "Coffee",
+        price: 112,
+        totalSales: 521,
+        revenue: 521,
+      },
+      {
+        name: "Body Spray",
+        price: 31,
+        totalSales: 521,
+        revenue: 521,
+      },
+      {
+        name: "Noodles",
+        price: 25,
+        totalSales: 521,
+        revenue: 521,
+      },
+      {
+        name: "Coconut Oil",
+        price: 54,
+        totalSales: 521,
+        revenue: 521,
+      },
+      {
+        name: "Soup",
+        price: 76,
+        totalSales: 521,
+        revenue: 521,
+      },
+      {
+        name: "Pizza",
+        price: 42,
+        totalSales: 521,
+        revenue: 521,
+      },
+      {
+        name: "Television",
+        price: 239,
+        totalSales: 521,
+        revenue: 521,
+      },
+      {
+        name: "Burger",
+        price: 25,
+        totalSales: 521,
+        revenue: 521,
+      },
+    ]
+
+    const backgroundColor = "#d6d6d6"
+
     return (
       <View style={styles.container}>
 
-        <View style={{flexDirection: "row", height: height * 0.40, borderWidth: 2, borderColor: "red"}}>
-          <View style={{width: width * 0.55, borderWidth: 2, borderColor: "black"}}>
-            <Text>LEFT CHART</Text>
+        <View style={{flexDirection: "row", height: height * 0.40}}>
+          <View style={{width: width * 0.55, backgroundColor: "white", borderRadius: 12, padding: 15}}>
+            <Text style={styles.cardHeaderText}>Sales Summary</Text>
             <View style={{justifyContent: "center", alignItems: "center", width: width * 0.55}}>
               <VictoryChart
-                width={width * 0.50}
+                width={width * 0.55}
                 height={chartContainerHeight * 0.9}
                 maxDomain={{ y: 30000 }}
-                padding={{left: 65, right: 50, top: 50, bottom: 50}}
+                padding={{left: 65, right: 50, top: 20, bottom: 50}}
               >
                 <VictoryAxis
                   style={{
                       axis: {stroke: "#ededed"},
                       grid: { stroke: "#ededed" },
+                      tickLabels: {fontSize: 14, fontWeight: "200", fill: "#464a77" }
                     }}
                 />
                 <VictoryAxis dependentAxis
@@ -70,6 +154,7 @@ export default class MetricsMainPage extends React.Component {
                   style={{
                     axis: {stroke: "#ededed"},
                     grid: { stroke: "#ededed" },
+                    tickLabels: {fontSize: 14, fontWeight: "200", fill: "#464a77" }
                   }}
                 />
                 <VictoryLine
@@ -90,27 +175,31 @@ export default class MetricsMainPage extends React.Component {
               </VictoryChart>
             </View>
           </View>
-          <View style={{width: cardContainerWidth, borderWidth: 2, borderColor: "blue", justifyContent: "space-between", alignItems: "center"}}>
-            <View style={{width: cardWidth, height: cardHeight, backgroundColor: "#bb87ea", borderRadius: 12, justifyContent: "center", alignItems: "center"}}>
-              <Text style={{fontSize: 50, fontWeight: "bold", color: "white"}}>$5541</Text>
-              <Text style={{fontSize: 10, fontWeight: "200", color: "white"}}>Today's Revenue</Text>
+            <View style={{width: cardContainerWidth, justifyContent: "space-between", alignItems: "center"}}>
+
+              <View style={{width: cardWidth, height: cardHeight, backgroundColor: "#bb87ea", borderRadius: 12, justifyContent: "center", alignItems: "center"}}>
+                <Text style={{fontSize: 50, fontWeight: "bold", color: "white"}}>$5541</Text>
+                <Text style={{fontSize: 14, fontWeight: "200", color: "white"}}>Today's Revenue</Text>
+              </View>
+
+                <BoxShadow setting={shadowOpt}>
+                  <View style={{width: cardWidth, height: cardHeight, backgroundColor: "white", borderRadius: 12, justifyContent: "center", alignItems: "center"}}>
+                    <Text style={{fontSize: 50, fontWeight: "bold", color: "#7f36ba"}}>$65656</Text>
+                    <Text style={{fontSize: 14, fontWeight: "200", color: "#7f36ba"}}>Revenue this week</Text>
+                  </View>
+                  </BoxShadow>
             </View>
-            <View style={{width: cardWidth, height: cardHeight, backgroundColor: "white", borderRadius: 12, justifyContent: "center", alignItems: "center"}}>
-              <Text style={{fontSize: 50, fontWeight: "bold", color: "#7f36ba"}}>$65656</Text>
-              <Text style={{fontSize: 10, fontWeight: "200", color: "#7f36ba"}}>Revenue this week</Text>
-            </View>
-          </View>
         </View>
 
-        <View style={{flexDirection: "row", height: height * 0.40, borderWidth: 2, borderColor: "red"}}>
-          <View style={{width: width * 0.30, borderWidth: 2, borderColor: "black"}}>
-            <Text>TOP PAYMENT METHODS</Text>
+        <View style={{flexDirection: "row", width: width * 0.90, height: height * 0.40, marginTop: 20}}>
+          <View style={{width: width * 0.25, padding: 15, borderRadius: 12, backgroundColor: "white"}}>
+            <Text  style={styles.cardHeaderText}>Top Payment Methods</Text>
             <View style={{justifyContent: "center", alignItems: "center", width: width * 0.30}}>
 
               <VictoryChart
-                height={height * 0.38}
+                height={height * 0.30}
                 width={width * 0.30}
-                padding={{left: 65, right: 50, top: 50, bottom: 50}}
+                padding={{left: 65, right: 85, top: 20, bottom: 0}}
                 domainPadding={{ x: 50, y: [0, 20] }}
               >
                 <VictoryBar
@@ -126,13 +215,37 @@ export default class MetricsMainPage extends React.Component {
                     { x: "NEO", y: 100000 },
                   ]}
                 />
+                <VictoryAxis dependentAxis
+                  tickFormat={(t) => `$ ${t}`}
+
+                  style={{
+                    axis: { stroke: "none", fill: "none" },
+                    tickLabels: {fontSize: 13, fontWeight: "200", fill: "#464a77" }
+                  }}/>
+                <VictoryAxis
+                  tickFormat={(t) => ''}
+                  style={{
+                    axis: { stroke: "none", fill: "none" },
+                    
+                  }}/>
               </VictoryChart>
 
               </View>
-            
+              <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 7, marginLeft: width * 0.0685, width: width * 0.135}}>
+                  {business.paymentMethods.map(coin => <Image style={{ height: 16, width: 16 }} source={coin.image} />)}
+              </View>
           </View>
-          <View style={{width: width * 0.60, borderWidth: 2, borderColor: "blue"}}>
-            <Text>TOP PRODUCTS</Text>
+          <View style={{width: width * 0.60, padding: 15, marginLeft: width * 0.02, backgroundColor: "white", borderRadius: 12}}>
+            <Text  style={styles.cardHeaderText}>Top Products</Text>
+              <ScrollView contentContainerStyle={styles.rowView}>
+                  {productHeaders.map(header => (
+                    <View style={styles.columnView}>
+                      <Text style={styles.productTableHeader}>{header.text}</Text>
+                      {products.map(product => <Text style={styles.productTableText}>{product[header.property]}</Text>)}
+                    </View>
+                  ))}
+              </ScrollView>
+
           </View>
         </View>
 
@@ -148,7 +261,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f5f9fb'
+    backgroundColor: '#d6d6d6',
   },
   products: {
     width: width *.65,
@@ -178,6 +291,10 @@ const styles = StyleSheet.create({
   checkout:{
     width: width * .35,
   },
+  cardHeaderText: {
+    fontSize: 20,
+    color: "#464a77",
+  },
   checkoutContainer: {
     backgroundColor: 'white',
     height: height * .85,
@@ -190,5 +307,23 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     paddingTop: 10,
     color: '#6D708A',
+  },
+  rowView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  columnView: {
+    flexDirection: 'column',
+  },
+  productTableHeader: {
+    marginTop: 15,
+    marginBottom: 20,
+    fontSize: 18,
+    color: "#464a77"
+  },
+  productTableText: {
+    marginTop: 10,
+    marginBottom: 10,
+    color: "#464a77",
   }
 });

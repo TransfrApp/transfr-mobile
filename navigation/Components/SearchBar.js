@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        width: width * 0.90
+        width: width * 0.90,
     },
     input: {
         height: 36,
