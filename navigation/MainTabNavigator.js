@@ -23,15 +23,24 @@ const CustomDrawerContentComponent = (props) => (
 const drawer = createDrawerNavigator({
   HomeScreen: {
     screen: HomeScreen,
+    navigationOptions: {
+      drawerLabel: 'Home Screen'
+    }
   },
   MetricsMainPage: {
-    screen: MetricsMainPage
+    screen: MetricsMainPage,
+    navigationOptions: {
+      drawerLabel: 'Metrics'
+    }
   },
   OrderHistory: {
-    screen: OrderHistory
+    screen: OrderHistory,
+    navigationOptions: {
+      drawerLabel: 'History'
+    }
   }
 }, {
-    initialRouteName: 'OrderHistory',
+    initialRouteName: 'HomeScreen',
     contentComponent: CustomDrawerContentComponent
   });
 

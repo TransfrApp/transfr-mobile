@@ -33,7 +33,7 @@ class OrderHistory extends Component {
             <View style={styles.container}>
                 <View style={styles.sales}>
                     <View style={styles.mainCardHeader}>
-                        <Text style={styles.sectionTitle}>Sales Section</Text>
+                        <Text style={styles.sectionTitle}>Sales History</Text>
                         <TouchableOpacity style={styles.dropDownButton}>
                             <Text>Weekly</Text>
                             <FontAwesome name="caret-down" size={16} color="black" />
@@ -63,7 +63,7 @@ class OrderHistory extends Component {
                 </View>
                 <View style={styles.products}>
                     <View style={styles.mainCardHeader}>
-                        <Text style={styles.sectionTitle}>Products Section</Text>
+                        <Text style={styles.sectionTitle}>Products Sold</Text>
                         <TouchableOpacity style={styles.dropDownButton}>
                             <Text>Weekly</Text>
                             <FontAwesome name="caret-down" size={16} color="black" />
