@@ -33,6 +33,14 @@ class ProductCards extends Component {
         this.props.store.BusinessStore.total();
     }
 
+    handleSearchCardClick(index){
+        const searchProducts = this.props.store.BusinessStore.business.searchProductList;
+        const business = this.props.store.BusinessStore;
+
+        business.itemToCheckoutQue(searchProducts[index]);
+        this.props.store.BusinessStore.total();
+    }
+
     displayProducts() {
         const list = this.state.listView;
         const products = this.props.store.BusinessStore.business.products;
@@ -41,7 +49,7 @@ class ProductCards extends Component {
         if (search.length > 0) {
             return search.map((item, index) => {
                 return (
-                    <TouchableOpacity key={index} onPress={() => this.handleCardClick(products, index)} style={list ? styles.wideCard : styles.card}>
+                    <TouchableOpacity key={index} onPress={() => this.handleSearchCardClick(index)} style={list ? styles.wideCard : styles.card}>
                         <Image
                             style={list ? styles.wideCardImage : styles.cardImage}
                             source={{ uri: item.image }} />
