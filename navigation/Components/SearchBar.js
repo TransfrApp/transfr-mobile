@@ -7,6 +7,7 @@ import {
     Dimensions,
     StyleSheet,
 } from 'react-native';
+import Fuse from 'fuse.js';
 import { FontAwesome } from '@expo/vector-icons';
 import { observer, inject } from 'mobx-react';
 
@@ -26,6 +27,19 @@ class SearchBar extends Component {
         alert("Need to wire in the search");
     }
 
+    fuzzySearch(searchValue){
+        const productList = this.props.store.BusinessStore.business.products;
+        const store = this.props.store.BusinessStore;
+        const options = {
+            keys: ['name']
+          };
+
+          const fuse = new Fuse(productList, options)
+          let result = fuse.search(searchValue)
+          
+          store.updateSearchProductList(result);
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -38,7 +52,7 @@ class SearchBar extends Component {
                         style={{ width: width * .25 }}
                         underlineColorAndroid={'transparent'}
                         placeholder={"Search Products"}
-                        onChangeText={(searchValue) => this.setState({ searchValue })} />
+                        onChangeText={(searchValue) => this.fuzzySearch(searchValue)} />
                     <TouchableOpacity onPress={() => this.handleSearch()}>
                         <FontAwesome name="search" size={20} color="grey" />
                     </TouchableOpacity>

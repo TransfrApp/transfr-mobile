@@ -36,17 +36,33 @@ class ProductCards extends Component {
     displayProducts() {
         const list = this.state.listView;
         const products = this.props.store.BusinessStore.business.products;
-        return this.props.store.BusinessStore.business.products.map((item, index) => {
-            return (
-                <TouchableOpacity key={index} onPress={() => this.handleCardClick(products, index)} style={list ? styles.wideCard : styles.card}>
-                    <Image
-                        style={list ? styles.wideCardImage : styles.cardImage}
-                        source={{ uri: item.image }} />
-                    <Text style={list ? styles.prodNameWideCard : styles.prodName}>{item.name}</Text>
-                    <Text style={list ? styles.priceWideCard : styles.price}>{`$${item.price}.00`}</Text>
-                </TouchableOpacity>
-            )
-        })
+        const search = this.props.store.BusinessStore.business.searchProductList;
+        console.log(search);
+        if (search.length > 0) {
+            return search.map((item, index) => {
+                return (
+                    <TouchableOpacity key={index} onPress={() => this.handleCardClick(products, index)} style={list ? styles.wideCard : styles.card}>
+                        <Image
+                            style={list ? styles.wideCardImage : styles.cardImage}
+                            source={{ uri: item.image }} />
+                        <Text style={list ? styles.prodNameWideCard : styles.prodName}>{item.name}</Text>
+                        <Text style={list ? styles.priceWideCard : styles.price}>{`$${item.price}.00`}</Text>
+                    </TouchableOpacity>
+                )
+            })
+        } else if (search.length === 0) {
+            return products.map((item, index) => {
+                return (
+                    <TouchableOpacity key={index} onPress={() => this.handleCardClick(products, index)} style={list ? styles.wideCard : styles.card}>
+                        <Image
+                            style={list ? styles.wideCardImage : styles.cardImage}
+                            source={{ uri: item.image }} />
+                        <Text style={list ? styles.prodNameWideCard : styles.prodName}>{item.name}</Text>
+                        <Text style={list ? styles.priceWideCard : styles.price}>{`$${item.price}.00`}</Text>
+                    </TouchableOpacity>
+                )
+            })
+        }
     }
 
     toggleIcon() {

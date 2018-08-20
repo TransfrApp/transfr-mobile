@@ -33,6 +33,7 @@ class BusinessStore {
                 quantity: 1,
             },
         ],
+        searchProductList: [],
         addingProduct: 0, // 0 -> no products being added // 1 -> adding name and category // 2 -> adding image
         productCategories: [
             {name: 'Hot Category', id: 'hotfood'},
@@ -73,6 +74,10 @@ class BusinessStore {
     updateCheckoutItems(index, item){
         // Uh, not super sure why this works but it does
         this.business.checkoutItems.concat().splice(index, 1, item);
+    }
+    updateSearchProductList(updatedList){
+        console.log("Updated List", updatedList);
+        this.business.searchProductList = updatedList;
     }
     addNewProductName(name){
         this.business.newProductName = name;
