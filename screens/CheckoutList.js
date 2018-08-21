@@ -194,7 +194,7 @@ class CheckoutList extends Component {
                     <View>
                         <Text style={styles.text}>{`$${business.sale.price}.00`}</Text>
                         {this.displayDiscountValue(business)}
-                        <Text style={[styles.smallText, { textAlign: 'right' }]}>{`$${business.sale.tax}`}</Text>
+                        <Text style={[styles.smallText, { textAlign: 'right' }]}>{`$${business.sale.tax.toFixed(2)}`}</Text>
                     </View>
                 </View>
                 {this.divider()}

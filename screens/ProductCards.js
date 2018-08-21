@@ -138,14 +138,14 @@ const styles = StyleSheet.create({
         marginRight: width * .20,
         width: 200,
         textAlign: 'left',
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
     },
     priceWideCard: {
         fontSize: 14,
         marginTop: 10,
         marginRight: 10,
         textAlign: 'left',
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
     },
     cardImage: {
         width: 130,
@@ -167,6 +167,8 @@ const styles = StyleSheet.create({
         color: '#35313A',
         marginTop: 5,
         marginLeft: 10,
+        numberOfLines: 1,
+        ellipsizeMode: 'tail',
     },
     price: {
         fontSize: 14,

@@ -40,7 +40,7 @@ const drawer = createDrawerNavigator({
     }
   }
 }, {
-    initialRouteName: 'MetricsMainPage',
+    initialRouteName: 'HomeScreen',
     contentComponent: CustomDrawerContentComponent
   });
 

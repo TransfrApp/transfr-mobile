@@ -127,7 +127,7 @@ export default class MetricsMainPage extends React.Component {
       },
     ]
 
-    const backgroundColor = "#d6d6d6"
+    const backgroundColor = "#F5F9FB"
 
     return (
       <View style={styles.container}>
@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#d6d6d6',
+    backgroundColor: '#F5F9FB',
   },
   products: {
     width: width *.65,
