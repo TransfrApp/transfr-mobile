@@ -56,6 +56,9 @@ export default class HomeScreen extends React.Component {
         <View style={{ justifyContent: 'space-between', alignItems: 'center', paddingTop: height * .2 }}>
           <Image style={{height: 209, width: 209}} source={require('../../assets/images/qrCode.png')}/>
           <Text style={[styles.mainText, {marginTop: 60, paddingLeft: 10, paddingRight: 10, textAlign: 'center' }]}>Show the customer the QR code so they can complete the payment</Text>
+          <TouchableOpacity onPress={() => this.props.store.BusinessStore.updateCheckoutFlow('')}>
+            <Text style={{fontSize: 20, fontWeight: '500', color: '#693CB7', justifyContent: 'center', alignItems: 'center', marginTop: 30}}>Cancel</Text>
+          </TouchableOpacity>
         </View>
       )
     }

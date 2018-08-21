@@ -24,7 +24,7 @@ const drawer = createDrawerNavigator({
   HomeScreen: {
     screen: HomeScreen,
     navigationOptions: {
-      drawerLabel: 'Home Screen',
+      drawerLabel: 'Dashboard',
     }
   },
   MetricsMainPage: {
