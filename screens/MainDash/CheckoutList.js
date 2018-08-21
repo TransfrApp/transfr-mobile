@@ -11,11 +11,12 @@ import {
     View,
 } from 'react-native';
 import Modal from 'react-native-modal';
+import { FontAwesome } from '@expo/vector-icons';
 
 const { width, height } = Dimensions.get('window');
 
 import { observer, inject } from 'mobx-react';
-import { FlatList } from '../../node_modules/react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler';
 import authStyles from '../../Styles/authStyles';
 
 @inject('store')
@@ -72,6 +73,22 @@ class CheckoutList extends Component {
         }
     }
 
+    handleDownQuantity(item, index){
+       if(item.quantity <= 1) return;
+       else{
+        item.quantity = item.quantity - 1;
+    
+        this.props.store.BusinessStore.updateCheckoutItems(index, item)
+        this.props.store.BusinessStore.total();
+       }
+    }
+    handleUpQuantity(item, index){
+        item.quantity = item.quantity + 1;
+    
+        this.props.store.BusinessStore.updateCheckoutItems(index, item)
+        this.props.store.BusinessStore.total();
+    }
+
     renderCheckoutList() {
         const business = this.props.store.BusinessStore.business;
 
@@ -86,19 +103,29 @@ class CheckoutList extends Component {
                         <Image
                             style={{ height: 60, width: 72 }}
                             source={{ uri: item.image }} />
-                        <View style={{ justifyContent: 'space-around', marginLeft: 10 }}>
+                        <View style={{ justifyContent: 'space-around', alignItems: 'center', marginLeft: 10 }}>
                             <Text style={{ fontSize: 14 }}>{item.name}</Text>
-                            <Text>incrementer here</Text>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignContent: 'center' }}>
+                                <TouchableOpacity onPress={() => this.handleDownQuantity(item, index)}>
+                                    <FontAwesome style={{ marginRight: 20 }} name="minus-square-o" size={20} color="grey" />
+                                </TouchableOpacity>
+                                <Text>{item.quantity}</Text>
+                                <TouchableOpacity onPress={() => this.handleUpQuantity(item, index)}>
+                                    <FontAwesome style={{ marginLeft: 20 }} name="plus-square-o" size={20} color="grey" />
+                                </TouchableOpacity>
+                            </View>
                         </View>
-                        <View style={{ justifyContent: 'center', alignItems: 'center', width: width * .06 }}>
-                            <Text style={{ fontSize: 14 }}>{`$${item.price}`}</Text>
-                        </View>
-                        <View style={{ justifyContent: 'center', alignItems: 'center', width: width * .06 }}>
-                            <TouchableOpacity onPress={() => this.removeItem(index)}>
-                                <Image
-                                    style={{ height: 23, width: 15 }}
-                                    source={require('../../assets/images/trash-can.png')} />
-                            </TouchableOpacity>
+                        <View style={{flexDirection: 'row', alignItems: 'flex-end', paddingBottom: 10}}>
+                            <View style={{ justifyContent: 'center', marginLeft: 10, alignItems: 'center', width: width * .06 }}>
+                                <Text style={{ fontSize: 14 }}>{`$${item.price}`}</Text>
+                            </View>
+                            <View style={{ justifyContent: 'center', alignItems: 'center', width: width * .06 }}>
+                                <TouchableOpacity onPress={() => this.removeItem(index)}>
+                                    <Image
+                                        style={{ height: 23, width: 15 }}
+                                        source={require('../../assets/images/trash-can.png')} />
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
                 )}
@@ -133,7 +160,7 @@ class CheckoutList extends Component {
         if (business.checkout === 'complete') {
             return (
                 <TouchableOpacity style={styles.checkoutButton}>
-                    <Text style={{fontSize: 16, color: 'white'}}>Cancel Payment</Text>
+                    <Text style={{ fontSize: 16, color: 'white' }}>Cancel Payment</Text>
                 </TouchableOpacity>
             )
         } else {
@@ -142,7 +169,7 @@ class CheckoutList extends Component {
                     <TouchableOpacity onPress={() => this.setState({ displayModal: true })} style={styles.discountButton}>
                         <Text style={{ fontSize: 16, color: '#6532BD' }}>Discount</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.setState({ displayPaymentModal: true })} style={[styles.checkoutButton, {marginBottom: 10}]}>
+                    <TouchableOpacity onPress={() => this.setState({ displayPaymentModal: true })} style={[styles.checkoutButton, { marginBottom: 10 }]}>
                         <Text style={{ fontSize: 16, color: 'white' }}>Select Payment Method</Text>
                     </TouchableOpacity>
                 </View>
