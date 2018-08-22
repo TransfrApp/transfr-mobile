@@ -14,8 +14,6 @@ import { observer, inject } from 'mobx-react';
 
 const { width, height } = Dimensions.get('window');
 
-@inject('store')
-@observer
 class DrawerHeader extends Component {
     constructor(props) {
         super(props);
@@ -72,4 +70,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default DrawerHeader;
+export default inject("store")(observer(DrawerHeader));

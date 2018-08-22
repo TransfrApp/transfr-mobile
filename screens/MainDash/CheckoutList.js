@@ -19,8 +19,6 @@ import { observer, inject } from 'mobx-react';
 import { FlatList } from 'react-native-gesture-handler';
 import authStyles from '../../Styles/authStyles';
 
-@inject('store')
-@observer
 class CheckoutList extends Component {
     constructor(props) {
         super(props);
@@ -372,4 +370,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default CheckoutList;
+export default inject("store")(observer(CheckoutList));

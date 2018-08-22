@@ -1,7 +1,7 @@
 import { observable, action, computed } from 'mobx';
 
 class BusinessStore {
-    @observable business = {
+    business = observable({
         products: [
             {
                 name: 'Pizza',
@@ -60,14 +60,14 @@ class BusinessStore {
         newProductName: '',
         newProductPrice: '',
         checkout: '', // QR showes the QR screen, "complete" shows the completed Screen
-    }
-    @observable sale = {
+    })
+    sale = observable({
         price: 0,
         tax: 0,
         discount: null,
         total: 0,
         soldItems: []
-    }
+    })
     addProductCateogry(categories){
         this.business.newProductCategories = categories
     }

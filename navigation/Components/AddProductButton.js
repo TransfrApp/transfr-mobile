@@ -13,8 +13,6 @@ import images from '../../assets/Images';
 
 const { width, height } = Dimensions.get('window');
 
-@inject('store')
-@observer
 class AddProductButton extends Component {
     constructor(props) {
         super(props);
@@ -66,4 +64,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default AddProductButton;
+export default inject("store")(observer(AddProductButton));

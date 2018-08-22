@@ -23,9 +23,7 @@ const { width, height } = Dimensions.get('window');
 
 import { observer, inject } from 'mobx-react';
 
-@inject('store')
-@observer
-export default class HomeScreen extends React.Component {
+class HomeScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     const params = navigation.state.params || {};
     return {
@@ -130,6 +128,7 @@ export default class HomeScreen extends React.Component {
   render() {
     const business = this.props.store.BusinessStore.business;
     const productList = this.props.store.BusinessStore.business.products.length;
+
     return (
       <View style={styles.container}>
         <View style={styles.products}>
@@ -227,3 +226,5 @@ const styles = StyleSheet.create({
     fontSize: 20
   }
 });
+
+export default inject("store")(observer(HomeScreen));

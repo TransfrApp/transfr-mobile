@@ -17,7 +17,6 @@ const commonNavigationOptions = {
         right: 0, 
         borderBottomWidth: 0 
     },
-    headerTitle: 'Testing the Header Title',
     headerTitleStyle: {
         flex: 1,
         textAlign: 'center',

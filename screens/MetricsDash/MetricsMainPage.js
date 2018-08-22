@@ -17,9 +17,7 @@ const {width, height} = Dimensions.get('window');
 
 import { observer, inject } from 'mobx-react';
 
-@inject('store')
-@observer
-export default class MetricsMainPage extends React.Component {
+class MetricsMainPage extends React.Component {
   static navigationOptions = {
     headerTitle: 'Metrics Dashboard',
     headerRight: (
@@ -327,3 +325,5 @@ const styles = StyleSheet.create({
     color: "#464a77",
   }
 });
+
+export default inject("store")(observer(MetricsMainPage));

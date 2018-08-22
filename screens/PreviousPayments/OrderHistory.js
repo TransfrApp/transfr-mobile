@@ -14,8 +14,6 @@ import mockData from '../../Store/mockSalesData';
 
 const { height, width } = Dimensions.get('window');
 
-@inject('store')
-@observer
 class OrderHistory extends Component {
     constructor(props) {
         super(props);
@@ -153,4 +151,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default OrderHistory;
+export default inject("store")(observer(OrderHistory));

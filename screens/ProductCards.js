@@ -17,8 +17,7 @@ const { width, height } = Dimensions.get('window');
 import { FontAwesome } from '@expo/vector-icons';
 import { observer, inject } from 'mobx-react';
 
-@inject('store')
-@observer
+
 class ProductCards extends Component {
     constructor(props) {
         super(props);
@@ -177,4 +176,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default ProductCards;
+export default inject("store")(observer(ProductCards));

@@ -14,8 +14,6 @@ import { observer, inject } from 'mobx-react';
 import Modal from 'react-native-modal';
 const { height, width } = Dimensions.get('window');
 
-@inject('store')
-@observer
 class AddProductInfo extends Component {
   constructor(props) {
     super(props);
@@ -177,4 +175,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AddProductInfo;
+export default inject("store")(observer(AddProductInfo));

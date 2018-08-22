@@ -15,8 +15,6 @@ import { observer, inject } from 'mobx-react';
 import { ImagePicker } from 'expo'
 const { height, width } = Dimensions.get('window');
 
-@inject('store')
-@observer
 class AddProductPhoto extends Component {
     constructor(props) {
         super(props);
@@ -96,4 +94,4 @@ const styles = StyleSheet.create({
 
     }
 })
-export default AddProductPhoto;
+export default inject("store")(observer(AddProductPhoto));

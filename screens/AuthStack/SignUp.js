@@ -16,8 +16,6 @@ import { observer, inject } from 'mobx-react';
 
 const { height, width } = Dimensions.get('window');
 
-@inject('store')
-@observer
 class CreateAccount extends Component {
     static navigationOptions = ({navigation}) => {
         const params = navigation.state.params || {};
@@ -120,4 +118,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default CreateAccount;
+export default inject("store")(observer(CreateAccount));
