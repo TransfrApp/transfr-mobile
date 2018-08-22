@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import UserLocation from '../Service/Location.js';
 import ResterauntAPI from '../Service/YelpAPI.js';
-import {module as userModule} from '../Store/user.js';
-import { connectStore } from 'redux-box';
 import { MapView } from 'expo';
 import { Marker } from 'react-native-maps';
 import {
