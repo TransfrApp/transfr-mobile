@@ -1,8 +1,8 @@
 
 // This file is hosting the initial needs for the DB
 
-import * from 'ipfs';
-import * from 'orbic-db';
+import ipfs from 'ipfs';
+import orbitdb from 'orbit-db';
 
 let orbitDb, db;
 
