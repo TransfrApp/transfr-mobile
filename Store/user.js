@@ -1,14 +1,14 @@
-import {observable} from 'mobx';
+import { observable } from 'mobx';
 
 class UserStore {
-	 user = observable({
-        email: "test@test.com",
+	user = observable({
+		email: "test@test.com",
 		password: "test",
 		businessName: '',
-		username: 'Test User',
+		name: 'Test User',
 		confirmPassword: '',
 		accountType: '',
-    })
+	})
 
 	login(user) {
 		this.user = user

@@ -22,13 +22,17 @@ class LoginScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
+            name: '',
             password: ''
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         console.log("Store", this.props.store);
+    }
+
+    handleLogin = () => {
+
     }
 
     render() {
@@ -39,21 +43,21 @@ class LoginScreen extends Component {
                         <Text style={styles.title}>Welcome Back!</Text>
                         <TextInput
                             underlineColorAndroid={'transparent'}
-                            value={this.state.username}
-                            onChangeText={(username) => this.setState({username})}
+                            value={this.state.name}
+                            onChangeText={(name) => this.setState({ name })}
                             placeholder="User Name"
                             style={styles.textInput} />
                         <TextInput
                             underlineColorAndroid={'transparent'}
                             value={this.state.password}
-                            onChangeText={(password) => this.setState({password})}
+                            onChangeText={(password) => this.setState({ password })}
                             secureTextEntry={true}
                             placeholder="Password"
                             style={styles.textInput} />
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.subText}>Forgot Password?</Text>
                             <TouchableOpacity onPress={() => alert("Waiting for backend functionality")}>
-                                <Text style={[styles.subText, {color: "#693CB7"}]}> Reset</Text>
+                                <Text style={[styles.subText, { color: "#693CB7" }]}> Reset</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={{ height: 120, justifyContent: 'flex-end' }}>
@@ -65,7 +69,7 @@ class LoginScreen extends Component {
                     <View style={{ flexDirection: 'row', marginTop: 20 }}>
                         <Text style={styles.subText}>No Account?</Text>
                         <TouchableOpacity onPress={() => this.props.navigation.navigate('CreateAccount')}>
-                            <Text style={[styles.subText, {color: '#693CB7'}]}> Get Started</Text>
+                            <Text style={[styles.subText, { color: '#693CB7' }]}> Get Started</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

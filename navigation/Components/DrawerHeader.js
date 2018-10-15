@@ -22,13 +22,13 @@ class DrawerHeader extends Component {
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         console.log("Props", this.props);
     }
 
     render() {
         const drawerProps = this.props.drawerProps;
-        const iconFill = this.props.store.UserStore.user.username.split('')[0];
+        const iconFill = this.props.store.UserStore.user.name.split('')[0];
         return (
             <View>
                 <ImageBackground
@@ -39,17 +39,17 @@ class DrawerHeader extends Component {
                             <Text style={{ color: 'white', fontSize: 36 }}>{iconFill}</Text>
                         </View>
                         <View>
-                            <Text style={{ color: 'white', fontSize: 28, textAlign: 'left' }}>{this.props.store.UserStore.user.username}</Text>
+                            <Text style={{ color: 'white', fontSize: 28, textAlign: 'left' }}>{this.props.store.UserStore.user.name}</Text>
                             <Text style={{ fontSize: 15, color: 'white', textAlign: 'left' }}>{this.props.store.UserStore.user.email}</Text>
                         </View>
                     </View>
                 </ImageBackground>
                 <DrawerItems {...drawerProps} />
-                <View style={{justifyContent: 'flex-end', alignItems: 'center', height: height * .5,}}>
+                <View style={{ justifyContent: 'flex-end', alignItems: 'center', height: height * .5, }}>
                     <TouchableOpacity onPress={() => this.props.drawerProps.navigation.navigate('Auth')} style={authStyles.login}>
                         <View style={{ flexDirection: 'row', height: 100, width: 187, justifyContent: 'center', alignItems: 'center' }}>
-                            <Image style={{height: 23, width: 30, marginRight: 10}} source={require('../../assets/images/logoutIcon.png')} />
-                            <Text style={{fontSize: 20, color: 'white', fontWeight: '300'}}> Log Out</Text>
+                            <Image style={{ height: 23, width: 30, marginRight: 10 }} source={require('../../assets/images/logoutIcon.png')} />
+                            <Text style={{ fontSize: 20, color: 'white', fontWeight: '300' }}> Log Out</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

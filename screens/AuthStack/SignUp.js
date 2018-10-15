@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import {
-    Image,
-    Platform,
-    ScrollView,
     StyleSheet,
     TextInput,
     Text,
@@ -11,13 +8,14 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import axios from 'axios';
 import appStyles from '../../Styles/authStyles';
 import { observer, inject } from 'mobx-react';
-
+import baseUrl from '../../request-config.js';
 const { height, width } = Dimensions.get('window');
 
 class CreateAccount extends Component {
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({ navigation }) => {
         const params = navigation.state.params || {};
         return {
             headerTitle: 'Sign Up',
@@ -28,23 +26,51 @@ class CreateAccount extends Component {
         this.state = {
             email: '',
             businessName: '',
-            username: '',
+            name: '',
             password: '',
             confirmPassword: '',
         }
     }
+
+    verifyInput = () => {
+        const { password, confirmPassword, email, name, businessName } = this.state;
+        if (password || confirmPassword === '') alert("Please make sure to add both passwords");
+        if (email === '') alert("Please make surey you have filled out your email");
+        if (name === '') alert("Please make sure that your name is filled out");
+        if (businessName === '') alert("Please make sure that your business name is listed");
+    }
+
+
     handleSubmit = () => {
-        const user = this.props.store.UserStore.user;
+        // this.verifyInput();
+        if (this.state.password === this.state.confirmPassword) {
+            axios.post(`${baseUrl}/users/sign_up`, {
+                users: {
+                    "email": this.state.email,
+                    "password": this.state.password,
+                    "name": this.state.name,
+                    "business_name": this.state.businessName
+                }
+            }).then((response) => {
+                console.log(response);
+                const user = this.props.store.UserStore.user;
 
-        // How would we pattern match this shit to make it less fugly?
-        user.businessName = this.state.businessName;
-        user.confirmPassword = this.state.confirmPassword;
-        user.email = this.state.email;
-        user.password = this.state.password;
-        user.confirmPassword = this.state.confirmPassword;
-        user.username = this.state.username;
+                // How would we pattern match this shit to make it less fugly?
+                user.businessName = this.state.businessName;
+                user.confirmPassword = this.state.confirmPassword;
+                user.email = this.state.email;
+                user.password = this.state.password;
+                user.name = this.state.name;
 
-        this.props.navigation.navigate('AccountSetup');
+                this.props.navigation.navigate('AccountSetup');
+            })
+                .catch((error) => {
+                    alert("Something seems to have gone wrong");
+                    console.log(error);
+                });
+        } else {
+            alert("Please make sure you're passwords match");
+        }
     }
 
     render() {
@@ -52,44 +78,44 @@ class CreateAccount extends Component {
             <ImageBackground source={require('../../assets/images/background.png')} style={{ height: '100%', width: '100%' }}>
                 <View style={styles.container}>
                     <View style={styles.window}>
-                        <Text style={[appStyles.title, {marginBottom: 10, marginTop: 15}]}>Welcome</Text>
+                        <Text style={[appStyles.title, { marginBottom: 10, marginTop: 15 }]}>Welcome</Text>
                         <TextInput
                             style={[appStyles.textInput, styles.input]}
                             placeholder={'Business Name'}
                             value={this.state.businessName}
-                            onChangeText={(businessName => this.setState({businessName}))}
+                            onChangeText={(businessName => this.setState({ businessName }))}
                             underlineColorAndroid={'transparent'} />
                         <TextInput
                             style={[appStyles.textInput, styles.input]}
                             underlineColorAndroid={'transparent'}
-                            value={this.state.username}
-                            onChangeText={(username) => this.setState({username})}
-                            placeholder={'Username'}/>
+                            value={this.state.name}
+                            onChangeText={(name) => this.setState({ name })}
+                            placeholder={'Name'} />
                         <TextInput
                             style={[appStyles.textInput, styles.input]}
                             value={this.state.email}
-                            onChangeText={(email) => this.setState({email})}
+                            onChangeText={(email) => this.setState({ email })}
                             underlineColorAndroid={'transparent'}
-                            placeholder={'Email'}/>
+                            placeholder={'Email'} />
                         <TextInput
                             style={[appStyles.textInput, styles.input]}
                             underlineColorAndroid={'transparent'}
                             secureTextEntry={true}
                             placeholder={'Password'}
                             value={this.state.password}
-                            onChangeText={(password) => this.setState({password})}/>
+                            onChangeText={(password) => this.setState({ password })} />
                         <TextInput
                             style={[appStyles.textInput, styles.input]}
                             underlineColorAndroid={'transparent'}
                             placeholder={'Confirm Password'}
                             value={this.state.confirmPassword}
                             secureTextEntry={true}
-                            onChangeText={(confirmPassword) => this.setState({confirmPassword})}/>
-                      <View style={{height: 100, marginBottom: 15, justifyContent: 'flex-end'}}>
-                      <TouchableOpacity onPress={() => this.handleSubmit()} style={appStyles.login}>
-                            <Text style={appStyles.buttonText}>Sign Up</Text>
-                       </TouchableOpacity>
-                      </View>
+                            onChangeText={(confirmPassword) => this.setState({ confirmPassword })} />
+                        <View style={{ height: 100, marginBottom: 15, justifyContent: 'flex-end' }}>
+                            <TouchableOpacity onPress={() => this.handleSubmit()} style={appStyles.login}>
+                                <Text style={appStyles.buttonText}>Sign Up</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </ImageBackground>
