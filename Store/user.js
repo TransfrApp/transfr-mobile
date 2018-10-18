@@ -9,7 +9,17 @@ class UserStore {
 		confirmPassword: '',
 		accountType: '',
 		walletAddress: '',
+		userId: null,
 	})
+
+	createAccount(user) {
+		const { businessName, email, password, name, userId } = user;
+		this.user.businessName = businessName;
+		this.user.email = email;
+		this.user.password = password;
+		this.user.name = name;
+		this.user.userId = userId;
+	}
 
 	login(user) {
 		this.user = user

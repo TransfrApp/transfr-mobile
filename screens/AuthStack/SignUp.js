@@ -52,15 +52,17 @@ class CreateAccount extends Component {
                 "business_name": this.state.businessName,
                 "wallet_address": this.state.walletAddress
             }).then((response) => {
-                console.log(response);
-                const user = this.props.store.UserStore.user;
+                console.log("Response From DB", response);
+                const user = this.props.store.UserStore;
                 // How would we pattern match this shit to make it less fugly?
-                user.businessName = this.state.businessName;
-                user.confirmPassword = this.state.confirmPassword;
-                user.email = this.state.email;
-                user.password = this.state.password;
-                user.name = this.state.name;
-                user.walletAddress = this.state.walletAddress
+                const obj = {
+                    businessName: response.data.business_name,
+                    email: response.data.email,
+                    password: response.data.password,
+                    name: response.data.name,
+                    userId: response.data.id
+                }
+                user.createAccount(obj); // Updates the store
                 this.props.navigation.navigate('AccountSetup');
             })
                 .catch((error) => {

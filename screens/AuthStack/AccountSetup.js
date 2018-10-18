@@ -11,13 +11,15 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import axios from "axios";
+import baseUrl from '../../request-config';
 import appStyles from '../../Styles/authStyles';
-import {observer, inject} from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 
 const { height, width } = Dimensions.get('window');
 
 class AccountSetup extends Component {
-    static navigationOptions = ({navigation}) => {
+    static navigationOptions = ({ navigation }) => {
         const params = navigation.state.params || {};
         return {
             headerTitle: 'Select Account Type'
@@ -29,11 +31,21 @@ class AccountSetup extends Component {
             businessType: '',
         }
     }
+    componentDidMount() {
+        console.log(this.props.store);
+    }
+
     handleSubmit = () => {
         const user = this.props.store.UserStore.user;
-
-        user.accountType = this.state.businessType;
-        this.props.navigation.navigate('Main');
+        //Update the DB with account type
+        axios.patch(`${baseUrl}/users`, user.userId, {
+            "account_type": this.state.businessType,
+            "id": user.userId
+        }).then(response => {
+            console.log("Update User Response", response);
+            user.accountType = this.state.businessType;
+            this.props.navigation.navigate('Main');
+        });
     }
 
     render() {
@@ -48,12 +60,12 @@ class AccountSetup extends Component {
                 <View style={styles.container}>
                     <View style={styles.window}>
                         <Text style={[appStyles.title, { marginBottom: 10, marginTop: 15 }]}>Select Account Type</Text>
-                       <TouchableOpacity onPress={() => this.setState({businessType: 'merchant'})} style={this.state.businessType === "merchant" ? styles.active :styles.radio}>
+                        <TouchableOpacity onPress={() => this.setState({ businessType: 'merchant' })} style={this.state.businessType === "merchant" ? styles.active : styles.radio}>
                             <Text style={this.state.businessType === 'merchant' ? styles.activeText : styles.label}>Merchant</Text>
-                       </TouchableOpacity>
-                       <TouchableOpacity onPress={() => this.setState({businessType: 'consumer'})} style={this.state.businessType === "consumer" ? styles.active :styles.radio}>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.setState({ businessType: 'consumer' })} style={this.state.businessType === "consumer" ? styles.active : styles.radio}>
                             <Text style={this.state.businessType === 'consumer' ? styles.activeText : styles.label}>Consumer</Text>
-                       </TouchableOpacity>
+                        </TouchableOpacity>
                         <View style={{ height: 100, marginBottom: 15, justifyContent: 'flex-end' }}>
                             <TouchableOpacity onPress={() => this.handleSubmit()} style={appStyles.login}>
                                 <Text style={appStyles.buttonText}>Sign Up</Text>
