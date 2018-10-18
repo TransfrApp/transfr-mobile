@@ -29,6 +29,7 @@ class CreateAccount extends Component {
             name: '',
             password: '',
             confirmPassword: '',
+            walletAddress: 'asdfk3234lksy332'
         }
     }
 
@@ -44,24 +45,22 @@ class CreateAccount extends Component {
     handleSubmit = () => {
         // this.verifyInput();
         if (this.state.password === this.state.confirmPassword) {
-            axios.post(`${baseUrl}/users/sign_up`, {
-                users: {
-                    "email": this.state.email,
-                    "password": this.state.password,
-                    "name": this.state.name,
-                    "business_name": this.state.businessName
-                }
+            axios.post(`${baseUrl}/user`, {
+                "email": this.state.email,
+                "password": this.state.password,
+                "name": this.state.name,
+                "business_name": this.state.businessName,
+                "wallet_address": this.state.walletAddress
             }).then((response) => {
                 console.log(response);
                 const user = this.props.store.UserStore.user;
-
                 // How would we pattern match this shit to make it less fugly?
                 user.businessName = this.state.businessName;
                 user.confirmPassword = this.state.confirmPassword;
                 user.email = this.state.email;
                 user.password = this.state.password;
                 user.name = this.state.name;
-
+                user.walletAddress = this.state.walletAddress
                 this.props.navigation.navigate('AccountSetup');
             })
                 .catch((error) => {

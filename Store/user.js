@@ -8,6 +8,7 @@ class UserStore {
 		name: 'Test User',
 		confirmPassword: '',
 		accountType: '',
+		walletAddress: '',
 	})
 
 	login(user) {
