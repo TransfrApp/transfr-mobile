@@ -6,6 +6,7 @@ import {
     Text,
     TouchableOpacity,
     View,
+    AsyncStorage,
     ImageBackground
 } from 'react-native';
 import axios from 'axios';
@@ -27,6 +28,39 @@ class LoginScreen extends Component {
         }
     }
 
+    saveToken = async (token) => {
+        try {
+            await AsyncStorage.setItem('token', token);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    getToken = async () => {
+        try {
+            const token = await AsyncStorage.getItem("token");
+            return token;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    componentDidMount = async () => {
+        const token = await this.getToken();
+        console.log("Token", token);
+        if (token !== null) {
+            axios.post(`${baseUrl}/user/login`, {
+                token
+            }).then(res => {
+                const { token, user } = res.data;
+                const { email, name, password } = user;
+                const camelCase = { businessName: user.business_name, email, password, name, userId: user.id }
+                this.props.store.UserStore.createAccount(camelCase);
+                this.props.navigation.navigate('Main');
+            }).catch((err) => console.log("Token auth unavailable. Need to finish the logic for JWT Auth"));
+        } else return;
+    }
+
     handleLogin = () => {
         axios.post(`${baseUrl}/user/login`, {
             "email": this.state.email,
@@ -34,6 +68,7 @@ class LoginScreen extends Component {
         }).then(res => {
             console.log("Res", res.data);
             const { token, user } = res.data;
+            this.saveToken(token);
             const { email, name, password } = user;
             const camelCase = { businessName: user.business_name, email, password, name, userId: user.id }
             this.props.store.UserStore.createAccount(camelCase);
