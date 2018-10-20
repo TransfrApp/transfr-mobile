@@ -8,9 +8,9 @@ import {
     View,
     ImageBackground
 } from 'react-native';
-
+import axios from 'axios';
+import baseUrl from '../../request-config';
 const { width, height } = Dimensions.get('window');
-
 import { observer, inject } from 'mobx-react';
 
 @inject('store')
@@ -22,17 +22,26 @@ class LoginScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: '',
+            email: '',
             password: ''
         }
     }
 
-    componentDidMount() {
-        console.log("Store", this.props.store);
-    }
-
     handleLogin = () => {
-
+        axios.post(`${baseUrl}/user/login`, {
+            "email": this.state.email,
+            "password": this.state.password,
+        }).then(res => {
+            console.log("Res", res.data);
+            const { token, user } = res.data;
+            const { email, name, password } = user;
+            const camelCase = { businessName: user.business_name, email, password, name, userId: user.id }
+            this.props.store.UserStore.createAccount(camelCase);
+            this.props.navigation.navigate('Main');
+        }).catch(err => {
+            alert("Seems like there was an issue...please try again.");
+            console.log(err);
+        });
     }
 
     render() {
@@ -43,9 +52,9 @@ class LoginScreen extends Component {
                         <Text style={styles.title}>Welcome Back!</Text>
                         <TextInput
                             underlineColorAndroid={'transparent'}
-                            value={this.state.name}
-                            onChangeText={(name) => this.setState({ name })}
-                            placeholder="User Name"
+                            value={this.state.email}
+                            onChangeText={(email) => this.setState({ email })}
+                            placeholder="Email"
                             style={styles.textInput} />
                         <TextInput
                             underlineColorAndroid={'transparent'}
@@ -61,7 +70,7 @@ class LoginScreen extends Component {
                             </TouchableOpacity>
                         </View>
                         <View style={{ height: 120, justifyContent: 'flex-end' }}>
-                            <TouchableOpacity style={styles.login} onPress={() => this.props.navigation.navigate('Main')}>
+                            <TouchableOpacity style={styles.login} onPress={() => this.handleLogin()}>
                                 <Text style={styles.buttonText}>Log In</Text>
                             </TouchableOpacity>
                         </View>

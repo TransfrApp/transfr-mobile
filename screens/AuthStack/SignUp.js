@@ -43,8 +43,8 @@ class CreateAccount extends Component {
 
 
     handleSubmit = () => {
-        // this.verifyInput();
-        if (this.state.password === this.state.confirmPassword) {
+        this.verifyInput();
+        if (this.state.password === this.state.confirmPassword || this.state.email === "") {
             axios.post(`${baseUrl}/user`, {
                 "email": this.state.email,
                 "password": this.state.password,
@@ -63,7 +63,7 @@ class CreateAccount extends Component {
                     userId: response.data.id
                 }
                 user.createAccount(obj); // Updates the store
-                this.props.navigation.navigate('AccountSetup');
+                this.props.navigation.navigate('Main'); // If we need account type route to AccountSetup
             })
                 .catch((error) => {
                     alert("Something seems to have gone wrong");

@@ -1,5 +1,6 @@
 import { observable } from 'mobx';
-
+import axios from 'axios';
+import baseUrl from '../request-config';
 class UserStore {
 	user = observable({
 		email: "test@test.com",
@@ -10,6 +11,7 @@ class UserStore {
 		accountType: '',
 		walletAddress: '',
 		userId: null,
+		accessToken: '',
 	})
 
 	createAccount(user) {
@@ -21,8 +23,21 @@ class UserStore {
 		this.user.userId = userId;
 	}
 
+	accessToken(token) {
+		this.user.accessToken = token;
+	}
+
 	login(user) {
 		this.user = user
+	}
+
+	syncFromDB() {
+		axios.post(`${baseUrl}/user/get`, {
+			"id": this.user.userId
+		})
+			.then(res => {
+				console.log(res);
+			}).catch(err => console.log(err));
 	}
 }
 

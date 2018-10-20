@@ -38,14 +38,13 @@ class AccountSetup extends Component {
     handleSubmit = () => {
         const user = this.props.store.UserStore.user;
         //Update the DB with account type
-        axios.patch(`${baseUrl}/users`, user.userId, {
+        axios.patch(`${baseUrl}/user`, {
             "account_type": this.state.businessType,
-            "id": user.userId
+            "id": 13
         }).then(response => {
-            console.log("Update User Response", response);
             user.accountType = this.state.businessType;
             this.props.navigation.navigate('Main');
-        });
+        }).catch(err => console.log(err));
     }
 
     render() {

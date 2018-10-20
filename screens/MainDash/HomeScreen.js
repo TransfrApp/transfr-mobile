@@ -27,7 +27,7 @@ class HomeScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
     const params = navigation.state.params || {};
     return {
-      headerTitle: <SearchBar/>,
+      headerTitle: <SearchBar />,
       headerRight: <AddProductButton />,
     }
   };
@@ -40,22 +40,26 @@ class HomeScreen extends React.Component {
     }
   }
 
+  componentDidMount = () => {
+    console.log("Store", this.props.store);
+  }
+
   checkoutList() {
     const business = this.props.store.BusinessStore.business;
     if (business.checkoutItems.length === 0) {
       return (
         <View style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center', paddingTop: height * .3 }}>
-          <Text  style={[styles.mainText, {paddingLeft: 10, paddingRight: 10, textAlign: 'center'}]}>No Product Selected</Text>
+          <Text style={[styles.mainText, { paddingLeft: 10, paddingRight: 10, textAlign: 'center' }]}>No Product Selected</Text>
           <Text style={[styles.mainText, { paddingLeft: 10, paddingRight: 10, textAlign: 'center' }]}>Please select from the product list</Text>
         </View>
       )
     } if (business.checkout === 'QR') {
       return (
         <View style={{ justifyContent: 'space-between', alignItems: 'center', paddingTop: height * .2 }}>
-          <Image style={{height: 209, width: 209}} source={require('../../assets/images/qrCode.png')}/>
-          <Text style={[styles.mainText, {marginTop: 60, paddingLeft: 10, paddingRight: 10, textAlign: 'center' }]}>Show the customer the QR code so they can complete the payment</Text>
+          <Image style={{ height: 209, width: 209 }} source={require('../../assets/images/qrCode.png')} />
+          <Text style={[styles.mainText, { marginTop: 60, paddingLeft: 10, paddingRight: 10, textAlign: 'center' }]}>Show the customer the QR code so they can complete the payment</Text>
           <TouchableOpacity onPress={() => this.props.store.BusinessStore.updateCheckoutFlow('')}>
-            <Text style={{fontSize: 20, fontWeight: '500', color: '#693CB7', justifyContent: 'center', alignItems: 'center', marginTop: 30}}>Cancel</Text>
+            <Text style={{ fontSize: 20, fontWeight: '500', color: '#693CB7', justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>Cancel</Text>
           </TouchableOpacity>
         </View>
       )
@@ -106,20 +110,20 @@ class HomeScreen extends React.Component {
     }
   }
 
-  handleTitleSwitch(business){
-    if(business.checkout === 'complete'){
-      return(
-        <View style={{flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', marginTop: 10}}>
+  handleTitleSwitch(business) {
+    if (business.checkout === 'complete') {
+      return (
+        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center', marginTop: 10 }}>
           <FontAwesome name="check-circle" size={40} color="#5AC93F" />
-          <View style={{justifyContent: 'center', alignContent: 'center'}}>
+          <View style={{ justifyContent: 'center', alignContent: 'center' }}>
             <Text style={styles.completedTitle}>Great Success</Text>
             <Text style={styles.completedText}>You're payment went through</Text>
             <Text style={styles.completedText}>without a hitch!</Text>
           </View>
         </View>
       )
-    } else{
-      return(
+    } else {
+      return (
         <Text style={styles.checkoutTitle}>Current Checkout</Text>
       )
     }
@@ -136,7 +140,7 @@ class HomeScreen extends React.Component {
         </View>
         <View style={styles.checkout}>
           <View style={styles.checkoutContainer}>
-           {this.handleTitleSwitch(business)}
+            {this.handleTitleSwitch(business)}
             {this.checkoutList()}
           </View>
         </View>
@@ -197,8 +201,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     shadowColor: "#000",
     shadowOffset: {
-        width: 0,
-        height: 6,
+      width: 0,
+      height: 6,
     },
     shadowOpacity: 0.37,
     shadowRadius: 7.49,
