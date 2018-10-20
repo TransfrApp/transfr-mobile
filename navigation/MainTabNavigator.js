@@ -1,64 +1,70 @@
 import React from 'react';
-import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
-
+import { Platform, TouchableOpacity, ImageBackground, View, StyleSheet, Text, Image } from 'react-native';
+import { createStackNavigator, createDrawerNavigator, DrawerItems } from 'react-navigation';
+import images from '../assets/Images';
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
-import CodeScanner from '../screens/CodeScanner';
+import HomeScreen from '../screens/MainDash/HomeScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import LoginScreen from '../screens/AuthStack/Login';
+// Components
+import SearchBar from './Components/SearchBar';
+import AddProductButton from './Components/AddProductButton';
+import DrawerHeader from './Components/DrawerHeader';
+import OrderHistory from '../screens/PreviousPayments/OrderHistory';
 
-const HomeStack = createStackNavigator({
-  Home: HomeScreen,
-});
 
-HomeStack.navigationOptions = {
-  tabBarLabel: 'Home',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
+import MetricsMainPage from "../screens/MetricsDash/MetricsMainPage"
+
+
+const CustomDrawerContentComponent = (props) => (
+ <DrawerHeader drawerProps={props}/>
+)
+
+const drawer = createDrawerNavigator({
+  HomeScreen: {
+    screen: HomeScreen,
+    navigationOptions: {
+      drawerLabel: 'Dashboard',
+    }
+  },
+  MetricsMainPage: {
+    screen: MetricsMainPage,
+    navigationOptions: {
+      drawerLabel: 'Metrics'
+    }
+  },
+  OrderHistory: {
+    screen: OrderHistory,
+    navigationOptions: {
+      drawerLabel: 'History'
+    }
+  }
+}, {
+    initialRouteName: 'HomeScreen',
+    contentComponent: CustomDrawerContentComponent
+  });
+
+const mainNavigation = createStackNavigator({
+  DrawerNavigation: { screen: drawer },
+}, {
+    navigationOptions: ({ navigation }) => ({
+      headerTitle: <SearchBar />,
+      headerRight: <AddProductButton />, 
+      headerLeft: (
+        <TouchableOpacity onPress={() => navigation.toggleDrawer()} style={{ marginLeft: 15 }}>
+          <Image style={{ height: 22, width: 32 }} source={images.headerLeft} />
+        </TouchableOpacity>
+      ),
+      headerStyle: {
+        backgroundColor: '#693CB7',
       }
-    />
-  ),
-};
+    })
+  })
 
+const styles = StyleSheet.create({
+  drawerheader: {
+    backgroundColor: 'red'
+  }
+})
 
-const ScanStack = createStackNavigator({
-  ScanStack: CodeScanner,
-});
-
-ScanStack.navigationOptions = {
-  tabBarLabel: 'Scan Code',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? `ios-link${focused ? '' : '-outline'}` : 'md-link'}
-    />
-  ),
-};
-
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
-});
-
-SettingsStack.navigationOptions = {
-  tabBarLabel: 'Explore',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? `ios-options${focused ? '' : '-outline'}` : 'md-options'}
-    />
-  ),
-};
-
-export default createBottomTabNavigator({
-  HomeStack: HomeStack,
-  ScanStack: ScanStack,
-  SettingsStack: SettingsStack,
-},{
-  initialRouteName: 'ScanStack'
-});
+export default mainNavigation;

@@ -1,54 +1,44 @@
-// ./store/user.js
-import UserLocation from '../Service/Location.js';
-import {Permissions, Location} from 'expo';
-import { 
-    createSagas, 
-    createContainer,
-    createActions, 
-    using } from "redux-box";
-    
-  import { call, put } from "redux-saga/effects";
+import { observable } from 'mobx';
+import axios from 'axios';
+import baseUrl from '../request-config';
+class UserStore {
+	user = observable({
+		email: "test@test.com",
+		password: "test",
+		businessName: '',
+		name: 'Test User',
+		confirmPassword: '',
+		accountType: '',
+		walletAddress: '',
+		userId: null,
+		accessToken: '',
+	})
 
-  const state = {
-      name: "",
-      location: null,
-  }
+	createAccount(user) {
+		const { businessName, email, password, name, userId } = user;
+		this.user.businessName = businessName;
+		this.user.email = email;
+		this.user.password = password;
+		this.user.name = name;
+		this.user.userId = userId;
+	}
 
-  const actions = createActions({
-      updateUser: payload => ({type: "UPDATE_USER", payload}),
-      syncFromDb: () => ({type: "SYNC_FROM_DB"})
-  })
+	accessToken(token) {
+		this.user.accessToken = token;
+	}
 
-  const mutations = {
-      UPDATE_USER: (state, {payload}) => {
-        Object.entries(payload).forEach(([k,v]) => state[k] = v);
-      },
-  }
+	login(user) {
+		this.user = user
+	}
 
-  const sagas = createSagas({
-      SYNC_FROM_DB: function*() {
-          try {
-            // Need to figure out why this isn't firing
-            const userLocation = yield(UserLocation.getLocation());
+	syncFromDB() {
+		axios.post(`${baseUrl}/user/get`, {
+			"id": this.user.userId
+		})
+			.then(res => {
+				console.log(res);
+			}).catch(err => console.log(err));
+	}
+}
 
-            const updateObj = {
-                location: userLocation
-            }
-            // Updates the store with computed values
-            yield put(actions.updateUser(updateObj));
-
-          } catch (e) {
-              console.log(e);
-          }
-      },
-  })
-
-  export const module = {
-    name: "user",
-    state,
-    actions,
-    mutations,
-    sagas
-  }
-  
-  export default createContainer(module);
+export default new UserStore()

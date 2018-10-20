@@ -2,7 +2,7 @@ import {StyleSheet, Dimensions} from 'react-native';
 
 const {height, width} = Dimensions.get('window');
 
-const authStyles = StyleSheet.create({
+const authStyles = {
     container: {
         flex: 1,
         justifyContent: 'center',
@@ -49,6 +49,6 @@ const authStyles = StyleSheet.create({
         fontSize: 20,
         color: '#6D708A'
     }
-});
+}
 
 export default authStyles;

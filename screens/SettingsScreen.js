@@ -1,9 +1,6 @@
 import React, { Component } from 'react';
 import UserLocation from '../Service/Location.js';
 import ResterauntAPI from '../Service/YelpAPI.js';
-import {module as userModule} from '../Store/user.js';
-import { module as resterauntModule } from '../Store/resteraunt.js';
-import { connectStore } from 'redux-box';
 import { MapView } from 'expo';
 import { Marker } from 'react-native-maps';
 import {
@@ -13,10 +10,6 @@ import {
   ActivityIndicator
 } from 'react-native';
 
-@connectStore({
-  user: userModule,
-  resteraunt: resterauntModule
-})
 class SettingsScreen extends Component {
   constructor(props){
     super(props);

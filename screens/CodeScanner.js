@@ -5,13 +5,8 @@ import {
   View,
   Text
  } from 'react-native';
- import { module as userModule } from '../Store/user.js';
- import { connectStore } from 'redux-box';
  import UserLocation from '../Service/Location.js';
 
- @connectStore({
-	user: userModule, // receives user as a prop
-})
 class CodeScanner extends Component {
   constructor(props){
     super(props);

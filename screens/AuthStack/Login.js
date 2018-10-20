@@ -1,37 +1,82 @@
 import React, { Component } from 'react';
 import {
-    Image,
-    Platform,
-    ScrollView,
     TextInput,
     StyleSheet,
     Dimensions,
     Text,
     TouchableOpacity,
     View,
+    AsyncStorage,
     ImageBackground
 } from 'react-native';
-
+import axios from 'axios';
+import baseUrl from '../../request-config';
 const { width, height } = Dimensions.get('window');
+import { observer, inject } from 'mobx-react';
 
+@inject('store')
+@observer
 class LoginScreen extends Component {
     static navigationOptions = {
         header: null,
-        // headerTitle: 'Sign In',
-        // headerStyle: { backgroundColor: '#6532BD', borderColor: 'transparent' },
-        // headerTitleStyle: {
-        //     flex: 1,
-        //     textAlign: 'center',
-        //     alignSelf: 'center',
-        //     fontWeight: '500'
-        // },
-        // headerTintColor: 'white',
     }
     constructor(props) {
         super(props);
         this.state = {
-
+            email: '',
+            password: ''
         }
+    }
+
+    saveToken = async (token) => {
+        try {
+            await AsyncStorage.setItem('token', token);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    getToken = async () => {
+        try {
+            const token = await AsyncStorage.getItem("token");
+            return token;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    componentDidMount = async () => {
+        const token = await this.getToken();
+        console.log("Token", token);
+        if (token !== null) {
+            axios.post(`${baseUrl}/user/login`, {
+                token
+            }).then(res => {
+                const { token, user } = res.data;
+                const { email, name, password } = user;
+                const camelCase = { businessName: user.business_name, email, password, name, userId: user.id }
+                this.props.store.UserStore.createAccount(camelCase);
+                this.props.navigation.navigate('Main');
+            }).catch((err) => console.log("Token auth unavailable. Need to finish the logic for JWT Auth"));
+        } else return;
+    }
+
+    handleLogin = () => {
+        axios.post(`${baseUrl}/user/login`, {
+            "email": this.state.email,
+            "password": this.state.password,
+        }).then(res => {
+            console.log("Res", res.data);
+            const { token, user } = res.data;
+            this.saveToken(token);
+            const { email, name, password } = user;
+            const camelCase = { businessName: user.business_name, email, password, name, userId: user.id }
+            this.props.store.UserStore.createAccount(camelCase);
+            this.props.navigation.navigate('Main');
+        }).catch(err => {
+            alert("Seems like there was an issue...please try again.");
+            console.log(err);
+        });
     }
 
     render() {
@@ -42,21 +87,25 @@ class LoginScreen extends Component {
                         <Text style={styles.title}>Welcome Back!</Text>
                         <TextInput
                             underlineColorAndroid={'transparent'}
-                            placeholder="User Name"
+                            value={this.state.email}
+                            onChangeText={(email) => this.setState({ email })}
+                            placeholder="Email"
                             style={styles.textInput} />
                         <TextInput
                             underlineColorAndroid={'transparent'}
+                            value={this.state.password}
+                            onChangeText={(password) => this.setState({ password })}
                             secureTextEntry={true}
                             placeholder="Password"
                             style={styles.textInput} />
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.subText}>Forgot Password?</Text>
                             <TouchableOpacity onPress={() => alert("Waiting for backend functionality")}>
-                                <Text style={[styles.subText, {color: "#693CB7"}]}> Reset</Text>
+                                <Text style={[styles.subText, { color: "#693CB7" }]}> Reset</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={{ height: 120, justifyContent: 'flex-end' }}>
-                            <TouchableOpacity style={styles.login} onPress={() => this.props.navigation.navigate('Main')}>
+                            <TouchableOpacity style={styles.login} onPress={() => this.handleLogin()}>
                                 <Text style={styles.buttonText}>Log In</Text>
                             </TouchableOpacity>
                         </View>
@@ -64,7 +113,7 @@ class LoginScreen extends Component {
                     <View style={{ flexDirection: 'row', marginTop: 20 }}>
                         <Text style={styles.subText}>No Account?</Text>
                         <TouchableOpacity onPress={() => this.props.navigation.navigate('CreateAccount')}>
-                            <Text style={[styles.subText, {color: '#693CB7'}]}> Get Started</Text>
+                            <Text style={[styles.subText, { color: '#693CB7' }]}> Get Started</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
