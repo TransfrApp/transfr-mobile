@@ -1,4 +1,7 @@
 import { observable, action, computed } from 'mobx';
+import baseUrl from '../request-config';
+import UserStore from './user';
+import axios from 'axios';
 
 class BusinessStore {
     business = observable({
@@ -33,6 +36,7 @@ class BusinessStore {
             //     quantity: 1,
             // },
         ],
+        checkoutClient: 'Insert Clients Wallet',
         searchProductList: [],
         addingProduct: 0, // 0 -> no products being added // 1 -> adding name and category // 2 -> adding image
         productCategories: [
@@ -67,7 +71,8 @@ class BusinessStore {
         discount: null,
         total: 0,
         soldItems: []
-    })
+    });
+
     addProductCateogry(categories) {
         this.business.newProductCategories = categories
     }
@@ -119,16 +124,28 @@ class BusinessStore {
     }
     updateCheckoutFlow(phase) {
         this.business.checkout = phase;
+        console.log("User item in checkout flow", UserStore);
         setTimeout(() => {
             this.business.checkout = 'complete';
-        }, 5000);
+        }, 4000);
 
         setTimeout(() => {
             this.business.checkout = '';
             this.business.selectedCoin = '';
+            // Add Axios to update the sold items in DB
+            axios.post(`${baseUrl}/transaction`, {
+                to: UserStore.user.businessName,
+                from: this.business.checkoutClient,
+                amount: this.sale.total,
+                items: this.business.checkoutItems,
+                UserId: UserStore.user.userId
+            }).then(txs => {
+                console.log("Return Value from transaction", txs);
+            }).catch(err => console.log(err));
+            // Add Items to Store and clear the checkout items 
             this.sale.soldItems = this.sale.soldItems.concat(this.business.checkoutItems);
             this.business.checkoutItems = [];
-        }, 15000);
+        }, 10000);
 
     }
 
