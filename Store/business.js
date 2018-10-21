@@ -36,23 +36,23 @@ class BusinessStore {
         searchProductList: [],
         addingProduct: 0, // 0 -> no products being added // 1 -> adding name and category // 2 -> adding image
         productCategories: [
-            {name: 'Hot Category', id: 'hotfood'},
-            {name: 'Dresses', id: 'dress'},
-            {name: 'Hoodies & Sweatshirts', id:'jackets'},
-            {name: 'T-Shirt', id:'tshirt'},
-            {name: 'Sweaters', id: 'sweater'},
-            {name: 'Socks & Hosiery', id: 'footshit'},
-            {name: 'Bottoms', id:'bottoms'},
-            {name: 'Skirts', id: 'skirts'},
-            {name: 'Leggings', id: 'leggings'}
+            { name: 'Hot Category', id: 'hotfood' },
+            { name: 'Dresses', id: 'dress' },
+            { name: 'Hoodies & Sweatshirts', id: 'jackets' },
+            { name: 'T-Shirt', id: 'tshirt' },
+            { name: 'Sweaters', id: 'sweater' },
+            { name: 'Socks & Hosiery', id: 'footshit' },
+            { name: 'Bottoms', id: 'bottoms' },
+            { name: 'Skirts', id: 'skirts' },
+            { name: 'Leggings', id: 'leggings' }
         ],
         paymentMethods: [
-            {name: 'REQ', image: require('../assets/cryptoIcons/REQ.png')},
-            {name: 'ETH', image: require('../assets/cryptoIcons/ETH.png')},
-            {name: 'KNC', image: require('../assets/cryptoIcons/KNC.png')},
-            {name: 'DGX', image: require('../assets/cryptoIcons/DGX.png')},
-            {name: 'DAI', image: require('../assets/cryptoIcons/DAI.png')},
-            {name: 'NEO', image: require('../assets/cryptoIcons/NEO.png')}
+            { name: 'REQ', image: require('../assets/cryptoIcons/REQ.png') },
+            { name: 'ETH', image: require('../assets/cryptoIcons/ETH.png') },
+            { name: 'KNC', image: require('../assets/cryptoIcons/KNC.png') },
+            { name: 'DGX', image: require('../assets/cryptoIcons/DGX.png') },
+            { name: 'DAI', image: require('../assets/cryptoIcons/DAI.png') },
+            { name: 'NEO', image: require('../assets/cryptoIcons/NEO.png') }
         ],
 
         selectedCoin: '',
@@ -68,62 +68,65 @@ class BusinessStore {
         total: 0,
         soldItems: []
     })
-    addProductCateogry(categories){
+    addProductCateogry(categories) {
         this.business.newProductCategories = categories
     }
-    updateCheckoutItems(index, item){
+    updateCheckoutItems(index, item) {
         // Uh, not super sure why this works but it does
         this.business.checkoutItems.concat().splice(index, 1, item);
     }
-    updateSearchProductList(updatedList){
+    updateSearchProductList(updatedList) {
         console.log("Updated List", updatedList);
         this.business.searchProductList = updatedList;
     }
-    addNewProductName(name){
+    addNewProductName(name) {
         this.business.newProductName = name;
     }
-    addNewProductPrice(price){
+    addNewProductPrice(price) {
         this.business.newProductPrice = price;
     }
-    changeAddingProductWindow(screen){
+    changeAddingProductWindow(screen) {
         this.business.addingProduct = screen;
     }
-    addProduct(product){
-        console.log("Product from Mobx Store",product);
+    addProduct(product) {
         this.business.products = this.business.products.concat(product);
+        // clear the state of the new product
+        this.business.newProductCategories = [];
+        this.business.newProductPrice = null;
+        this.business.newProductName = "";
     }
-    itemToCheckoutQue(item){
+    itemToCheckoutQue(item) {
         console.log("Item from Mobx Store", item);
         this.business.checkoutItems = this.business.checkoutItems.concat(item);
     }
-    removeItemFromCheckoutList(index){
+    removeItemFromCheckoutList(index) {
         const item = this.business.checkoutItems.concat();
         item.splice(index, 1);
         this.business.checkoutItems = item;
     }
-    setSelectedCoin(coin){
+    setSelectedCoin(coin) {
         this.business.selectedCoin = coin;
     }
-    addSaleDiscount(discount){
+    addSaleDiscount(discount) {
         this.sale.discount = discount;
     }
-    updateCheckoutFlow(phase){
+    updateCheckoutFlow(phase) {
         this.business.checkout = phase;
-        setTimeout(() => { 
-           this.business.checkout = 'complete';
+        setTimeout(() => {
+            this.business.checkout = 'complete';
         }, 5000);
 
-        setTimeout(() => { 
+        setTimeout(() => {
             this.business.checkout = '';
             this.business.selectedCoin = '';
             this.sale.soldItems = this.sale.soldItems.concat(this.business.checkoutItems);
             this.business.checkoutItems = [];
-         }, 15000);
+        }, 15000);
 
     }
-   
-    total(){
-        if(this.business.checkoutItems.length > 0){
+
+    total() {
+        if (this.business.checkoutItems.length > 0) {
             const price = this.business.checkoutItems.reduce((accum, value) => {
                 return parseFloat(accum) + (parseFloat(value.price) * parseInt(value.quantity));
             }, 0);

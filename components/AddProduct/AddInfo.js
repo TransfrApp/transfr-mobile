@@ -31,6 +31,7 @@ class AddProductInfo extends Component {
 
   handleSetCategories() {
     this.props.store.BusinessStore.addProductCateogry(this.state.prodCategory.concat());
+    console.log("Product Categories", this.props.store.BusinessStore.business.newProductCategories);
     this.setState({ modalDisplay: false });
   }
 

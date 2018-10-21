@@ -30,25 +30,24 @@ class AddProductPhoto extends Component {
         const name = this.props.store.BusinessStore.business.newProductName;
         const price = parseFloat(this.props.store.BusinessStore.business.newProductPrice);
         const userId = this.props.store.UserStore.user.userId;
+        const categories = this.props.store.BusinessStore.business.newProductCategories;
         const item = {
             image,
             name,
             quantity: 1,
             price,
+            meta_tags: categories
         }
-        console.log("Item", item);
-        console.log("Type of Price", typeof (price), price);
-        console.log("User Id", userId);
         axios.post(`${baseUrl}/inventory`, {
             name,
             price: price,
             quantity: 1,
             user_id: userId,
-            meta_tags: { tag: 'food' }
+            meta_tags: categories,
+            image, // This is a placeholder until we need to active a CDN
         }).then((res) => {
             this.props.store.BusinessStore.addProduct(item);
             this.props.store.BusinessStore.changeAddingProductWindow(0);
-            console.log("Item Store", this.props.store.BusinessStore.business.products);
         })
     }
 
