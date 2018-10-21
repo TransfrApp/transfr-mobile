@@ -65,8 +65,13 @@ class LoginScreen extends Component {
     handleLogin = async () => {
         const { email, password } = this.state;
         const { camelCase, token } = await syncFromDB.fetchUser(email, password);
+        const userId = camelCase.userId;
+        const inventory = await syncFromDB.fetchInventory(userId);
         this.saveToken(token);
         this.props.store.UserStore.createAccount(camelCase);
+        if (inventory.length > 0) {
+            this.props.store.BusinessStore.addProduct(inventory)
+        }
         this.props.navigation.navigate('Main');
     }
 

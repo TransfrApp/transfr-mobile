@@ -17,9 +17,18 @@ const fetchUser = (email, password) => {
     });
 }
 
+const fetchInventory = (id) => {
+    return axios.post(`${baseUrl}/inventory/get`, {
+        id,
+    }).then(res => {
+        return res.data;
+    }).catch(err => console.log(err));
+}
+
 
 const syncFromDB = {
-    fetchUser
+    fetchUser,
+    fetchInventory
 }
 
 export default syncFromDB;

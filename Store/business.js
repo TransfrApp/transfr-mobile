@@ -95,6 +95,11 @@ class BusinessStore {
         this.business.newProductPrice = null;
         this.business.newProductName = "";
     }
+    // Called to Pull all the users items into the store
+    productDBToState(products) {
+        this.business.products = products;
+    }
+
     itemToCheckoutQue(item) {
         console.log("Item from Mobx Store", item);
         this.business.checkoutItems = this.business.checkoutItems.concat(item);
