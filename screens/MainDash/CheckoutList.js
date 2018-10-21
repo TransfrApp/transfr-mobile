@@ -71,18 +71,18 @@ class CheckoutList extends Component {
         }
     }
 
-    handleDownQuantity(item, index){
-       if(item.quantity <= 1) return;
-       else{
-        item.quantity = item.quantity - 1;
-    
-        this.props.store.BusinessStore.updateCheckoutItems(index, item)
-        this.props.store.BusinessStore.total();
-       }
+    handleDownQuantity(item, index) {
+        if (item.quantity <= 1) return;
+        else {
+            item.quantity = item.quantity - 1;
+
+            this.props.store.BusinessStore.updateCheckoutItems(index, item)
+            this.props.store.BusinessStore.total();
+        }
     }
-    handleUpQuantity(item, index){
+    handleUpQuantity(item, index) {
         item.quantity = item.quantity + 1;
-    
+
         this.props.store.BusinessStore.updateCheckoutItems(index, item)
         this.props.store.BusinessStore.total();
     }
@@ -113,7 +113,7 @@ class CheckoutList extends Component {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <View style={{flexDirection: 'row', alignItems: 'flex-end', paddingBottom: 10}}>
+                        <View style={{ flexDirection: 'row', alignItems: 'flex-end', paddingBottom: 10 }}>
                             <View style={{ justifyContent: 'center', marginLeft: 10, alignItems: 'center', width: width * .06 }}>
                                 <Text style={{ fontSize: 14 }}>{`$${item.price}`}</Text>
                             </View>
@@ -190,9 +190,9 @@ class CheckoutList extends Component {
                         <Text style={[styles.smallText, styles.pricePadding]}>Tax</Text>
                     </View>
                     <View>
-                        <Text style={styles.text}>{`$${business.sale.price}.00`}</Text>
+                        <Text style={styles.text}>{`$${business.sale.price.toFixed(2)}`}</Text>
                         {this.displayDiscountValue(business)}
-                        <Text style={[styles.smallText, { textAlign: 'right' }]}>{`$${business.sale.tax}`}</Text>
+                        <Text style={[styles.smallText, { textAlign: 'right' }]}>{`$${(business.sale.tax).toFixed(2)}`}</Text>
                     </View>
                 </View>
                 {this.divider()}
