@@ -102,7 +102,9 @@ class BusinessStore {
 
     itemToCheckoutQue(item) {
         console.log("Item from Mobx Store", item);
-        this.business.checkoutItems = this.business.checkoutItems.concat(item);
+        const { image, name, price, quantity } = item;
+        const product = { image, name, price, quantity: 1 };
+        this.business.checkoutItems = this.business.checkoutItems.concat(product);
     }
     removeItemFromCheckoutList(index) {
         const item = this.business.checkoutItems.concat();
