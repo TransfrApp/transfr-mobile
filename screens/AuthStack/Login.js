@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import baseUrl from '../../request-config';
+import syncFromDB from '../../Service/syncFromDB';
 const { width, height } = Dimensions.get('window');
 import { observer, inject } from 'mobx-react';
 
@@ -61,22 +62,17 @@ class LoginScreen extends Component {
         } else return;
     }
 
-    handleLogin = () => {
-        axios.post(`${baseUrl}/user/login`, {
-            "email": this.state.email,
-            "password": this.state.password,
-        }).then(res => {
-            console.log("Res", res.data);
-            const { token, user } = res.data;
-            this.saveToken(token);
-            const { email, name, password } = user;
-            const camelCase = { businessName: user.business_name, email, password, name, userId: user.id }
-            this.props.store.UserStore.createAccount(camelCase);
-            this.props.navigation.navigate('Main');
-        }).catch(err => {
-            alert("Seems like there was an issue...please try again.");
-            console.log(err);
-        });
+    handleLogin = async () => {
+        const { email, password } = this.state;
+        const { camelCase, token } = await syncFromDB.fetchUser(email, password);
+        const userId = camelCase.userId;
+        const inventory = await syncFromDB.fetchInventory(userId);
+        this.saveToken(token);
+        this.props.store.UserStore.createAccount(camelCase);
+        if (inventory.length > 0) {
+            this.props.store.BusinessStore.addProduct(inventory)
+        }
+        this.props.navigation.navigate('Main');
     }
 
     render() {

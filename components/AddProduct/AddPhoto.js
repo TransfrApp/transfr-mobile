@@ -10,6 +10,8 @@ import {
     Dimensions,
     Text
 } from 'react-native';
+import axios from 'axios';
+import baseUrl from '../../request-config';
 import authStyles from '../../Styles/authStyles';
 import { observer, inject } from 'mobx-react';
 import { ImagePicker } from 'expo'
@@ -23,20 +25,31 @@ class AddProductPhoto extends Component {
         }
     }
 
-      handleSubmit(){
+    handleSubmit() {
         const image = 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=74ac7c1aa35dc36f50cc1ac7517c70a7&auto=format&fit=crop&w=1350&q=80'
         const name = this.props.store.BusinessStore.business.newProductName;
-        const price = this.props.store.BusinessStore.business.newProductPrice;
-          const item = {
-              image,
-              name,
-              quantity: 1,
-              price,
-          }
-          this.props.store.BusinessStore.addProduct(item);
-          this.props.store.BusinessStore.changeAddingProductWindow(0);
-          console.log("Item Store", this.props.store.BusinessStore.business.products);
-      }
+        const price = parseFloat(this.props.store.BusinessStore.business.newProductPrice);
+        const userId = this.props.store.UserStore.user.userId;
+        const categories = this.props.store.BusinessStore.business.newProductCategories;
+        const item = {
+            image,
+            name,
+            quantity: 1,
+            price,
+            meta_tags: categories
+        }
+        axios.post(`${baseUrl}/inventory`, {
+            name,
+            price: price,
+            quantity: 1,
+            user_id: userId,
+            meta_tags: categories,
+            image, // This is a placeholder until we need to active a CDN
+        }).then((res) => {
+            this.props.store.BusinessStore.addProduct(item);
+            this.props.store.BusinessStore.changeAddingProductWindow(0);
+        })
+    }
 
     render() {
         return (
@@ -86,10 +99,10 @@ const styles = StyleSheet.create({
         height: 100,
         width: 100,
     },
-    buttonContainer:{
+    buttonContainer: {
         height: height * .12,
         justifyContent: 'flex-end',
-        alignItems:'center',
+        alignItems: 'center',
         marginBottom: 20
 
     }

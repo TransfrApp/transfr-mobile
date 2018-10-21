@@ -31,7 +31,7 @@ class ProductCards extends Component {
         this.props.store.BusinessStore.total();
     }
 
-    handleSearchCardClick(index){
+    handleSearchCardClick(index) {
         const searchProducts = this.props.store.BusinessStore.business.searchProductList;
         const business = this.props.store.BusinessStore;
 
@@ -64,7 +64,7 @@ class ProductCards extends Component {
                             style={list ? styles.wideCardImage : styles.cardImage}
                             source={{ uri: item.image }} />
                         <Text style={list ? styles.prodNameWideCard : styles.prodName}>{item.name}</Text>
-                        <Text style={list ? styles.priceWideCard : styles.price}>{`$${item.price}.00`}</Text>
+                        <Text style={list ? styles.priceWideCard : styles.price}>{`$${item.price}`}</Text>
                     </TouchableOpacity>
                 )
             })

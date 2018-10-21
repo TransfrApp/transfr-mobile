@@ -31,6 +31,7 @@ class AddProductInfo extends Component {
 
   handleSetCategories() {
     this.props.store.BusinessStore.addProductCateogry(this.state.prodCategory.concat());
+    console.log("Product Categories", this.props.store.BusinessStore.business.newProductCategories);
     this.setState({ modalDisplay: false });
   }
 
@@ -54,10 +55,10 @@ class AddProductInfo extends Component {
     })
   }
 
-  handleNext(){
+  handleNext() {
     const BusinessStore = this.props.store.BusinessStore;
     BusinessStore.addNewProductName(this.state.prodName);
-    BusinessStore.addNewProductPrice(this.state.prodPrice);
+    BusinessStore.addNewProductPrice(parseFloat(this.state.prodPrice));
     BusinessStore.changeAddingProductWindow(2);
     console.log("Business Store", BusinessStore.business);
   }
@@ -75,16 +76,16 @@ class AddProductInfo extends Component {
             placeholder="Name of Product"
             value={this.state.prodName}
             underlineColorAndroid={'transparent'}
-            onChangeText={(name) => this.setState({prodName: name})}
+            onChangeText={(name) => this.setState({ prodName: name })}
             style={authStyles.textInput} />
           <TextInput
             placeholder="$15"
             value={this.state.prodPrice}
             underlineColorAndroid={'transparent'}
-            onChangeText={(name) => this.setState({prodPrice: name})}
-            style={[authStyles.textInput, {marginTop: 10}]} />
-          <View style={{ flexDirection: 'row', width: 300, justifyContent: 'center', alignItems: 'center'}}>
-              {this.ifCategoriesExist(business)}
+            onChangeText={(price) => this.setState({ prodPrice: price })}
+            style={[authStyles.textInput, { marginTop: 10 }]} />
+          <View style={{ flexDirection: 'row', width: 300, justifyContent: 'center', alignItems: 'center' }}>
+            {this.ifCategoriesExist(business)}
           </View>
           <TouchableOpacity onPress={() => this.setState({ modalDisplay: true })}>
             <Text style={styles.ghostButton}>Select Category</Text>
