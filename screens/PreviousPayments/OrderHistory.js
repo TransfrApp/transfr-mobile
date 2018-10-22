@@ -45,7 +45,33 @@ class OrderHistory extends Component {
             return (
                 <View style={{ height: height * .6, justifyContent: 'center', alignItems: 'center' }}>
                     <Text style={{ fontSize: 20, fontWeight: 'bold' }}>There Are No Transactions Yet</Text>
-                    <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Afte Selling an Item you will be able to track it here</Text>
+                    <Text style={{ fontSize: 20, marginTop: 30, fontWeight: 'bold' }}>After Selling an Item you will be able to track it here</Text>
+                </View>
+            )
+        }
+    }
+
+    handleSwitchProductUI(productHistory) {
+        if (productHistory.length > 0) {
+            return (
+                <FlatList
+                    data={productHistory}
+                    scrollEnabled={true}
+                    keyExtractor={(item, index) => index}
+                    renderItem={({ item, index }) => (
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignContent: 'center', marginTop: 10 }}>
+                            <Text style={[styles.prodHistoryDataFormat, { color: '#454974', fontSize: 13, fontWeight: '200' }]}>{item.productName}</Text>
+                            <Text style={[styles.prodHistoryDataFormat, { color: '#454974', fontSize: 13, fontWeight: '200' }]}>{item.date}</Text>
+                            <Text style={[styles.prodHistoryDataFormat, { color: '#454974', fontSize: 13, fontWeight: '200' }]}>{item.price}</Text>
+                        </View>
+                    )}
+                />
+            )
+        } else {
+            return (
+                <View style={{ height: height * .6, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold' }}>There Are No Transactions Yet</Text>
+                    <Text style={{ fontSize: 20, marginTop: 30, fontWeight: 'bold' }}>After Selling an Item you will be able to track it here</Text>
                 </View>
             )
         }
@@ -96,18 +122,7 @@ class OrderHistory extends Component {
                     {/* 
                     // Product Sales History Starts Here
                     */}
-                    <FlatList
-                        data={productHistory}
-                        scrollEnabled={true}
-                        keyExtractor={(item, index) => index}
-                        renderItem={({ item, index }) => (
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignContent: 'center', marginTop: 10 }}>
-                                <Text style={[styles.prodHistoryDataFormat, { color: '#454974', fontSize: 13, fontWeight: '200' }]}>{item.productName}</Text>
-                                <Text style={[styles.prodHistoryDataFormat, { color: '#454974', fontSize: 13, fontWeight: '200' }]}>{item.date}</Text>
-                                <Text style={[styles.prodHistoryDataFormat, { color: '#454974', fontSize: 13, fontWeight: '200' }]}>{item.price}</Text>
-                            </View>
-                        )}
-                    />
+                    {this.handleSwitchProductUI(productHistory)}
                 </View>
             </View>
         )
