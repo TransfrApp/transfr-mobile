@@ -25,10 +25,20 @@ const fetchInventory = (id) => {
     }).catch(err => console.log(err));
 }
 
+const fetchTransactions = (id) => {
+    return axios.post(`${baseUrl}/transaction/get`, {
+        id,
+    }).then(res => {
+        console.log("Res from Fetch Transactions", res);
+        return res.data;
+    }).catch(err => console.log(err));
+}
+
 
 const syncFromDB = {
     fetchUser,
-    fetchInventory
+    fetchInventory,
+    fetchTransactions
 }
 
 export default syncFromDB;

@@ -22,11 +22,42 @@ class OrderHistory extends Component {
         }
     }
 
+    handleSwitchSalesUI(salesHistory) {
+        console.log("Sales History in Switch UI", salesHistory);
+        if (salesHistory.length > 0) {
+            return (
+                <FlatList
+                    data={salesHistory}
+                    scrollEnabled={true}
+                    keyExtractor={(item, index) => index}
+                    renderItem={({ item, index }) => (
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignContent: 'center', marginTop: 10 }}>
+                            <Text style={[styles.salesHistoryDataFormat, { color: '#454974', fontSize: 13, fontWeight: '200' }]}>{item.id}</Text>
+                            <Text style={[styles.salesHistoryDataFormat, { color: '#454974', fontSize: 13, fontWeight: '200' }]}>{`$${(item.amount - item.tax).toFixed(2)}`}</Text>
+                            <Text style={[styles.salesHistoryDataFormat, { color: '#454974', fontSize: 13, fontWeight: '200' }]}>{`$${item.discount ? item.discount.toFixed(2) : item.discount}`}</Text>
+                            <Text style={[styles.salesHistoryDataFormat, { color: '#454974', fontSize: 13, fontWeight: '200' }]}>{`$${item.tax ? item.tax.toFixed(2) : item.tax}`}</Text>
+                            <Text style={[styles.salesHistoryDataFormat, { color: '#454974', fontSize: 13, fontWeight: '200' }]}>{`$${item.amount ? item.amount.toFixed(2) : item.amount}`}</Text>
+                        </View>
+                    )}
+                />
+            )
+        } else {
+            return (
+                <View style={{ height: height * .6, justifyContent: 'center', alignItems: 'center' }}>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold' }}>There Are No Transactions Yet</Text>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Afte Selling an Item you will be able to track it here</Text>
+                </View>
+            )
+        }
+    }
+
     render() {
         let sortBy = ['Day', 'Week', 'Month', 'Year'];
-       const productHistory = mockData.productHistory;
-       const salesHistory = mockData.salesHistory;
-        console.log("Sold Items", this.props.store.BusinessStore.sale.soldItems);
+        // Mock Sales Data
+        const productHistory = mockData.productHistory;
+        const mockSalesHistory = mockData.salesHistory;
+        // Actual Sales Data
+        const salesHistory = this.props.store.BusinessStore.business.completedTransactions;
         return (
             <View style={styles.container}>
                 <View style={styles.sales}>
@@ -44,20 +75,10 @@ class OrderHistory extends Component {
                         <Text style={styles.salesHistoryDataFormat}>Tax</Text>
                         <Text style={styles.salesHistoryDataFormat}>Total Price</Text>
                     </View>
-                    <FlatList
-                        data={salesHistory}
-                        scrollEnabled={true}
-                        keyExtractor={(item, index) => index}
-                        renderItem={({item, index}) => (
-                            <View style={{flexDirection: 'row', justifyContent: 'space-evenly', alignContent: 'center', marginTop: 10}}>
-                                <Text style={[styles.salesHistoryDataFormat,{color: '#454974', fontSize: 13, fontWeight: '200'}]}>{index + 1}</Text>
-                                <Text style={[styles.salesHistoryDataFormat,{color: '#454974', fontSize: 13, fontWeight: '200'}]}>{item.subtotal}</Text>
-                                <Text style={[styles.salesHistoryDataFormat,{color: '#454974', fontSize: 13, fontWeight: '200'}]}>{item.discount}</Text>
-                                <Text style={[styles.salesHistoryDataFormat,{color: '#454974', fontSize: 13, fontWeight: '200'}]}>{item.tax}</Text>
-                                <Text style={[styles.salesHistoryDataFormat,{color: '#454974', fontSize: 13, fontWeight: '200'}]}>{item.totalPrice}</Text>
-                            </View>
-                        )}
-                    />
+                    {/* 
+                    // Sales History Section Begins Here
+                    */}
+                    {this.handleSwitchSalesUI(salesHistory)}
                 </View>
                 <View style={styles.products}>
                     <View style={styles.mainCardHeader}>
@@ -72,15 +93,18 @@ class OrderHistory extends Component {
                         <Text style={styles.prodHistoryDataFormat}>Date & Time</Text>
                         <Text style={styles.prodHistoryDataFormat}>Price</Text>
                     </View>
+                    {/* 
+                    // Product Sales History Starts Here
+                    */}
                     <FlatList
                         data={productHistory}
                         scrollEnabled={true}
                         keyExtractor={(item, index) => index}
-                        renderItem={({item, index}) => (
-                            <View style={{flexDirection: 'row', justifyContent: 'space-evenly', alignContent: 'center', marginTop: 10}}>
-                                <Text style={[styles.prodHistoryDataFormat, {color: '#454974', fontSize: 13, fontWeight: '200'}]}>{item.productName}</Text>
-                                <Text style={[styles.prodHistoryDataFormat, {color: '#454974', fontSize: 13, fontWeight: '200'}]}>{item.date}</Text>
-                                <Text style={[styles.prodHistoryDataFormat, {color: '#454974', fontSize: 13, fontWeight: '200'}]}>{item.price}</Text>
+                        renderItem={({ item, index }) => (
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignContent: 'center', marginTop: 10 }}>
+                                <Text style={[styles.prodHistoryDataFormat, { color: '#454974', fontSize: 13, fontWeight: '200' }]}>{item.productName}</Text>
+                                <Text style={[styles.prodHistoryDataFormat, { color: '#454974', fontSize: 13, fontWeight: '200' }]}>{item.date}</Text>
+                                <Text style={[styles.prodHistoryDataFormat, { color: '#454974', fontSize: 13, fontWeight: '200' }]}>{item.price}</Text>
                             </View>
                         )}
                     />
@@ -100,15 +124,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5F9FB'
     },
     mainCardHeader: {
-        flexDirection: 'row', 
-        justifyContent: 'space-between', 
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center'
     },
     dataHeader: {
-        flexDirection: 'row', 
-        justifyContent: 'space-evenly', 
-        alignContent: 'center', 
-        marginTop:30,
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        alignContent: 'center',
+        marginTop: 30,
         marginBottom: 30
     },
     salesHistoryDataFormat: {

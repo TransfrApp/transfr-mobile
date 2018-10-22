@@ -50,25 +50,29 @@ class LoginScreen extends Component {
         const token = await this.getToken();
         console.log("Token", token);
         if (token !== null) {
-            axios.post(`${baseUrl}/user/login`, {
-                token
-            }).then(res => {
-                const { token, user } = res.data;
-                const { email, name, password } = user;
-                const camelCase = { businessName: user.business_name, email, password, name, userId: user.id }
-                this.props.store.UserStore.createAccount(camelCase);
-                this.props.navigation.navigate('Main');
-            }).catch((err) => console.log("Token auth unavailable. Need to finish the logic for JWT Auth"));
+            axios.post(`${baseUrl}/user/login`, { token })
+                .then(res => {
+                    const { token, user } = res.data;
+                    const { email, name, password } = user;
+                    const camelCase = { businessName: user.business_name, email, password, name, userId: user.id }
+                    this.props.store.UserStore.createAccount(camelCase);
+                    this.props.navigation.navigate('Main')
+                })
+                .catch((err) => console.log("Token auth unavailable. Need to finish the logic for JWT Auth"));
         } else return;
     }
 
     handleLogin = async () => {
         const { email, password } = this.state;
+        // Fetch Data From DB
         const { camelCase, token } = await syncFromDB.fetchUser(email, password);
         const userId = camelCase.userId;
         const inventory = await syncFromDB.fetchInventory(userId);
+        const transactions = await syncFromDB.fetchTransactions(userId);
+        // Update the Store
         this.saveToken(token);
         this.props.store.UserStore.createAccount(camelCase);
+        this.props.store.BusinessStore.addCompletedTransaction(transactions);
         if (inventory.length > 0) {
             this.props.store.BusinessStore.addProduct(inventory)
         }

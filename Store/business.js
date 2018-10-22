@@ -23,6 +23,7 @@ class BusinessStore {
                 quantity: 1,
             },
         ],
+        completedTransactions: [],
         checkoutItems: [
             // {
             //     name: 'Coffee',
@@ -122,26 +123,35 @@ class BusinessStore {
     addSaleDiscount(discount) {
         this.sale.discount = discount;
     }
+
+    addCompletedTransaction(transaction) {
+        console.log("Transaction in Add Complete Transactions in Store", transaction);
+        this.business.completedTransactions = this.business.completedTransactions.concat(transaction);
+    }
+
     updateCheckoutFlow(phase) {
         this.business.checkout = phase;
         console.log("User item in checkout flow", UserStore);
         setTimeout(() => {
             this.business.checkout = 'complete';
-        }, 4000);
-
-        setTimeout(() => {
-            this.business.checkout = '';
-            this.business.selectedCoin = '';
             // Add Axios to update the sold items in DB
             axios.post(`${baseUrl}/transaction`, {
                 to: UserStore.user.businessName,
                 from: this.business.checkoutClient,
                 amount: this.sale.total,
+                tax: this.sale.tax,
+                discount: this.sale.discount ? this.sale.discount : 0,
                 items: this.business.checkoutItems,
                 UserId: UserStore.user.userId
             }).then(txs => {
-                console.log("Return Value from transaction", txs);
+                console.log("Transaction from Axios", txs.data);
+                this.addCompletedTransaction(txs.data);
             }).catch(err => console.log(err));
+        }, 4000);
+
+        setTimeout(() => {
+            this.business.checkout = '';
+            this.business.selectedCoin = '';
             // Add Items to Store and clear the checkout items 
             this.sale.soldItems = this.sale.soldItems.concat(this.business.checkoutItems);
             this.business.checkoutItems = [];

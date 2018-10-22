@@ -31,7 +31,6 @@ class AddProductInfo extends Component {
 
   handleSetCategories() {
     this.props.store.BusinessStore.addProductCateogry(this.state.prodCategory.concat());
-    console.log("Product Categories", this.props.store.BusinessStore.business.newProductCategories);
     this.setState({ modalDisplay: false });
   }
 
@@ -45,7 +44,6 @@ class AddProductInfo extends Component {
     else {
       temp.push(business.productCategories[index]);
       this.setState({ prodCategory: temp });
-      console.log("Prod Category", this.state.prodCategory);
     }
   }
 
@@ -60,7 +58,6 @@ class AddProductInfo extends Component {
     BusinessStore.addNewProductName(this.state.prodName);
     BusinessStore.addNewProductPrice(parseFloat(this.state.prodPrice));
     BusinessStore.changeAddingProductWindow(2);
-    console.log("Business Store", BusinessStore.business);
   }
 
   render() {
