@@ -11,6 +11,7 @@ import { observer, inject } from 'mobx-react';
 import { FontAwesome } from '@expo/vector-icons';
 import { Dropdown } from 'react-native-material-dropdown';
 import mockData from '../../Store/mockSalesData';
+import moment from 'moment';
 
 const { height, width } = Dimensions.get('window');
 
@@ -51,22 +52,22 @@ class OrderHistory extends Component {
         }
     }
 
-    handleSwitchProductUI(productHistory) {
-        if (productHistory.length > 0) {
-            return (
-                <FlatList
-                    data={productHistory}
-                    scrollEnabled={true}
-                    keyExtractor={(item, index) => index}
-                    renderItem={({ item, index }) => (
+    handleSwitchProductUI(productHistory, salesHistory) {
+        console.log("Transactions Complete", JSON.stringify(salesHistory, null, 4));
+        let date;
+        if (salesHistory.length > 0) {
+            return salesHistory.map(transaction => {
+                date = transaction.createdAt;
+                return transaction.items.map(item => {
+                    return (
                         <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignContent: 'center', marginTop: 10 }}>
-                            <Text style={[styles.prodHistoryDataFormat, { color: '#454974', fontSize: 13, fontWeight: '200' }]}>{item.productName}</Text>
-                            <Text style={[styles.prodHistoryDataFormat, { color: '#454974', fontSize: 13, fontWeight: '200' }]}>{item.date}</Text>
-                            <Text style={[styles.prodHistoryDataFormat, { color: '#454974', fontSize: 13, fontWeight: '200' }]}>{item.price}</Text>
+                            <Text style={[styles.prodHistoryDataFormat, { color: '#454974', fontSize: 13, fontWeight: '200' }]}>{item.name}</Text>
+                            <Text style={[styles.prodHistoryDataFormat, { color: '#454974', fontSize: 13, fontWeight: '200' }]}>{moment(date).fromNow()}</Text>
+                            <Text style={[styles.prodHistoryDataFormat, { color: '#454974', fontSize: 13, fontWeight: '200' }]}>{`$${parseFloat(item.price)}`}</Text>
                         </View>
-                    )}
-                />
-            )
+                    )
+                })
+            });
         } else {
             return (
                 <View style={{ height: height * .6, justifyContent: 'center', alignItems: 'center' }}>
@@ -122,7 +123,7 @@ class OrderHistory extends Component {
                     {/* 
                     // Product Sales History Starts Here
                     */}
-                    {this.handleSwitchProductUI(productHistory)}
+                    {this.handleSwitchProductUI(productHistory, salesHistory)}
                 </View>
             </View>
         )

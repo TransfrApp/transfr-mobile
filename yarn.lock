@@ -6868,6 +6868,11 @@ ltgt@^2.1.2, ltgt@~2.2.0:
   resolved "https://registry.yarnpkg.com/ltgt/-/ltgt-2.2.1.tgz#f35ca91c493f7b73da0e07495304f17b31f87ee5"
   integrity sha1-81ypHEk/e3PaDgdJUwTxezH4fuU=
 
+luxon@^1.4.4:
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/luxon/-/luxon-1.4.4.tgz#36929fb9559d4119bec4a1b8bdee1516ddb63bf5"
+  integrity sha512-M21p8nbKZRLqVnQ0XAhhCo+2Z3Z6+zm9tuogDMZ2vlkFkw8AREF+d5/abn8tz1/ycu4cemNlqcQcc7HqjhrpTw==
+
 macos-release@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/macos-release/-/macos-release-1.1.0.tgz#831945e29365b470aa8724b0ab36c8f8959d10fb"
@@ -7314,6 +7319,11 @@ mobx@^4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/mobx/-/mobx-4.3.1.tgz#334e5aab4916b1d43f0faf3605a64b1b4b3ccb8d"
   integrity sha1-M05aq0kWsdQ/D682BaZLG0s8y40=
+
+moment@^2.22.2:
+  version "2.22.2"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
+  integrity sha1-PCV/mDn8DpP/UxSWMiOeuQeD/2Y=
 
 morgan@^1.9.0:
   version "1.9.0"

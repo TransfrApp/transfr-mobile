@@ -142,9 +142,8 @@ class BusinessStore {
                 tax: this.sale.tax,
                 discount: this.sale.discount ? this.sale.discount : 0,
                 items: this.business.checkoutItems,
-                UserId: UserStore.user.userId
+                UserId: UserStore.user.userId,
             }).then(txs => {
-                console.log("Transaction from Axios", txs.data);
                 this.addCompletedTransaction(txs.data);
             }).catch(err => console.log(err));
         }, 4000);
