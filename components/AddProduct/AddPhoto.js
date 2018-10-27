@@ -42,7 +42,7 @@ class AddProductPhoto extends Component {
             name,
             price: price,
             quantity: 1,
-            user_id: userId,
+            UserId: userId,
             meta_tags: categories,
             image, // This is a placeholder until we need to active a CDN
         }).then((res) => {
