@@ -46,8 +46,8 @@ class CreateAccount extends Component {
         this.verifyInput();
         if (this.state.password === this.state.confirmPassword || this.state.email === "") {
             axios.post(`${baseUrl}/user`, {
-                "email": this.state.email,
-                "password": this.state.password,
+                "email": this.state.email.toLowerCase(),
+                "password": this.state.password.toLowerCase(),
                 "name": this.state.name,
                 "business_name": this.state.businessName,
                 "wallet_address": this.state.walletAddress

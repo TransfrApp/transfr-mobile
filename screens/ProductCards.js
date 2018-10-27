@@ -53,7 +53,7 @@ class ProductCards extends Component {
                             style={list ? styles.wideCardImage : styles.cardImage}
                             source={{ uri: item.image }} />
                         <Text style={list ? styles.prodNameWideCard : styles.prodName}>{item.name}</Text>
-                        <Text style={list ? styles.priceWideCard : styles.price}>{`$${item.price}.00`}</Text>
+                        <Text style={list ? styles.priceWideCard : styles.price}>{`$${item.price}`}</Text>
                     </TouchableOpacity>
                 )
             })
@@ -65,7 +65,7 @@ class ProductCards extends Component {
                             style={list ? styles.wideCardImage : styles.cardImage}
                             source={{ uri: item.image }} />
                         <Text style={list ? styles.prodNameWideCard : styles.prodName}>{item.name}</Text>
-                        <Text style={list ? styles.priceWideCard : styles.price}>{`$${item.price}.00`}</Text>
+                        <Text style={list ? styles.priceWideCard : styles.price}>{`$${item.price}`}</Text>
                     </TouchableOpacity>
                 )
             })
@@ -85,7 +85,7 @@ class ProductCards extends Component {
                     <FontAwesome style={{ marginRight: 40 }} name="th-large" size={20} color="grey" />
                 </TouchableOpacity>
             )
-        }
+    }
     }
 
     render() {

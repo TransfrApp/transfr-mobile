@@ -3,8 +3,8 @@ import baseUrl from '../request-config';
 
 const fetchUser = (email, password) => {
     return axios.post(`${baseUrl}/user/login`, {
-        email,
-        password,
+        email: email.toLowerCase(),
+        password: password.toLowerCase(),
     }).then(res => {
         const { token, user } = res.data;
         const { email, name, password } = user;
