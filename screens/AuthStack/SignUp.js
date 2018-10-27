@@ -63,7 +63,7 @@ class CreateAccount extends Component {
                     userId: response.data.id
                 }
                 user.createAccount(obj); // Updates the store
-                this.props.navigation.navigate('Main'); // If we need account type route to AccountSetup
+                this.props.navigation.navigate('AccountSetup'); // If we need account type route to AccountSetup
             })
                 .catch((error) => {
                     alert("Something seems to have gone wrong");

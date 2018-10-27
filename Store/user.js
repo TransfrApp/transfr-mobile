@@ -15,12 +15,17 @@ class UserStore {
 	})
 
 	createAccount(user) {
-		const { businessName, email, password, name, userId } = user;
+		const { businessName, email, password, name, userId, walletAddress } = user;
 		this.user.businessName = businessName;
 		this.user.email = email;
 		this.user.password = password;
 		this.user.name = name;
 		this.user.userId = userId;
+		this.user.walletAddress = walletAddress;
+	}
+
+	createWalletAddress(address){
+		this.user.walletAddress = address;
 	}
 
 	accessToken(token) {
