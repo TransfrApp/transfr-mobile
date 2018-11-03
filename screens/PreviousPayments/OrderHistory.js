@@ -19,7 +19,8 @@ class OrderHistory extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            salesHistoryTimeFrame: "",
+            productHistoryTimeFrame: "",
         }
     }
 
@@ -90,15 +91,12 @@ class OrderHistory extends Component {
                 <View style={styles.sales}>
                     <View style={styles.mainCardHeader}>
                         <Text style={styles.sectionTitle}>Sales History</Text>
-                        {/* <TouchableOpacity style={styles.dropDownButton}>
-                            <Text>Weekly</Text>
-                            <FontAwesome name="caret-down" size={16} color="black" />
-                        </TouchableOpacity> */}
                         <Dropdown
-                            containerStyle={{ width: 150, height: 20 }}
-                            labelFontSize={{ color: 'black', paddingLeft: 10, paddingRight: 10 }}
+                            containerStyle={{ width: 150, marginRight: 15 }}
+                            dropdownPosition={0}
+                            value="Week"
                             textColor={'black'}
-                            label={"Week"}
+                            onChangeText={(item) => this.setState({ productHistoryTimeFrame: item }) }
                             data={sortBy}/>
                     </View>
                     <View style={styles.dataHeader}>
@@ -116,10 +114,17 @@ class OrderHistory extends Component {
                 <View style={styles.products}>
                     <View style={styles.mainCardHeader}>
                         <Text style={styles.sectionTitle}>Products Sold</Text>
-                        <TouchableOpacity style={styles.dropDownButton}>
+                        {/* <TouchableOpacity style={styles.dropDownButton}>
                             <Text>Weekly</Text>
                             <FontAwesome name="caret-down" size={16} color="black" />
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
+                        <Dropdown
+                            containerStyle={{ width: 150, marginRight: 15 }}
+                            dropdownPosition={0}
+                            value="Week"
+                            textColor={'black'}
+                            onChangeText={(item) => this.setState({ salesHistoryTimeFrame: item }) }
+                            data={sortBy}/>
                     </View>
                     <View style={styles.dataHeader}>
                         <Text style={styles.prodHistoryDataFormat}>Product Name</Text>
