@@ -79,7 +79,7 @@ class OrderHistory extends Component {
     }
 
     render() {
-        let sortBy = ['Day', 'Week', 'Month', 'Year'];
+        let sortBy = [{value: 'Day'}, {value: 'Week'}, {value: 'Month'}, {value: 'Year'}];
         // Mock Sales Data
         const productHistory = mockData.productHistory;
         const mockSalesHistory = mockData.salesHistory;
@@ -90,10 +90,16 @@ class OrderHistory extends Component {
                 <View style={styles.sales}>
                     <View style={styles.mainCardHeader}>
                         <Text style={styles.sectionTitle}>Sales History</Text>
-                        <TouchableOpacity style={styles.dropDownButton}>
+                        {/* <TouchableOpacity style={styles.dropDownButton}>
                             <Text>Weekly</Text>
                             <FontAwesome name="caret-down" size={16} color="black" />
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
+                        <Dropdown
+                            containerStyle={{ width: 150, height: 20 }}
+                            labelFontSize={{ color: 'black', paddingLeft: 10, paddingRight: 10 }}
+                            textColor={'black'}
+                            label={"Week"}
+                            data={sortBy}/>
                     </View>
                     <View style={styles.dataHeader}>
                         <Text style={styles.salesHistoryDataFormat}>Receipt No.</Text>
