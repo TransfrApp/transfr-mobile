@@ -19,8 +19,8 @@ class OrderHistory extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            salesHistoryTimeFrame: "",
-            productHistoryTimeFrame: "",
+            salesHistoryTimeFrame: "Week",
+            productHistoryTimeFrame: "Week",
         }
     }
 
@@ -85,7 +85,7 @@ class OrderHistory extends Component {
         const productHistory = mockData.productHistory;
         const mockSalesHistory = mockData.salesHistory;
         // Actual Sales Data
-        const salesHistory = this.props.store.BusinessStore.business.completedTransactions;
+        const salesHistory = this.props.store.BusinessStore.filterCompletedTransactions(this.state.salesHistoryTimeFrame);
         return (
             <View style={styles.container}>
                 <View style={styles.sales}>
@@ -106,18 +106,11 @@ class OrderHistory extends Component {
                         <Text style={styles.salesHistoryDataFormat}>Tax</Text>
                         <Text style={styles.salesHistoryDataFormat}>Total Price</Text>
                     </View>
-                    {/* 
-                    // Sales History Section Begins Here
-                    */}
                     {this.handleSwitchSalesUI(salesHistory)}
                 </View>
                 <View style={styles.products}>
                     <View style={styles.mainCardHeader}>
                         <Text style={styles.sectionTitle}>Products Sold</Text>
-                        {/* <TouchableOpacity style={styles.dropDownButton}>
-                            <Text>Weekly</Text>
-                            <FontAwesome name="caret-down" size={16} color="black" />
-                        </TouchableOpacity> */}
                         <Dropdown
                             containerStyle={{ width: 150, marginRight: 15 }}
                             dropdownPosition={0}

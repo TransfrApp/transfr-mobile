@@ -171,6 +171,11 @@ class BusinessStore {
             this.sale.total = total;
         }
     }
+
+    filterCompletedTransactions(timerPeriod) {
+        console.log("Time Period", timerPeriod);
+        return this.business.completedTransactions;
+    }
 }
 
 export default new BusinessStore;
