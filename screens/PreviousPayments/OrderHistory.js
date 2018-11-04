@@ -53,7 +53,7 @@ class OrderHistory extends Component {
         }
     }
 
-    handleSwitchProductUI(productHistory, salesHistory) {
+    handleSwitchProductUI(salesHistory) {
         console.log("Transactions Complete", JSON.stringify(salesHistory, null, 4));
         let date;
         if (salesHistory.length > 0) {
@@ -127,7 +127,7 @@ class OrderHistory extends Component {
                     {/* 
                     // Product Sales History Starts Here
                     */}
-                    {this.handleSwitchProductUI(productHistory, salesHistory)}
+                    {this.handleSwitchProductUI(salesHistory)}
                 </View>
             </View>
         )

@@ -2,7 +2,8 @@ import { observable, action, computed } from 'mobx';
 import baseUrl from '../request-config';
 import UserStore from './user';
 import axios from 'axios';
-
+import transactionFilter from '../Service/transactionFilters.js';
+import { DateTime } from 'luxon';
 class BusinessStore {
     business = observable({
         products: [
@@ -172,9 +173,31 @@ class BusinessStore {
         }
     }
 
-    filterCompletedTransactions(timerPeriod) {
-        console.log("Time Period", timerPeriod);
-        return this.business.completedTransactions;
+    filterCompletedTransactions = (timePeriod) => {
+        const allData = this.business.completedTransactions; 
+        const currentYear = DateTime.local().get('year');
+        
+        // Filter out data from other years
+        const yearData = allData.filter(item => {
+            const itemYear = DateTime.fromISO(item.createdAt).get('year');
+            return itemYear === currentYear
+        });
+  
+        let result;
+        switch(timePeriod) {
+            case "Day":
+                result = transactionFilter.filterDay(yearData);
+                break;
+            case "Week":
+                result = transactionFilter.filterWeek(yearData);
+                break;
+            case "Month":
+                result = transactionFilter.filterMonth(yearData);
+                break;
+            case "Year": 
+                result = yearData
+        }
+        return result ? result : allData;
     }
 }
 
