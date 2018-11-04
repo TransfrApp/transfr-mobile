@@ -176,7 +176,7 @@ class BusinessStore {
     filterCompletedTransactions = (timePeriod) => {
         const allData = this.business.completedTransactions; 
         const currentYear = DateTime.local().get('year');
-        
+
         // Filter out data from other years
         const yearData = allData.filter(item => {
             const itemYear = DateTime.fromISO(item.createdAt).get('year');
@@ -197,6 +197,7 @@ class BusinessStore {
             case "Year": 
                 result = yearData
         }
+        console.log("Result", result);
         return result ? result : allData;
     }
 }

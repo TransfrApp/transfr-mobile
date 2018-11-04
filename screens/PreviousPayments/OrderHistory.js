@@ -53,11 +53,11 @@ class OrderHistory extends Component {
         }
     }
 
-    handleSwitchProductUI(salesHistory) {
-        console.log("Transactions Complete", JSON.stringify(salesHistory, null, 4));
+    handleSwitchProductUI(productHistory) {
+        console.log("Transactions Complete", productHistory);
         let date;
-        if (salesHistory.length > 0) {
-            return salesHistory.map(transaction => {
+        if (productHistory.length > 0) {
+            return productHistory.map(transaction => {
                 date = transaction.createdAt;
                 return transaction.items.map(item => {
                     return (
@@ -81,11 +81,15 @@ class OrderHistory extends Component {
 
     render() {
         let sortBy = [{value: 'Day'}, {value: 'Week'}, {value: 'Month'}, {value: 'Year'}];
-        // Mock Sales Data
-        const productHistory = mockData.productHistory;
-        const mockSalesHistory = mockData.salesHistory;
+        /*
+            // Mock Sales Data
+            const productHistory = mockData.productHistory;
+            const mockSalesHistory = mockData.salesHistory; 
+         */
+        
         // Actual Sales Data
         const salesHistory = this.props.store.BusinessStore.filterCompletedTransactions(this.state.salesHistoryTimeFrame);
+        const productHistory = this.props.store.BusinessStore.filterCompletedTransactions(this.state.productHistoryTimeFrame);
         return (
             <View style={styles.container}>
                 <View style={styles.sales}>
@@ -96,7 +100,7 @@ class OrderHistory extends Component {
                             dropdownPosition={0}
                             value="Week"
                             textColor={'black'}
-                            onChangeText={(item) => this.setState({ productHistoryTimeFrame: item }) }
+                            onChangeText={(item) => this.setState({ salesHistoryTimeFrame: item }) }
                             data={sortBy}/>
                     </View>
                     <View style={styles.dataHeader}>
@@ -116,7 +120,7 @@ class OrderHistory extends Component {
                             dropdownPosition={0}
                             value="Week"
                             textColor={'black'}
-                            onChangeText={(item) => this.setState({ salesHistoryTimeFrame: item }) }
+                            onChangeText={(item) => this.setState({ productHistoryTimeFrame: item }) }
                             data={sortBy}/>
                     </View>
                     <View style={styles.dataHeader}>
@@ -127,7 +131,7 @@ class OrderHistory extends Component {
                     {/* 
                     // Product Sales History Starts Here
                     */}
-                    {this.handleSwitchProductUI(salesHistory)}
+                    {this.handleSwitchProductUI(productHistory)}
                 </View>
             </View>
         )
