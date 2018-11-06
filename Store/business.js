@@ -126,13 +126,11 @@ class BusinessStore {
     }
 
     addCompletedTransaction(transaction) {
-        console.log("Transaction in Add Complete Transactions in Store", transaction);
         this.business.completedTransactions = this.business.completedTransactions.concat(transaction);
     }
 
     updateCheckoutFlow(phase) {
         this.business.checkout = phase;
-        console.log("User item in checkout flow", UserStore);
         setTimeout(() => {
             this.business.checkout = 'complete';
             // Add Axios to update the sold items in DB
@@ -147,7 +145,7 @@ class BusinessStore {
             }).then(txs => {
                 this.addCompletedTransaction(txs.data);
             }).catch(err => console.log(err));
-        }, 4000);
+        }, 6000);
 
         setTimeout(() => {
             this.business.checkout = '';

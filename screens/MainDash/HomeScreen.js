@@ -18,6 +18,7 @@ import CheckoutList from './CheckoutList.js';
 import AddProductButton from '../../navigation/Components/AddProductButton.js';
 import { FontAwesome } from '@expo/vector-icons';
 import SearchBar from '../../navigation/Components/SearchBar.js';
+import QRCode from 'react-native-qrcode';
 
 const { width, height } = Dimensions.get('window');
 
@@ -46,6 +47,7 @@ class HomeScreen extends React.Component {
 
   checkoutList() {
     const business = this.props.store.BusinessStore.business;
+    const walletAddress = this.props.store.UserStore.user.walletAddress;
     if (business.checkoutItems.length === 0) {
       return (
         <View style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center', paddingTop: height * .3 }}>
@@ -56,7 +58,12 @@ class HomeScreen extends React.Component {
     } if (business.checkout === 'QR') {
       return (
         <View style={{ justifyContent: 'space-between', alignItems: 'center', paddingTop: height * .2 }}>
-          <Image style={{ height: 209, width: 209 }} source={require('../../assets/images/qrCode.png')} />
+          {/* <Image style={{ height: 209, width: 209 }} source={require('../../assets/images/qrCode.png')} /> */}
+          <QRCode
+            value={walletAddress}
+            size={209}
+            bgColor={'#693CB7'}
+            fgColor={"white"}/>
           <Text style={[styles.mainText, { marginTop: 60, paddingLeft: 10, paddingRight: 10, textAlign: 'center' }]}>Show the customer the QR code so they can complete the payment</Text>
           <TouchableOpacity onPress={() => this.props.store.BusinessStore.updateCheckoutFlow('')}>
             <Text style={{ fontSize: 20, fontWeight: '500', color: '#693CB7', justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>Cancel</Text>
