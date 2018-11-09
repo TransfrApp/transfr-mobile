@@ -53,19 +53,20 @@ class BusinessStore {
             { name: 'Leggings', id: 'leggings' }
         ],
         paymentMethods: [
-            { name: 'REQ', image: require('../assets/cryptoIcons/REQ.png') },
-            { name: 'ETH', image: require('../assets/cryptoIcons/ETH.png') },
-            { name: 'KNC', image: require('../assets/cryptoIcons/KNC.png') },
-            { name: 'DGX', image: require('../assets/cryptoIcons/DGX.png') },
-            { name: 'DAI', image: require('../assets/cryptoIcons/DAI.png') },
-            { name: 'NEO', image: require('../assets/cryptoIcons/NEO.png') }
+            { name: 'REQ', walletAddress: 'requestWallet', image: require('../assets/cryptoIcons/REQ.png') },
+            { name: 'ETH', walletAddress: 'etheriumWallet', image: require('../assets/cryptoIcons/ETH.png') },
+            { name: 'BTC', walletAddress: 'bitcoinWallet', image: require('../assets/cryptoIcons/BTC.png') },
+            { name: 'KNC', walletAddress: 'kncWallet', image: require('../assets/cryptoIcons/KNC.png') },
+            { name: 'DGX', walletAddress: 'bgxWallet', image: require('../assets/cryptoIcons/DGX.png') },
+            { name: 'DAI', walletAddress: 'daiWallet', image: require('../assets/cryptoIcons/DAI.png') },
+            { name: 'NEO', walletAddress: 'neoWallet', image: require('../assets/cryptoIcons/NEO.png') }
         ],
 
         selectedCoin: '',
         newProductCategories: [],
         newProductName: '',
         newProductPrice: '',
-        checkout: '', // QR showes the QR screen, "complete" shows the completed Screen
+        checkout: '', // "" is default, QR showes the QR screen, "complete" shows the completed Screen
     })
     sale = observable({
         price: 0,
@@ -108,7 +109,7 @@ class BusinessStore {
     }
 
     itemToCheckoutQue(item) {
-        console.log("Item from Mobx Store", item);
+        // console.log("Item from Mobx Store", item);
         const { image, name, price, quantity } = item;
         const product = { image, name, price, quantity: 1 };
         this.business.checkoutItems = this.business.checkoutItems.concat(product);
