@@ -28,8 +28,9 @@ class UserStore {
 		this.user.bitcoinWallet = bitcoinWallet; 
 	}
 
-	createWalletAddress(address){
-		this.user.walletAddress = address;
+	createWalletAddress(eth, btc){
+		this.user.etheriumWallet = eth;
+		this.user.bitcoinWallet = btc;
 	}
 
 	accessToken(token) {

@@ -3,6 +3,7 @@ import {
     StyleSheet,
     TextInput,
     Text,
+    Image,
     Dimensions,
     ImageBackground,
     TouchableOpacity,
@@ -19,13 +20,15 @@ class AccountSetup extends Component {
     static navigationOptions = ({ navigation }) => {
         const params = navigation.state.params || {};
         return {
-            headerTitle: 'Select Account Type'
+            headerTitle: 'Set Your Wallet Addresses'
         }
     }
     constructor(props) {
         super(props);
         this.state = {
             wallet: '',
+            ETH: null,
+            BTC: null,
         }
     }
     componentDidMount() {
@@ -38,10 +41,11 @@ class AccountSetup extends Component {
         const user = this.props.store.UserStore.user;
         //Update the DB with account type
         axios.patch(`${baseUrl}/user`, {
-            "wallet_address": this.state.wallet,
+            "etherium_wallet": this.state.ETH,
+            "bitcoin_wallet": this.state.BTC,
             "id": user.userId
         }).then(response => {
-           this.props.store.UserStore.createWalletAddress(this.state.wallet);
+           this.props.store.UserStore.createWalletAddress(this.state.ETH, this.state.BTC);
             this.props.navigation.navigate('Main');
         }).catch(err => console.log(err));
     }
@@ -53,12 +57,34 @@ class AccountSetup extends Component {
                 <View style={styles.container}>
                     <View style={styles.window}>
                         <Text style={[appStyles.title, { marginBottom: 30, marginTop: 30 }]}>Set Your Wallet Address</Text>
-                        <TextInput
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center'}}>
+                            <Image
+                                style={{ height: 50, width: 50, marginRight: 15 }}
+                                source={require('../../assets/cryptoIcons/ETH.png')}/>
+                            <TextInput 
+                                underlineColorAndroid={'transparent'}
+                                value={this.state.ETH}
+                                onChangeText={(address) => this.setState({ ETH: address })}
+                                placeholder="Etherium Wallet Address"
+                                style={styles.textInput}/>
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center'}}>
+                            <Image 
+                                style={{height: 50, width: 50, marginRight: 15 }}
+                                source={require('../../assets/cryptoIcons/BTC.png')}/>
+                            <TextInput 
+                                underlineColorAndroid={'transparent'}
+                                value={this.state.BTC}
+                                onChangeText={(address) => this.setState({ BTC: address })}
+                                placeholder="Bitcoin Wallet Address"
+                                style={styles.textInput}/>
+                        </View>
+                        {/* <TextInput
                             underlineColorAndroid={'transparent'}
                             value={this.state.wallet}
-                            onChangeText={(wallet) => this.setState({ wallet })}
+                            onChangeText={(address) => this.setState({ wallet: address })}
                             placeholder="Wallet Address"
-                            style={styles.textInput} />
+                            style={styles.textInput} /> */}
                         <View style={{ height: 100, marginBottom: 30, marginTop:30, justifyContent: 'flex-end' }}>
                             <TouchableOpacity onPress={() => this.handleSubmit()} style={appStyles.login}>
                                 <Text style={appStyles.buttonText}>Finish Sign Up</Text>
