@@ -63,6 +63,7 @@ class BusinessStore {
         ],
 
         selectedCoin: '',
+        activeWalletAddress: '',
         newProductCategories: [],
         newProductName: '',
         newProductPrice: '',
@@ -119,8 +120,10 @@ class BusinessStore {
         item.splice(index, 1);
         this.business.checkoutItems = item;
     }
-    setSelectedCoin(coin) {
-        this.business.selectedCoin = coin;
+    setSelectedCoin(coin, address) {
+        this.business.selectedCoin = coin.name;
+        this.business.activeWalletAddress = address;
+        
     }
     addSaleDiscount(discount) {
         this.sale.discount = discount;

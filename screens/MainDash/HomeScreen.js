@@ -47,7 +47,7 @@ class HomeScreen extends React.Component {
 
   checkoutList() {
     const business = this.props.store.BusinessStore.business;
-    const walletAddress = this.props.store.UserStore.user.walletAddress;
+    const walletAddress = this.props.store.BusinessStore.business.activeWalletAddress;
     if (business.checkoutItems.length === 0) {
       return (
         <View style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center', paddingTop: height * .3 }}>

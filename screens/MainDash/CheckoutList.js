@@ -252,11 +252,12 @@ class CheckoutList extends Component {
         const business = this.props.store.BusinessStore.business;
         const BusinessStore = this.props.store.BusinessStore;
         return business.paymentMethods.map((coin, index) => {
-            if (!this.props.store.UserStore.user[coin.walletAddress]) return;
+            const address = this.props.store.UserStore.user[coin.walletAddress];
+            if (!address) return;
             return (
                 <TouchableOpacity
                     key={index}
-                    onPress={() => BusinessStore.setSelectedCoin(coin.name)}
+                    onPress={() => BusinessStore.setSelectedCoin(coin, address)}
                     style={business.selectedCoin === coin.name ? styles.selectedCoinContainer : styles.coinContainer}>
                     <Image style={{ height: 25, width: 25 }} source={coin.image} />
                     <Text style={business.selectedCoin === coin.name ? styles.activeText : styles.text}>{coin.name}</Text>
