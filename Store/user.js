@@ -10,18 +10,22 @@ class UserStore {
 		confirmPassword: '',
 		accountType: '',
 		walletAddress: '',
+		etheriumWallet: '',
+		bitcoinWallet: '',
 		userId: null,
 		accessToken: '',
 	})
 
 	createAccount(user) {
-		const { businessName, email, password, name, userId, walletAddress } = user;
+		const { businessName, email, password, name, userId, walletAddress, etheriumWallet, bitcoinWallet } = user;
 		this.user.businessName = businessName;
 		this.user.email = email;
 		this.user.password = password;
 		this.user.name = name;
 		this.user.userId = userId;
 		this.user.walletAddress = walletAddress;
+		this.user.etheriumWallet = etheriumWallet;
+		this.user.bitcoinWallet = bitcoinWallet; 
 	}
 
 	createWalletAddress(address){

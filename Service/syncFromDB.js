@@ -7,8 +7,17 @@ const fetchUser = (email, password) => {
         password: password.toLowerCase(),
     }).then(res => {
         const { token, user } = res.data;
-        const { email, name, password, wallet_address } = user;
-        const camelCase = { "businessName": user.business_name, "walletAddress": wallet_address, email, password, name, userId: user.id }
+        const { email, name, password, wallet_address, etherium_wallet, bitcoin_wallet } = user;
+        const camelCase = { 
+            "businessName": user.business_name, 
+            "walletAddress": wallet_address, 
+            "etheriumWallet": etherium_wallet, 
+            "bitcoinWallet": bitcoin_wallet, 
+            email, 
+            password, 
+            name, 
+            userId: user.id 
+        }
         const items = { camelCase, token };
         return items;
     }).catch(err => {
