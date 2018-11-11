@@ -48,6 +48,10 @@ class HomeScreen extends React.Component {
   checkoutList() {
     const business = this.props.store.BusinessStore.business;
     const walletAddress = this.props.store.BusinessStore.business.activeWalletAddress;
+    const qrObject = {
+      to: walletAddress,
+      usd: 10
+    }
     if (business.checkoutItems.length === 0) {
       return (
         <View style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center', paddingTop: height * .3 }}>
@@ -60,7 +64,7 @@ class HomeScreen extends React.Component {
         <View style={{ justifyContent: 'space-between', alignItems: 'center', paddingTop: height * .2 }}>
           {/* <Image style={{ height: 209, width: 209 }} source={require('../../assets/images/qrCode.png')} /> */}
           <QRCode
-            value={walletAddress}
+            value={qrObject}
             size={209}
             bgColor={'#693CB7'}
             fgColor={"white"}/>

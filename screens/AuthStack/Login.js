@@ -68,6 +68,7 @@ class LoginScreen extends Component {
         const { camelCase, token } = await syncFromDB.fetchUser(email, password);
         const userId = camelCase.userId;
         const inventory = await syncFromDB.fetchInventory(userId);
+        console.log("Inventory from DB", inventory);
         const transactions = await syncFromDB.fetchTransactions(userId);
         // Update the Store
         this.saveToken(token);

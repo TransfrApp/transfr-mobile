@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Fuse from 'fuse.js';
 import { FontAwesome } from '@expo/vector-icons';
+import { Dropdown } from 'react-native-material-dropdown';
 import { observer, inject } from 'mobx-react';
 
 const { width, height } = Dimensions.get('window');
@@ -18,6 +19,7 @@ class SearchBar extends Component {
         super(props);
         this.state = {
             searchValue: null,
+            activeCategory: null,
         }
     }
 
@@ -39,12 +41,23 @@ class SearchBar extends Component {
     }
 
     render() {
+        console.log("Items", this.props.store.BusinessStore.business.products);
+        const sortBy = [{value: 'Food'}, {value: 'Beverage'}, {value: 'Alchohol'}]
         return (
             <View style={styles.container}>
-                <TouchableOpacity style={styles.button}>
+                {/* <TouchableOpacity style={styles.button}>
                     <Text>Categories </Text>
                     <FontAwesome name="angle-down" size={20} color="black" />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
+                <View style={styles.button}>
+                    <Dropdown
+                        containerStyle={{ width: 110, height: 36, marginBottom: height * .05 }}
+                        dropdownPosition={0}
+                        value="Category"
+                        textColor={'black'}
+                        onChangeText={(item) => this.setState({ activeCategory: item }) }
+                        data={sortBy}/>
+                </View>
                 <View style={[styles.input, { flexDirection: 'row', alignItems: 'center' }]}>
                     <TextInput
                         style={{ width: width * .25 }}
@@ -77,7 +90,7 @@ const styles = StyleSheet.create({
     },
     button: {
         height: 36,
-        width: 120,
+        minWidth: 130,
         borderTopLeftRadius: 18,
         borderBottomLeftRadius: 18,
         justifyContent: 'center',
@@ -85,7 +98,19 @@ const styles = StyleSheet.create({
         marginRight: 5,
         flexDirection: 'row',
         backgroundColor: '#E5E0EE',
-    }
+    },
+    dropDownButton: {
+        width: 90,
+        height: 36, // 25
+        borderWidth: 2,
+        borderColor: '#DBDBDB',
+        borderRadius: 4.5,
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        marginRight: 20,
+        marginTop: 20
+    },
 })
 
 export default inject("store")(observer(SearchBar));
