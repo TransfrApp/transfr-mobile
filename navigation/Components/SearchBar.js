@@ -36,26 +36,41 @@ class SearchBar extends Component {
 
           const fuse = new Fuse(productList, options)
           let result = fuse.search(searchValue)
-          
+          if (this.state.activeCategory) {
+              result = result.filter((item) => {
+                  return item. meta_tags.name === this.state.activeCategory;
+              });
+          }
           store.updateSearchProductList(result);
     }
 
+    searchByCategory(item){
+        console.log("Item", typeof item, item);
+        const productList = this.props.store.BusinessStore.business.products;
+        const store = this.props.store.BusinessStore;
+        if (item === 'All') {
+            store.updateSearchProductList(productList);
+        } else {
+            const result = productList.filter((product) => {
+                return product.meta_tags.value === item;
+            });
+            console.log("Result from cat search", result);
+            store.updateSearchProductList(result);
+        }
+    }
+
     render() {
-        console.log("Items", this.props.store.BusinessStore.business.products);
-        const sortBy = [{value: 'Food'}, {value: 'Beverage'}, {value: 'Alchohol'}]
+        // console.log("Items", this.props.store.BusinessStore.business.products);
+        const sortBy = this.props.store.BusinessStore.business.productCategories;
         return (
             <View style={styles.container}>
-                {/* <TouchableOpacity style={styles.button}>
-                    <Text>Categories </Text>
-                    <FontAwesome name="angle-down" size={20} color="black" />
-                </TouchableOpacity> */}
                 <View style={styles.button}>
                     <Dropdown
                         containerStyle={{ width: 110, height: 36, marginBottom: height * .05 }}
                         dropdownPosition={0}
                         value="Category"
                         textColor={'black'}
-                        onChangeText={(item) => this.setState({ activeCategory: item }) }
+                        onChangeText={(item) => this.searchByCategory(item) }
                         data={sortBy}/>
                 </View>
                 <View style={[styles.input, { flexDirection: 'row', alignItems: 'center' }]}>
