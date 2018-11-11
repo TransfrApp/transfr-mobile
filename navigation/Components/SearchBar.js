@@ -45,7 +45,6 @@ class SearchBar extends Component {
     }
 
     searchByCategory(item){
-        console.log("Item", typeof item, item);
         const productList = this.props.store.BusinessStore.business.products;
         const store = this.props.store.BusinessStore;
         if (item === 'All') {
@@ -54,13 +53,11 @@ class SearchBar extends Component {
             const result = productList.filter((product) => {
                 return product.meta_tags.value === item;
             });
-            console.log("Result from cat search", result);
             store.updateSearchProductList(result);
         }
     }
 
     render() {
-        // console.log("Items", this.props.store.BusinessStore.business.products);
         const sortBy = this.props.store.BusinessStore.business.productCategories;
         return (
             <View style={styles.container}>
