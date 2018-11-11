@@ -42,6 +42,7 @@ class SearchBar extends Component {
               });
           }
           store.updateSearchProductList(result);
+        //   this.searchByCategory(this.state.activeCategory);
     }
 
     searchByCategory(item){
@@ -51,7 +52,12 @@ class SearchBar extends Component {
             store.updateSearchProductList(productList);
         } else {
             const result = productList.filter((product) => {
-                return product.meta_tags.value === item;
+                const containsTag = product.meta_tags.map(tag => {
+                    if (tag.value === item){
+                        return true;
+                    }
+                });
+                if (containsTag.includes(true)) return product;
             });
             store.updateSearchProductList(result);
         }

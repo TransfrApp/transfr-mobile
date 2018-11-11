@@ -41,10 +41,6 @@ class HomeScreen extends React.Component {
     }
   }
 
-  componentDidMount = () => {
-    console.log("Store", this.props.store);
-  }
-
   checkoutList() {
     const business = this.props.store.BusinessStore.business;
     const walletAddress = this.props.store.BusinessStore.business.activeWalletAddress;

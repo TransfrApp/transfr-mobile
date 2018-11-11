@@ -43,7 +43,6 @@ class ProductCards extends Component {
         const list = this.state.listView;
         const products = this.props.store.BusinessStore.business.products;
         const search = this.props.store.BusinessStore.business.searchProductList;
-        console.log(search);
         if (search.length > 0) {
             return search.map((item, index) => {
                 return (

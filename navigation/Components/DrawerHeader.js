@@ -21,11 +21,7 @@ class DrawerHeader extends Component {
             searchValue: null,
         }
     }
-
-    componentDidMount() {
-        console.log("Props", this.props);
-    }
-
+    
     render() {
         const drawerProps = this.props.drawerProps;
         const iconFill = this.props.store.UserStore.user.name.split('')[0];

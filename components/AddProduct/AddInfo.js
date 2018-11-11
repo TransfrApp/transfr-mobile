@@ -36,10 +36,6 @@ class AddProductInfo extends Component {
 
   addCategory(index, item, business) {
     const prodCategory = this.state.prodCategory.concat();
-    // this.setState({ prodCategory: temp });
-    // const categoryExists = temp.filter(product => {
-    //   return product.value ===
-    // })
     if (prodCategory.filter(product => product.value === item.value).length) {
       const minusSelectedItem = prodCategory.filter(product => product.value !== item.value);
       this.setState({ prodCategory: minusSelectedItem });
