@@ -200,7 +200,6 @@ class BusinessStore {
             case "Year": 
                 result = yearData
         }
-        console.log("Result", result);
         return result ? result : allData;
     }
 }

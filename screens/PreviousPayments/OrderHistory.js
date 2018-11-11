@@ -25,7 +25,6 @@ class OrderHistory extends Component {
     }
 
     handleSwitchSalesUI(salesHistory) {
-        console.log("Sales History in Switch UI", salesHistory);
         if (salesHistory.length > 0) {
             return (
                 <FlatList
@@ -54,7 +53,6 @@ class OrderHistory extends Component {
     }
 
     handleSwitchProductUI(productHistory) {
-        console.log("Transactions Complete", productHistory);
         let date;
         if (productHistory.length > 0) {
             return productHistory.map(transaction => {

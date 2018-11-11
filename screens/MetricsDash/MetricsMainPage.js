@@ -35,6 +35,24 @@ class MetricsMainPage extends React.Component {
     }
   }
 
+  calculateDailyRevenue = () => {
+    const transactions = this.props.store.BusinessStore.filterCompletedTransactions('Day');
+    let total;
+    if (!transactions.length) return total = 0;
+    total = transactions.reduce((accum, value) => {
+      return accum + value.amount;
+    },0);
+    console.log("Total", total);
+  }
+
+  calculateWeeklyRevenue = () => {
+    const transactions = this.props.store.BusinessStore.filterCompletedTransactions('Week');
+    const total = transactions.reduce((accum, value) => {
+      return accum + value.amount;
+    },0);
+    return total;
+  }
+
   render() {
     const business = this.props.store.BusinessStore.business;
 
@@ -127,6 +145,9 @@ class MetricsMainPage extends React.Component {
 
     const backgroundColor = "#F5F9FB"
 
+    const weeklyRevenue = this.calculateWeeklyRevenue();
+    const dailyRevenue = this.calculateDailyRevenue();
+
     return (
       <View style={styles.container}>
 
@@ -176,13 +197,13 @@ class MetricsMainPage extends React.Component {
             <View style={{width: cardContainerWidth, justifyContent: "space-between", alignItems: "center"}}>
 
               <View style={{width: cardWidth, height: cardHeight, backgroundColor: "#bb87ea", borderRadius: 12, justifyContent: "center", alignItems: "center"}}>
-                <Text style={{fontSize: 50, fontWeight: "bold", color: "white"}}>$5541</Text>
+                <Text style={{fontSize: 50, fontWeight: "bold", color: "white"}}>{`$${dailyRevenue}`}</Text>
                 <Text style={{fontSize: 14, fontWeight: "200", color: "white"}}>Today's Revenue</Text>
               </View>
 
                 <BoxShadow setting={shadowOpt}>
                   <View style={{width: cardWidth, height: cardHeight, backgroundColor: "white", borderRadius: 12, justifyContent: "center", alignItems: "center"}}>
-                    <Text style={{fontSize: 50, fontWeight: "bold", color: "#7f36ba"}}>$65656</Text>
+                    <Text style={{fontSize: 50, fontWeight: "bold", color: "#7f36ba"}}>{`$${weeklyRevenue}`}</Text>
                     <Text style={{fontSize: 14, fontWeight: "200", color: "#7f36ba"}}>Revenue this week</Text>
                   </View>
                   </BoxShadow>
