@@ -3,6 +3,7 @@ import {
   Image,
   Platform,
   ScrollView,
+  FlatList,
   StyleSheet,
   Dimensions,
   Text,
@@ -13,6 +14,8 @@ import { VictoryChart, VictoryLine, VictoryAxis, VictoryBar } from "victory-nati
 import { BoxShadow } from "expo-react-native-shadow"
 import images from '../../assets/Images.js';
 import appStyles from '../../constants/Styles.js';
+import metricServices from '../../Service/metricsServices.js';
+
 const {width, height} = Dimensions.get('window');
 
 import { observer, inject } from 'mobx-react';
@@ -38,11 +41,14 @@ class MetricsMainPage extends React.Component {
   calculateDailyRevenue = () => {
     const transactions = this.props.store.BusinessStore.filterCompletedTransactions('Day');
     let total;
-    if (!transactions.length) return total = 0;
-    total = transactions.reduce((accum, value) => {
-      return accum + value.amount;
-    },0);
-    console.log("Total", total);
+    if (!transactions.length){
+      return total = 0;
+    } else {
+      total = transactions.reduce((accum, value) => {
+        return accum + value.amount;
+      },0);
+    }
+    return total.toFixed(2);
   }
 
   calculateWeeklyRevenue = () => {
@@ -50,7 +56,43 @@ class MetricsMainPage extends React.Component {
     const total = transactions.reduce((accum, value) => {
       return accum + value.amount;
     },0);
-    return total;
+    return total.toFixed(2);
+  }
+
+  switchTopProdUI(productHeaders, itemTotals, testData){
+    // test data is just placeholder data to try different scenarios
+    if (itemTotals.length){
+      return(
+
+        <View>
+          <View>
+          </View>
+          <FlatList
+          data={itemTotals}
+          style={{ width: width * .6 }}
+          scrollEnabled={true}
+          keyExtractor={(item, index) => index}
+          renderItem={({ item, index }) => (
+            <View key={index} style={styles.flatlist}>
+              <Text style={styles.productTableText}>{item.name}</Text>
+              <Text style={styles.productTableText}>{item.price / item.quantity}</Text>
+              <Text style={styles.productTableText}>{item.price}</Text>
+              <Text style={styles.productTableText}>{item.quantity}</Text>
+            </View>
+          )}/>
+        </View>
+        // <View style={styles.columnView}>
+        //   <Text style={styles.productTableHeader}>{header.text}</Text>
+        //   {itemTotals.map(product => <Text style={styles.productTableText}>{product[header.property]}</Text>)}
+        // </View>
+      )
+    } else {
+      return(
+        <View style={styles.placeholder}>
+          <Text style={styles.placeholderText}>You don't have any sales data yet.</Text>
+        </View>
+      )
+    }
   }
 
   render() {
@@ -84,61 +126,65 @@ class MetricsMainPage extends React.Component {
         property: "price",
       },
       {
-        text: "Total Sales",
-        property: "totalSales",
+        text: 'Total Revenue',
+        property: "total"
       },
       {
-        text: "Revenue",
-        property: "revenue",
+        text: "Items Sold",
+        property: "quantity",
       },
+      // {
+      //   text: "Revenue",
+      //   property: "revenue",
+      // },
     ]
     const products = [
       {
         name: "Coffee",
         price: 112,
-        totalSales: 521,
+        quantity: 521,
         revenue: 521,
       },
       {
         name: "Body Spray",
         price: 31,
-        totalSales: 521,
+        quantity: 521,
         revenue: 521,
       },
       {
         name: "Noodles",
         price: 25,
-        totalSales: 521,
+        quantity: 521,
         revenue: 521,
       },
       {
         name: "Coconut Oil",
         price: 54,
-        totalSales: 521,
+        quantity: 521,
         revenue: 521,
       },
       {
         name: "Soup",
         price: 76,
-        totalSales: 521,
+        quantity: 521,
         revenue: 521,
       },
       {
         name: "Pizza",
         price: 42,
-        totalSales: 521,
+        quantity: 521,
         revenue: 521,
       },
       {
         name: "Television",
         price: 239,
-        totalSales: 521,
+        quantity: 521,
         revenue: 521,
       },
       {
         name: "Burger",
         price: 25,
-        totalSales: 521,
+        quantity: 521,
         revenue: 521,
       },
     ]
@@ -147,7 +193,8 @@ class MetricsMainPage extends React.Component {
 
     const weeklyRevenue = this.calculateWeeklyRevenue();
     const dailyRevenue = this.calculateDailyRevenue();
-
+    const topProducts = metricServices.findTopProducts(business.completedTransactions);
+    const {itemTotals, transactionsByItem} = topProducts;
     return (
       <View style={styles.container}>
 
@@ -257,12 +304,7 @@ class MetricsMainPage extends React.Component {
           <View style={{width: width * 0.60, padding: 15, marginLeft: width * 0.02, backgroundColor: "white", borderRadius: 12}}>
             <Text  style={styles.cardHeaderText}>Top Products</Text>
               <ScrollView contentContainerStyle={styles.rowView}>
-                  {productHeaders.map(header => (
-                    <View style={styles.columnView}>
-                      <Text style={styles.productTableHeader}>{header.text}</Text>
-                      {products.map(product => <Text style={styles.productTableText}>{product[header.property]}</Text>)}
-                    </View>
-                  ))}
+                  {this.switchTopProdUI(productHeaders, itemTotals, products)}
               </ScrollView>
 
           </View>
@@ -344,6 +386,24 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     color: "#464a77",
+  },
+  placeholder: {
+   width: width * 0.60,
+   height: height * .3,
+   alignItems: 'center',
+   justifyContent: 'center',
+  },
+  placeholderText: {
+    fontSize: 25,
+    fontWeight: '600',
+    color: '#B1B5C2',
+  },
+  flatlist: {
+    width: width * .55,
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    paddingTop: 5, 
+    paddingBottom: 5
   }
 });
 
