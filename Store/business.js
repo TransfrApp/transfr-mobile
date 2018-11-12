@@ -146,6 +146,7 @@ class BusinessStore {
                 tax: this.sale.tax,
                 discount: this.sale.discount ? this.sale.discount : 0,
                 items: this.business.checkoutItems,
+                payment_method: this.business.selectedCoin,
                 UserId: UserStore.user.userId,
             }).then(txs => {
                 this.addCompletedTransaction(txs.data);

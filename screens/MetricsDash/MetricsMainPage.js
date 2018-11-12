@@ -13,7 +13,7 @@ import { VictoryChart, VictoryLine, VictoryAxis, VictoryBar } from "victory-nati
 import { BoxShadow } from "expo-react-native-shadow"
 import images from '../../assets/Images.js';
 import appStyles from '../../constants/Styles.js';
-import metricServices from '../../Service/metricsServices.js';
+import metricServices from '../../Service/MetricServices/topProducts';
 
 const {width, height} = Dimensions.get('window');
 
@@ -61,7 +61,6 @@ class MetricsMainPage extends React.Component {
   switchTopProdUI(productHeaders, itemTotals, testData){
     // test data is just placeholder data to try different scenarios
     if (itemTotals.length){
-      console.log("Product Headers", productHeaders);
       return productHeaders.map(header => (
         <View style={styles.columnView}>
           <Text style={styles.productTableHeader}>{header.text}</Text>
@@ -175,7 +174,6 @@ class MetricsMainPage extends React.Component {
     const {itemTotals, transactionsByItem} = topProducts;
     return (
       <View style={styles.container}>
-
         <View style={{flexDirection: "row", height: height * 0.40}}>
           <View style={{width: width * 0.55, backgroundColor: "white", borderRadius: 12, padding: 15}}>
             <Text style={styles.cardHeaderText}>Sales Summary</Text>

@@ -50,7 +50,6 @@ class CreateAccount extends Component {
                 "password": this.state.password.toLowerCase(),
                 "name": this.state.name,
                 "business_name": this.state.businessName,
-                "wallet_address": this.state.walletAddress
             }).then((response) => {
                 console.log("Response From DB", response);
                 const user = this.props.store.UserStore;

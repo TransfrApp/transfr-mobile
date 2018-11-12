@@ -17,13 +17,12 @@ class UserStore {
 	})
 
 	createAccount(user) {
-		const { businessName, email, password, name, userId, walletAddress, etheriumWallet, bitcoinWallet } = user;
+		const { businessName, email, password, name, userId, etheriumWallet, bitcoinWallet } = user;
 		this.user.businessName = businessName;
 		this.user.email = email;
 		this.user.password = password;
 		this.user.name = name;
 		this.user.userId = userId;
-		this.user.walletAddress = walletAddress;
 		this.user.etheriumWallet = etheriumWallet;
 		this.user.bitcoinWallet = bitcoinWallet; 
 	}
