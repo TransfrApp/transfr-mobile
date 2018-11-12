@@ -20,7 +20,7 @@ const formatTransactionsByItem = (allItems) => {
 }
 
 const totalsPerItem = (items, transactionsByItem) => {
-    return items.map(itemName => {
+    const reducedItems = items.map(itemName => {
         const result = transactionsByItem[itemName].reduce((accum, value) => {
            return {
              price: accum.price + value.price,
@@ -29,7 +29,17 @@ const totalsPerItem = (items, transactionsByItem) => {
            }
          });
          return result;
-       })
+       });
+
+       // Format Data To Match UI
+      return reducedItems.map(item => {
+           return {
+               name: item.name,
+               price: `$${(item.price / item.quantity).toFixed(2)}`,
+               quantity: item.quantity,
+               total: `$${item.price.toFixed(2)}`,
+           }
+       });
 }
 
 

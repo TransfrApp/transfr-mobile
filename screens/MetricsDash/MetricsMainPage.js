@@ -3,7 +3,6 @@ import {
   Image,
   Platform,
   ScrollView,
-  FlatList,
   StyleSheet,
   Dimensions,
   Text,
@@ -62,30 +61,13 @@ class MetricsMainPage extends React.Component {
   switchTopProdUI(productHeaders, itemTotals, testData){
     // test data is just placeholder data to try different scenarios
     if (itemTotals.length){
-      return(
-
-        <View>
-          <View>
-          </View>
-          <FlatList
-          data={itemTotals}
-          style={{ width: width * .6 }}
-          scrollEnabled={true}
-          keyExtractor={(item, index) => index}
-          renderItem={({ item, index }) => (
-            <View key={index} style={styles.flatlist}>
-              <Text style={styles.productTableText}>{item.name}</Text>
-              <Text style={styles.productTableText}>{item.price / item.quantity}</Text>
-              <Text style={styles.productTableText}>{item.price}</Text>
-              <Text style={styles.productTableText}>{item.quantity}</Text>
-            </View>
-          )}/>
+      console.log("Product Headers", productHeaders);
+      return productHeaders.map(header => (
+        <View style={styles.columnView}>
+          <Text style={styles.productTableHeader}>{header.text}</Text>
+          {itemTotals.map(product => <Text style={styles.productTableText}>{product[header.property]}</Text>)}
         </View>
-        // <View style={styles.columnView}>
-        //   <Text style={styles.productTableHeader}>{header.text}</Text>
-        //   {itemTotals.map(product => <Text style={styles.productTableText}>{product[header.property]}</Text>)}
-        // </View>
-      )
+      ))
     } else {
       return(
         <View style={styles.placeholder}>
@@ -122,7 +104,7 @@ class MetricsMainPage extends React.Component {
         property: "name",
       },
       {
-        text: "Regular Price",
+        text: "Average Price",
         property: "price",
       },
       {
@@ -133,10 +115,6 @@ class MetricsMainPage extends React.Component {
         text: "Items Sold",
         property: "quantity",
       },
-      // {
-      //   text: "Revenue",
-      //   property: "revenue",
-      // },
     ]
     const products = [
       {
@@ -397,13 +375,6 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: '600',
     color: '#B1B5C2',
-  },
-  flatlist: {
-    width: width * .55,
-    flexDirection: 'row', 
-    justifyContent: 'space-between', 
-    paddingTop: 5, 
-    paddingBottom: 5
   }
 });
 
