@@ -50,9 +50,8 @@ const calculateTopPaymentMethods = (transactions) => {
     // Reduce the data to find the top coins used, and later, credit cards and e-payments
     const paymentTypes = reduceByPaymentMethod(transactions);
     const coinsUsed = findAllUsedCoins(transactions);
-    const finalData = formatToUIData(coinsUsed, paymentTypes);
-    console.log("Final Data", finalData);
-    return finalData;
+    const topPaymentMethod = formatToUIData(coinsUsed, paymentTypes);
+    return { topPaymentMethod, coinsUsed };
 }
 
 export default calculateTopPaymentMethods;

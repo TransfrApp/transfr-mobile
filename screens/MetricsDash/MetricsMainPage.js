@@ -77,6 +77,16 @@ class MetricsMainPage extends React.Component {
     }
   }
 
+  handleRenderCorrectIcon = (coinsUsed, business) => {
+   return business.paymentMethods.map(coin => {
+     if (coinsUsed.includes(coin.name)){
+       return (
+         <Image style={{ height: 22, width: 22 }} source={coin.image}/>
+       )
+     }
+   })
+  }
+
   render() {
     const business = this.props.store.BusinessStore.business;
 
@@ -172,7 +182,16 @@ class MetricsMainPage extends React.Component {
     const weeklyRevenue = this.calculateWeeklyRevenue();
     const dailyRevenue = this.calculateDailyRevenue();
     const topProducts = metricServices.findTopProducts(business.completedTransactions);
-    const topPaymentMethod = calculateTopPaymentMethods(business.completedTransactions);
+    const { topPaymentMethod, coinsUsed } = calculateTopPaymentMethods(business.completedTransactions);
+    console.log("Coins Used", coinsUsed);
+    const testTopPaymentMethod = [
+      { x: "ETH", y: 30000 },
+      { x: "REQ", y: 60000 },
+      { x: "KNC", y: 100000 },
+      { x: "DGX", y: 30000 },
+      { x: "DAI", y: 60000 },
+      { x: "NEO", y: 100000 },
+    ];
     const {itemTotals, transactionsByItem} = topProducts;
     return (
       <View style={styles.container}>
@@ -268,8 +287,8 @@ class MetricsMainPage extends React.Component {
               </VictoryChart>
 
               </View>
-              <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 7, marginLeft: width * 0.0685, width: width * 0.135}}>
-                  {business.paymentMethods.map(coin => <Image style={{ height: 16, width: 16 }} source={coin.image} />)}
+              <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 7, marginLeft: width * 0.0685, width: width * 0.145 }}>
+                  {this.handleRenderCorrectIcon(coinsUsed, business)}
               </View>
           </View>
           <View style={{width: width * 0.60, padding: 15, marginLeft: width * 0.02, backgroundColor: "white", borderRadius: 12}}>
