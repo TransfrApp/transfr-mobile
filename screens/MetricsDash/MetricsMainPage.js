@@ -14,6 +14,7 @@ import { BoxShadow } from "expo-react-native-shadow"
 import images from '../../assets/Images.js';
 import appStyles from '../../constants/Styles.js';
 import metricServices from '../../Service/MetricServices/topProducts';
+import calculateTopPaymentMethods from '../../Service/MetricServices/topPaymentMethods';
 
 const {width, height} = Dimensions.get('window');
 
@@ -171,6 +172,7 @@ class MetricsMainPage extends React.Component {
     const weeklyRevenue = this.calculateWeeklyRevenue();
     const dailyRevenue = this.calculateDailyRevenue();
     const topProducts = metricServices.findTopProducts(business.completedTransactions);
+    const topPaymentMethod = calculateTopPaymentMethods(business.completedTransactions);
     const {itemTotals, transactionsByItem} = topProducts;
     return (
       <View style={styles.container}>
@@ -248,14 +250,7 @@ class MetricsMainPage extends React.Component {
                   style={{
                     data: { fill: "#7f36ba" },
                   }}
-                  data={[
-                    { x: "ETH", y: 30000 },
-                    { x: "REQ", y: 60000 },
-                    { x: "KNC", y: 100000 },
-                    { x: "DGX", y: 30000 },
-                    { x: "DAI", y: 60000 },
-                    { x: "NEO", y: 100000 },
-                  ]}
+                  data={topPaymentMethod}
                 />
                 <VictoryAxis dependentAxis
                   tickFormat={(t) => `$ ${t}`}
