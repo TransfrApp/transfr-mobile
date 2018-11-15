@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import { FontAwesome } from '@expo/vector-icons';
-
+import axios from 'axios';
 const { width, height } = Dimensions.get('window');
 
 import { observer, inject } from 'mobx-react';
@@ -28,7 +28,8 @@ class CheckoutList extends Component {
             total: 0,
             discount: null,
             displayModal: false,
-            displayPaymentModal: false
+            displayPaymentModal: false,
+            cryptoRate: 0,
         }
     }
 
@@ -70,6 +71,16 @@ class CheckoutList extends Component {
             this.setState({ price, total, tax });
         }
     }
+    // Calculates the exhange from crypto to fiat 
+    calculateExchange = async (usd, coin) => {
+        console.log(coin.toLowerCase(), usd);
+        const price = await axios.get(`https://api.cryptonator.com/api/ticker/${coin.toLowerCase()}-usd`)
+              .then((res) => {
+                const price =  res.data.ticker.price;
+                const conversionRate = 1 / price;
+                this.setState({ cryptoRate: conversionRate * usd }); 
+              });
+      }
 
     handleDownQuantity(item, index) {
         if (item.quantity <= 1) return;
@@ -147,9 +158,16 @@ class CheckoutList extends Component {
         this.setState({ displayPaymentModal: false })
     }
 
-    handleShowQRCode() {
-        const business = this.props.store.BusinessStore;
-        business.updateCheckoutFlow('QR');
+    handleShowQRCode = async() => {
+        const business = this.props.store.BusinessStore.business;
+        const businessStore = this.props.store.BusinessStore;
+        const crypto = business.selectedCoin;
+        const amountInUSD = this.props.store.BusinessStore.sale.price;
+        const convert = await this.calculateExchange(amountInUSD, crypto);
+        console.log("Rate in State", this.state.cryptoRate);
+
+        businessStore.updateAmountDueInCrypto(this.state.cryptoRate);
+        businessStore.updateCheckoutFlow('QR');
         this.setState({ displayPaymentModal: false })
     }
 

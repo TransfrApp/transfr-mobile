@@ -65,6 +65,7 @@ class BusinessStore {
 
         selectedCoin: '',
         activeWalletAddress: '',
+        amountDueInCrypto: null,
         newProductCategories: [],
         newProductName: '',
         newProductPrice: '',
@@ -81,6 +82,9 @@ class BusinessStore {
 
     addProductCateogry(categories) {
         this.business.newProductCategories = categories
+    }
+    updateAmountDueInCrypto(amount) {
+        this.business.amountDueInCrypto = amount;
     }
     updateCheckoutItems(index, item) {
         // Uh, not super sure why this works but it does
@@ -151,7 +155,7 @@ class BusinessStore {
             }).then(txs => {
                 this.addCompletedTransaction(txs.data);
             }).catch(err => console.log(err));
-        }, 6000);
+        }, 10000);
 
         setTimeout(() => {
             this.business.checkout = '';

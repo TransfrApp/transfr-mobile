@@ -19,10 +19,10 @@ import AddProductButton from '../../navigation/Components/AddProductButton.js';
 import { FontAwesome } from '@expo/vector-icons';
 import SearchBar from '../../navigation/Components/SearchBar.js';
 import QRCode from 'react-native-qrcode';
-
 const { width, height } = Dimensions.get('window');
 
 import { observer, inject } from 'mobx-react';
+import axios from 'axios';
 
 class HomeScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -38,16 +38,29 @@ class HomeScreen extends React.Component {
     this.state = {
       drawerActive: false,
       products: [],
+      cryptoRate: 0,
     }
   }
 
-  checkoutList() {
-    const business = this.props.store.BusinessStore.business;
-    const walletAddress = this.props.store.BusinessStore.business.activeWalletAddress;
-    const qrObject = {
-      to: walletAddress,
-      usd: 10
+  generateQRCode = (coin, walletAddress, amountInCrypto) => {
+    if (!coin || !walletAddress || !amountInCrypto) return;
+    let qrCode;
+    switch(coin) {
+      case "BTC":
+        qrCode = `bitcoin:${walletAddress}?amount=${amountInCrypto}`;
+        break;
+      case "ETH":
+        qrCode = `${walletAddress}?amount=${amountInCrypto}`;
+        break;
     }
+    return qrCode;
+  }
+
+  checkoutList = () => {
+    const business = this.props.store.BusinessStore.business;
+    const {selectedCoin, activeWalletAddress, amountDueInCrypto} = business;
+    const qrData = this.generateQRCode(selectedCoin, activeWalletAddress, amountDueInCrypto);
+
     if (business.checkoutItems.length === 0) {
       return (
         <View style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center', paddingTop: height * .3 }}>
@@ -60,7 +73,7 @@ class HomeScreen extends React.Component {
         <View style={{ justifyContent: 'space-between', alignItems: 'center', paddingTop: height * .2 }}>
           {/* <Image style={{ height: 209, width: 209 }} source={require('../../assets/images/qrCode.png')} /> */}
           <QRCode
-            value={qrObject}
+            value={qrData}
             size={209}
             bgColor={'#693CB7'}
             fgColor={"white"}/>
