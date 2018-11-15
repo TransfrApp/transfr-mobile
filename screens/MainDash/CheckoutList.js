@@ -158,12 +158,8 @@ class CheckoutList extends Component {
         this.setState({ displayPaymentModal: false })
     }
 
-    handleShowQRCode = async() => {
-        const business = this.props.store.BusinessStore.business;
+    handleShowQRCode = () => {
         const businessStore = this.props.store.BusinessStore;
-        const crypto = business.selectedCoin;
-        const amountInUSD = this.props.store.BusinessStore.sale.price;
-        const convert = await this.calculateExchange(amountInUSD, crypto);
         console.log("Rate in State", this.state.cryptoRate);
 
         businessStore.updateAmountDueInCrypto(this.state.cryptoRate);
@@ -266,6 +262,16 @@ class CheckoutList extends Component {
         )
     }
 
+    handleSelectPayment = (BusinessStore, token, address) => {
+        // Pre-emptively fetching the coin ticker
+        const { total } = this.props.store.BusinessStore.sale;
+        const amountInUSD = total;
+        const coin = token.name; 
+        // console.log("Coin", coin);
+        BusinessStore.setSelectedCoin(token, address)
+        this.calculateExchange(amountInUSD, coin);
+    }
+
     selectPaymentModal() {
         const business = this.props.store.BusinessStore.business;
         const BusinessStore = this.props.store.BusinessStore;
@@ -275,7 +281,7 @@ class CheckoutList extends Component {
             return (
                 <TouchableOpacity
                     key={index}
-                    onPress={() => BusinessStore.setSelectedCoin(coin, address)}
+                    onPress={() => this.handleSelectPayment(BusinessStore, coin, address)}
                     style={business.selectedCoin === coin.name ? styles.selectedCoinContainer : styles.coinContainer}>
                     <Image style={{ height: 25, width: 25 }} source={coin.image} />
                     <Text style={business.selectedCoin === coin.name ? styles.activeText : styles.text}>{coin.name}</Text>
