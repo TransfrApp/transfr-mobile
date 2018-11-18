@@ -54,4 +54,18 @@ const calculateTopPaymentMethods = (transactions) => {
     return { topPaymentMethod, coinsUsed };
 }
 
+
+/*
+Data to test the Top Payments with
+
+ const testTopPaymentMethod = [
+      { x: "ETH", y: 30000 },
+      { x: "REQ", y: 60000 },
+      { x: "KNC", y: 100000 },
+      { x: "DGX", y: 30000 },
+      { x: "DAI", y: 60000 },
+      { x: "NEO", y: 100000 },
+    ];
+*/
+
 export default calculateTopPaymentMethods;

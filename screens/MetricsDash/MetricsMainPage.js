@@ -15,6 +15,7 @@ import images from '../../assets/Images.js';
 import appStyles from '../../constants/Styles.js';
 import metricServices from '../../Service/MetricServices/topProducts';
 import calculateTopPaymentMethods from '../../Service/MetricServices/topPaymentMethods';
+import generateSalesSummary from '../../Service/MetricServices/SalesSummary';
 
 const {width, height} = Dimensions.get('window');
 
@@ -59,7 +60,7 @@ class MetricsMainPage extends React.Component {
     return total.toFixed(2);
   }
 
-  switchTopProdUI(productHeaders, itemTotals, testData){
+  switchTopProdUI(productHeaders, itemTotals){
     // test data is just placeholder data to try different scenarios
     if (itemTotals.length){
       return productHeaders.map(header => (
@@ -126,56 +127,6 @@ class MetricsMainPage extends React.Component {
         property: "quantity",
       },
     ]
-    const products = [
-      {
-        name: "Coffee",
-        price: 112,
-        quantity: 521,
-        revenue: 521,
-      },
-      {
-        name: "Body Spray",
-        price: 31,
-        quantity: 521,
-        revenue: 521,
-      },
-      {
-        name: "Noodles",
-        price: 25,
-        quantity: 521,
-        revenue: 521,
-      },
-      {
-        name: "Coconut Oil",
-        price: 54,
-        quantity: 521,
-        revenue: 521,
-      },
-      {
-        name: "Soup",
-        price: 76,
-        quantity: 521,
-        revenue: 521,
-      },
-      {
-        name: "Pizza",
-        price: 42,
-        quantity: 521,
-        revenue: 521,
-      },
-      {
-        name: "Television",
-        price: 239,
-        quantity: 521,
-        revenue: 521,
-      },
-      {
-        name: "Burger",
-        price: 25,
-        quantity: 521,
-        revenue: 521,
-      },
-    ]
 
     const backgroundColor = "#F5F9FB"
 
@@ -183,14 +134,8 @@ class MetricsMainPage extends React.Component {
     const dailyRevenue = this.calculateDailyRevenue();
     const topProducts = metricServices.findTopProducts(business.completedTransactions);
     const { topPaymentMethod, coinsUsed } = calculateTopPaymentMethods(business.completedTransactions);
-    const testTopPaymentMethod = [
-      { x: "ETH", y: 30000 },
-      { x: "REQ", y: 60000 },
-      { x: "KNC", y: 100000 },
-      { x: "DGX", y: 30000 },
-      { x: "DAI", y: 60000 },
-      { x: "NEO", y: 100000 },
-    ];
+    const salesSummary = generateSalesSummary(business.completedTransactions);
+   
     const {itemTotals, transactionsByItem} = topProducts;
     return (
       <View style={styles.container}>
@@ -293,7 +238,7 @@ class MetricsMainPage extends React.Component {
           <View style={{width: width * 0.60, padding: 15, marginLeft: width * 0.02, backgroundColor: "white", borderRadius: 12}}>
             <Text  style={styles.cardHeaderText}>Top Products</Text>
               <ScrollView contentContainerStyle={styles.rowView}>
-                  {this.switchTopProdUI(productHeaders, itemTotals, products)}
+                  {this.switchTopProdUI(productHeaders, itemTotals)}
               </ScrollView>
 
           </View>
