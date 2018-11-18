@@ -39,7 +39,7 @@ const reduceByPaymentMethod = (transactions) => {
         return paymentType[coin].reduce((accum, value) => {
           return {
             x: value.payment_method,
-            y: parseFloat(accum.amount) + parseFloat(value.amount),
+            y: accum.amount ? accum.amount : accum.y + value.amount, // accum changes object shape from payment type to the ui type which causes a break
           }
         });
       });

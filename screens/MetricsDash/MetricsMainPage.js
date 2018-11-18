@@ -183,7 +183,6 @@ class MetricsMainPage extends React.Component {
     const dailyRevenue = this.calculateDailyRevenue();
     const topProducts = metricServices.findTopProducts(business.completedTransactions);
     const { topPaymentMethod, coinsUsed } = calculateTopPaymentMethods(business.completedTransactions);
-    console.log("Coins Used", coinsUsed);
     const testTopPaymentMethod = [
       { x: "ETH", y: 30000 },
       { x: "REQ", y: 60000 },
