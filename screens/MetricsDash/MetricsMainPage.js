@@ -134,8 +134,7 @@ class MetricsMainPage extends React.Component {
     const dailyRevenue = this.calculateDailyRevenue();
     const topProducts = metricServices.findTopProducts(business.completedTransactions);
     const { topPaymentMethod, coinsUsed } = calculateTopPaymentMethods(business.completedTransactions);
-    const salesSummary = generateSalesSummary(business.completedTransactions);
-   
+    const { salesSummary, highestTotal } = generateSalesSummary(business.completedTransactions);
     const {itemTotals, transactionsByItem} = topProducts;
     return (
       <View style={styles.container}>
@@ -146,7 +145,7 @@ class MetricsMainPage extends React.Component {
               <VictoryChart
                 width={width * 0.55}
                 height={chartContainerHeight * 0.9}
-                maxDomain={{ y: 30000 }}
+                maxDomain={{ y: highestTotal * 1.2 }}
                 padding={{left: 65, right: 50, top: 20, bottom: 50}}
               >
                 <VictoryAxis
@@ -166,15 +165,7 @@ class MetricsMainPage extends React.Component {
                 />
                 <VictoryLine
                   interpolation="natural"
-                  data={[
-                    { x: "Sun", y: 0 },
-                    { x: "Mon", y: 12000 },
-                    { x: "Tue", y: 4000 },
-                    { x: "Wed", y: 12000 },
-                    { x: "Thu", y: 7000 },
-                    { x: "Fri", y: 4000 },
-                    { x: "Sat", y: 10000 },
-                  ]}
+                  data={salesSummary}
                   style={{
                     data: { stroke: "#bb87ea", strokeWidth: 2 },
                   }}
