@@ -25,7 +25,6 @@ class OrderHistory extends Component {
     }
 
     handleSwitchSalesUI(salesHistory) {
-        console.log("Sales History in Switch UI", salesHistory);
         if (salesHistory.length > 0) {
             return (
                 <FlatList
@@ -54,17 +53,16 @@ class OrderHistory extends Component {
     }
 
     handleSwitchProductUI(productHistory) {
-        console.log("Transactions Complete", productHistory);
         let date;
         if (productHistory.length > 0) {
-            return productHistory.map(transaction => {
+            return productHistory.reverse().map(transaction => {
                 date = transaction.createdAt;
                 return transaction.items.map(item => {
                     return (
                         <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignContent: 'center', marginTop: 10 }}>
                             <Text style={[styles.prodHistoryDataFormat, { color: '#454974', fontSize: 13, fontWeight: '200' }]}>{item.name}</Text>
                             <Text style={[styles.prodHistoryDataFormat, { color: '#454974', fontSize: 13, fontWeight: '200' }]}>{moment(date).fromNow()}</Text>
-                            <Text style={[styles.prodHistoryDataFormat, { color: '#454974', fontSize: 13, fontWeight: '200' }]}>{`$${parseFloat(item.price)}`}</Text>
+                            <Text style={[styles.prodHistoryDataFormat, { color: '#454974', fontSize: 13, fontWeight: '200' }]}>{`$${item.price.toFixed(2)}`}</Text>
                         </View>
                     )
                 })

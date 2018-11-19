@@ -35,21 +35,20 @@ class AddProductInfo extends Component {
   }
 
   addCategory(index, item, business) {
-    const temp = this.state.prodCategory.concat()
-
-    if (temp.filter(x => x.id === item.id).length) {
-      const minusSelectedItem = temp.filter(x => x.id !== item.id);
+    const prodCategory = this.state.prodCategory.concat();
+    if (prodCategory.filter(product => product.value === item.value).length) {
+      const minusSelectedItem = prodCategory.filter(product => product.value !== item.value);
       this.setState({ prodCategory: minusSelectedItem });
     }
     else {
-      temp.push(business.productCategories[index]);
-      this.setState({ prodCategory: temp });
+      const updatedProdCategory = this.state.prodCategory.concat(item);
+      this.setState({ prodCategory: updatedProdCategory });
     }
   }
 
   ifCategoriesExist(business) {
     return this.state.prodCategory.concat().map(item => {
-      return <Text>{` ${item.name} `}</Text>
+      return <Text>{` ${item.value} `}</Text>
     })
   }
 
@@ -101,7 +100,7 @@ class AddProductInfo extends Component {
               keyExtractor={({ item, index }) => index}
               renderItem={({ item, index }) => (
                 <TouchableOpacity onPress={() => this.addCategory(index, item, business)}>
-                  <Text style={this.checkStyling(item)}>{item.name}</Text>
+                  <Text style={this.checkStyling(item)}>{item.value}</Text>
                 </TouchableOpacity>
               )}
             />

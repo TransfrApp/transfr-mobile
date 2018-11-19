@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import { FontAwesome } from '@expo/vector-icons';
-
+import axios from 'axios';
 const { width, height } = Dimensions.get('window');
 
 import { observer, inject } from 'mobx-react';
@@ -28,7 +28,8 @@ class CheckoutList extends Component {
             total: 0,
             discount: null,
             displayModal: false,
-            displayPaymentModal: false
+            displayPaymentModal: false,
+            cryptoRate: 0,
         }
     }
 
@@ -70,6 +71,15 @@ class CheckoutList extends Component {
             this.setState({ price, total, tax });
         }
     }
+    // Calculates the exhange from crypto to fiat 
+    calculateExchange = async (usd, coin) => {
+        const price = await axios.get(`https://api.cryptonator.com/api/ticker/${coin.toLowerCase()}-usd`)
+              .then((res) => {
+                const price =  res.data.ticker.price;
+                const conversionRate = 1 / price;
+                this.setState({ cryptoRate: conversionRate * usd }); 
+              });
+      }
 
     handleDownQuantity(item, index) {
         if (item.quantity <= 1) return;
@@ -147,9 +157,10 @@ class CheckoutList extends Component {
         this.setState({ displayPaymentModal: false })
     }
 
-    handleShowQRCode() {
-        const business = this.props.store.BusinessStore;
-        business.updateCheckoutFlow('QR');
+    handleShowQRCode = () => {
+        const businessStore = this.props.store.BusinessStore;
+        businessStore.updateAmountDueInCrypto(this.state.cryptoRate);
+        businessStore.updateCheckoutFlow('QR');
         this.setState({ displayPaymentModal: false })
     }
 
@@ -248,14 +259,26 @@ class CheckoutList extends Component {
         )
     }
 
+    handleSelectPayment = (BusinessStore, token, address) => {
+        // Pre-emptively fetching the coin ticker
+        const { total } = this.props.store.BusinessStore.sale;
+        const amountInUSD = total;
+        const coin = token.name; 
+        // console.log("Coin", coin);
+        BusinessStore.setSelectedCoin(token, address)
+        this.calculateExchange(amountInUSD, coin);
+    }
+
     selectPaymentModal() {
         const business = this.props.store.BusinessStore.business;
         const BusinessStore = this.props.store.BusinessStore;
-
         return business.paymentMethods.map((coin, index) => {
+            const address = this.props.store.UserStore.user[coin.walletAddress];
+            if (!address) return;
             return (
                 <TouchableOpacity
-                    onPress={() => BusinessStore.setSelectedCoin(coin.name)}
+                    key={index}
+                    onPress={() => this.handleSelectPayment(BusinessStore, coin, address)}
                     style={business.selectedCoin === coin.name ? styles.selectedCoinContainer : styles.coinContainer}>
                     <Image style={{ height: 25, width: 25 }} source={coin.image} />
                     <Text style={business.selectedCoin === coin.name ? styles.activeText : styles.text}>{coin.name}</Text>

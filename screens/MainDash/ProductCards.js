@@ -43,7 +43,6 @@ class ProductCards extends Component {
         const list = this.state.listView;
         const products = this.props.store.BusinessStore.business.products;
         const search = this.props.store.BusinessStore.business.searchProductList;
-        console.log(search);
         if (search.length > 0) {
             return search.map((item, index) => {
                 return (
@@ -52,7 +51,7 @@ class ProductCards extends Component {
                             style={list ? styles.wideCardImage : styles.cardImage}
                             source={{ uri: item.image }} />
                         <Text style={list ? styles.prodNameWideCard : styles.prodName}>{item.name}</Text>
-                        <Text style={list ? styles.priceWideCard : styles.price}>{`$${item.price}`}</Text>
+                        <Text style={list ? styles.priceWideCard : styles.price}>{`$${item.price.toFixed(2)}`}</Text>
                     </TouchableOpacity>
                 )
             })
@@ -64,7 +63,7 @@ class ProductCards extends Component {
                             style={list ? styles.wideCardImage : styles.cardImage}
                             source={{ uri: item.image }} />
                         <Text style={list ? styles.prodNameWideCard : styles.prodName}>{item.name}</Text>
-                        <Text style={list ? styles.priceWideCard : styles.price}>{`$${item.price}`}</Text>
+                        <Text style={list ? styles.priceWideCard : styles.price}>{`$${item.price.toFixed(2)}`}</Text>
                     </TouchableOpacity>
                 )
             })

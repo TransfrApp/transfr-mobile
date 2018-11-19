@@ -13,6 +13,10 @@ import { VictoryChart, VictoryLine, VictoryAxis, VictoryBar } from "victory-nati
 import { BoxShadow } from "expo-react-native-shadow"
 import images from '../../assets/Images.js';
 import appStyles from '../../constants/Styles.js';
+import metricServices from '../../Service/MetricServices/topProducts';
+import calculateTopPaymentMethods from '../../Service/MetricServices/topPaymentMethods';
+import generateSalesSummary from '../../Service/MetricServices/SalesSummary';
+
 const {width, height} = Dimensions.get('window');
 
 import { observer, inject } from 'mobx-react';
@@ -33,6 +37,55 @@ class MetricsMainPage extends React.Component {
       drawerActive: false,
       products: [],
     }
+  }
+
+  calculateDailyRevenue = () => {
+    const transactions = this.props.store.BusinessStore.filterCompletedTransactions('Day');
+    let total;
+    if (!transactions.length){
+      return total = 0;
+    } else {
+      total = transactions.reduce((accum, value) => {
+        return accum + value.amount;
+      },0);
+    }
+    return total.toFixed(2);
+  }
+
+  calculateWeeklyRevenue = () => {
+    const transactions = this.props.store.BusinessStore.filterCompletedTransactions('Week');
+    const total = transactions.reduce((accum, value) => {
+      return accum + value.amount;
+    },0);
+    return total.toFixed(2);
+  }
+
+  switchTopProdUI(productHeaders, itemTotals){
+    // test data is just placeholder data to try different scenarios
+    if (itemTotals.length){
+      return productHeaders.map(header => (
+        <View style={styles.columnView}>
+          <Text style={styles.productTableHeader}>{header.text}</Text>
+          {itemTotals.map(product => <Text style={styles.productTableText}>{product[header.property]}</Text>)}
+        </View>
+      ))
+    } else {
+      return(
+        <View style={styles.placeholder}>
+          <Text style={styles.placeholderText}>You don't have any sales data yet.</Text>
+        </View>
+      )
+    }
+  }
+
+  handleRenderCorrectIcon = (coinsUsed, business) => {
+   return business.paymentMethods.map(coin => {
+     if (coinsUsed.includes(coin.name)){
+       return (
+         <Image style={{ height: 22, width: 22 }} source={coin.image}/>
+       )
+     }
+   })
   }
 
   render() {
@@ -62,74 +115,29 @@ class MetricsMainPage extends React.Component {
         property: "name",
       },
       {
-        text: "Regular Price",
+        text: "Average Price",
         property: "price",
       },
       {
-        text: "Total Sales",
-        property: "totalSales",
+        text: 'Total Revenue',
+        property: "total"
       },
       {
-        text: "Revenue",
-        property: "revenue",
-      },
-    ]
-    const products = [
-      {
-        name: "Coffee",
-        price: 112,
-        totalSales: 521,
-        revenue: 521,
-      },
-      {
-        name: "Body Spray",
-        price: 31,
-        totalSales: 521,
-        revenue: 521,
-      },
-      {
-        name: "Noodles",
-        price: 25,
-        totalSales: 521,
-        revenue: 521,
-      },
-      {
-        name: "Coconut Oil",
-        price: 54,
-        totalSales: 521,
-        revenue: 521,
-      },
-      {
-        name: "Soup",
-        price: 76,
-        totalSales: 521,
-        revenue: 521,
-      },
-      {
-        name: "Pizza",
-        price: 42,
-        totalSales: 521,
-        revenue: 521,
-      },
-      {
-        name: "Television",
-        price: 239,
-        totalSales: 521,
-        revenue: 521,
-      },
-      {
-        name: "Burger",
-        price: 25,
-        totalSales: 521,
-        revenue: 521,
+        text: "Items Sold",
+        property: "quantity",
       },
     ]
 
     const backgroundColor = "#F5F9FB"
 
+    const weeklyRevenue = this.calculateWeeklyRevenue();
+    const dailyRevenue = this.calculateDailyRevenue();
+    const topProducts = metricServices.findTopProducts(business.completedTransactions);
+    const { topPaymentMethod, coinsUsed } = calculateTopPaymentMethods(business.completedTransactions);
+    const { salesSummary, highestTotal } = generateSalesSummary(business.completedTransactions);
+    const {itemTotals, transactionsByItem} = topProducts;
     return (
       <View style={styles.container}>
-
         <View style={{flexDirection: "row", height: height * 0.40}}>
           <View style={{width: width * 0.55, backgroundColor: "white", borderRadius: 12, padding: 15}}>
             <Text style={styles.cardHeaderText}>Sales Summary</Text>
@@ -137,7 +145,7 @@ class MetricsMainPage extends React.Component {
               <VictoryChart
                 width={width * 0.55}
                 height={chartContainerHeight * 0.9}
-                maxDomain={{ y: 30000 }}
+                maxDomain={{ y: highestTotal * 1.2 }}
                 padding={{left: 65, right: 50, top: 20, bottom: 50}}
               >
                 <VictoryAxis
@@ -157,15 +165,7 @@ class MetricsMainPage extends React.Component {
                 />
                 <VictoryLine
                   interpolation="natural"
-                  data={[
-                    { x: "Sun", y: 0 },
-                    { x: "Mon", y: 12000 },
-                    { x: "Tue", y: 4000 },
-                    { x: "Wed", y: 12000 },
-                    { x: "Thu", y: 7000 },
-                    { x: "Fri", y: 4000 },
-                    { x: "Sat", y: 10000 },
-                  ]}
+                  data={salesSummary}
                   style={{
                     data: { stroke: "#bb87ea", strokeWidth: 2 },
                   }}
@@ -176,13 +176,13 @@ class MetricsMainPage extends React.Component {
             <View style={{width: cardContainerWidth, justifyContent: "space-between", alignItems: "center"}}>
 
               <View style={{width: cardWidth, height: cardHeight, backgroundColor: "#bb87ea", borderRadius: 12, justifyContent: "center", alignItems: "center"}}>
-                <Text style={{fontSize: 50, fontWeight: "bold", color: "white"}}>$5541</Text>
+                <Text style={{fontSize: 50, fontWeight: "bold", color: "white"}}>{`$${dailyRevenue}`}</Text>
                 <Text style={{fontSize: 14, fontWeight: "200", color: "white"}}>Today's Revenue</Text>
               </View>
 
                 <BoxShadow setting={shadowOpt}>
                   <View style={{width: cardWidth, height: cardHeight, backgroundColor: "white", borderRadius: 12, justifyContent: "center", alignItems: "center"}}>
-                    <Text style={{fontSize: 50, fontWeight: "bold", color: "#7f36ba"}}>$65656</Text>
+                    <Text style={{fontSize: 50, fontWeight: "bold", color: "#7f36ba"}}>{`$${weeklyRevenue}`}</Text>
                     <Text style={{fontSize: 14, fontWeight: "200", color: "#7f36ba"}}>Revenue this week</Text>
                   </View>
                   </BoxShadow>
@@ -204,14 +204,7 @@ class MetricsMainPage extends React.Component {
                   style={{
                     data: { fill: "#7f36ba" },
                   }}
-                  data={[
-                    { x: "ETH", y: 30000 },
-                    { x: "REQ", y: 60000 },
-                    { x: "KNC", y: 100000 },
-                    { x: "DGX", y: 30000 },
-                    { x: "DAI", y: 60000 },
-                    { x: "NEO", y: 100000 },
-                  ]}
+                  data={topPaymentMethod}
                 />
                 <VictoryAxis dependentAxis
                   tickFormat={(t) => `$ ${t}`}
@@ -229,19 +222,14 @@ class MetricsMainPage extends React.Component {
               </VictoryChart>
 
               </View>
-              <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 7, marginLeft: width * 0.0685, width: width * 0.135}}>
-                  {business.paymentMethods.map(coin => <Image style={{ height: 16, width: 16 }} source={coin.image} />)}
+              <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 7, marginLeft: width * 0.0685, width: width * 0.145 }}>
+                  {this.handleRenderCorrectIcon(coinsUsed, business)}
               </View>
           </View>
           <View style={{width: width * 0.60, padding: 15, marginLeft: width * 0.02, backgroundColor: "white", borderRadius: 12}}>
             <Text  style={styles.cardHeaderText}>Top Products</Text>
               <ScrollView contentContainerStyle={styles.rowView}>
-                  {productHeaders.map(header => (
-                    <View style={styles.columnView}>
-                      <Text style={styles.productTableHeader}>{header.text}</Text>
-                      {products.map(product => <Text style={styles.productTableText}>{product[header.property]}</Text>)}
-                    </View>
-                  ))}
+                  {this.switchTopProdUI(productHeaders, itemTotals)}
               </ScrollView>
 
           </View>
@@ -323,6 +311,17 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     color: "#464a77",
+  },
+  placeholder: {
+   width: width * 0.60,
+   height: height * .3,
+   alignItems: 'center',
+   justifyContent: 'center',
+  },
+  placeholderText: {
+    fontSize: 25,
+    fontWeight: '600',
+    color: '#B1B5C2',
   }
 });
 

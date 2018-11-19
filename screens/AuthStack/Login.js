@@ -24,8 +24,8 @@ class LoginScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: 'nolanrbrady@gmail.com',
-            password: 'pilatus321'
+            email: 'test@user.com', //nolanrbrady@gmail.com
+            password: 'changeme' // pilatus321
         }
     }
 
@@ -48,7 +48,6 @@ class LoginScreen extends Component {
 
     componentDidMount = async () => {
         const token = await this.getToken();
-        console.log("Token", token);
         if (token !== null) {
             axios.post(`${baseUrl}/user/login`, { token })
                 .then(res => {

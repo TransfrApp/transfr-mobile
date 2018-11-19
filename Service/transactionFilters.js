@@ -7,7 +7,6 @@ const currentDay = DateTime.local().get('day');
 
 
 const filterMonth = (yearlyData) => {
-    console.log("Filter Month Firing");
     const relevantTransactions = yearlyData.filter(item => {
         const itemYear = DateTime.fromISO(item.createdAt).get('year');
         const itemMonth = DateTime.fromISO(item.createdAt).get('month');
@@ -17,7 +16,6 @@ const filterMonth = (yearlyData) => {
 }
 
 const filterWeek = (yearlyData) => {
-    console.log("Filter Week Firing");
     const relevantTransactions = yearlyData.filter(item => {
         const itemWeek = DateTime.fromISO(item.createdAt).weekNumber;
         const itemYear = DateTime.fromISO(item.createdAt).get('year');
@@ -27,7 +25,6 @@ const filterWeek = (yearlyData) => {
 }
 
 const filterDay = (yearlyData) => {
-    console.log("Filter Day Firing");
     const relevantTransactions = yearlyData.filter(item => {
         const itemDay = DateTime.fromISO(item.createdAt).get('day');
         const itemWeek = DateTime.fromISO(item.createdAt).weekNumber;

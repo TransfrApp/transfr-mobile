@@ -44,10 +44,6 @@ class SettingsScreen extends Component {
     this.props.resteraunt.updateResteraunt({
       resterauntNearby: list
     });
-
-    this.props.resteraunt.resterauntNearby.map(x => {
-      console.log(x);
-    })
   }
 
   render() {

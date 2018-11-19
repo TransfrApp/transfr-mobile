@@ -21,10 +21,6 @@ class AddProductButton extends Component {
         }
     }
 
-    componentDidMount() {
-        console.log("Props", this.props);
-    }
-    
     render() {
         return (
             <TouchableOpacity

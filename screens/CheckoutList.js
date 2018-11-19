@@ -251,8 +251,9 @@ class CheckoutList extends Component {
     selectPaymentModal() {
         const business = this.props.store.BusinessStore.business;
         const BusinessStore = this.props.store.BusinessStore;
-
+        const { bitcoinWallet, etheriumWallet } = this.props.store.UserStore.user;
         return business.paymentMethods.map((coin, index) => {
+            if (!this.props.store.UserStore[coin.walletAddress]) return;
             return (
                 <TouchableOpacity
                     onPress={() => BusinessStore.setSelectedCoin(coin.name)}

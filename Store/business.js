@@ -12,16 +12,19 @@ class BusinessStore {
                 image: 'https://images.unsplash.com/photo-1506354666786-959d6d497f1a?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=86c8c1fd5e9e5b384696472a095c42ac&auto=format&fit=crop&w=1500&q=80',
                 price: 20.00,
                 quantity: 1,
+                meta_tags: [{value: 'Food'}]
             }, {
                 name: 'Coffee',
                 image: 'https://images.unsplash.com/photo-1504630083234-14187a9df0f5?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=c29572a9d10e1903398a9448e1e962ed&auto=format&fit=crop&w=1500&q=80',
                 price: 5.00,
                 quantity: 1,
+                meta_tags: [{value: 'Beverage'}]
             }, {
                 name: 'Dessert',
                 image: 'https://images.unsplash.com/photo-1505418640699-b8e61c7273af?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=e3ee68f6a29882dc092879cd68cb6f12&auto=format&fit=crop&w=1225&q=80',
                 price: 7.00,
                 quantity: 1,
+                meta_tags: [{value: 'Food'}]
             },
         ],
         completedTransactions: [],
@@ -41,31 +44,33 @@ class BusinessStore {
         checkoutClient: 'Insert Clients Wallet',
         searchProductList: [],
         addingProduct: 0, // 0 -> no products being added // 1 -> adding name and category // 2 -> adding image
+        // This should change to mimick how the drop down is set up on SearchBar.js
         productCategories: [
-            { name: 'Hot Category', id: 'hotfood' },
-            { name: 'Dresses', id: 'dress' },
-            { name: 'Hoodies & Sweatshirts', id: 'jackets' },
-            { name: 'T-Shirt', id: 'tshirt' },
-            { name: 'Sweaters', id: 'sweater' },
-            { name: 'Socks & Hosiery', id: 'footshit' },
-            { name: 'Bottoms', id: 'bottoms' },
-            { name: 'Skirts', id: 'skirts' },
-            { name: 'Leggings', id: 'leggings' }
+            { value: 'All' },
+            { value: 'Food' },
+            { value: 'Hot Category' },
+            { value: 'Beverage' },
+            { value: 'Clothing' },
+            { value: 'Alchohol' }
         ],
         paymentMethods: [
-            { name: 'REQ', image: require('../assets/cryptoIcons/REQ.png') },
-            { name: 'ETH', image: require('../assets/cryptoIcons/ETH.png') },
-            { name: 'KNC', image: require('../assets/cryptoIcons/KNC.png') },
-            { name: 'DGX', image: require('../assets/cryptoIcons/DGX.png') },
-            { name: 'DAI', image: require('../assets/cryptoIcons/DAI.png') },
-            { name: 'NEO', image: require('../assets/cryptoIcons/NEO.png') }
+            { name: 'REQ', walletAddress: 'requestWallet', image: require('../assets/cryptoIcons/REQ.png') },
+            { name: 'ETH', walletAddress: 'etheriumWallet', image: require('../assets/cryptoIcons/ETH.png') },
+            { name: 'BTC', walletAddress: 'bitcoinWallet', image: require('../assets/cryptoIcons/BTC.png') },
+            { name: 'KNC', walletAddress: 'kncWallet', image: require('../assets/cryptoIcons/KNC.png') },
+            { name: 'DGX', walletAddress: 'bgxWallet', image: require('../assets/cryptoIcons/DGX.png') },
+            { name: 'DAI', walletAddress: 'daiWallet', image: require('../assets/cryptoIcons/DAI.png') },
+            { name: 'NEO', walletAddress: 'neoWallet', image: require('../assets/cryptoIcons/NEO.png') }
         ],
 
         selectedCoin: '',
+        activeWalletAddress: '',
+        amountDueInCrypto: null,
         newProductCategories: [],
         newProductName: '',
         newProductPrice: '',
-        checkout: '', // QR showes the QR screen, "complete" shows the completed Screen
+        checkout: '', // "" is default, QR showes the QR screen, "complete" shows the completed Screen
+        activeSearchBarCategory: null,
     })
     sale = observable({
         price: 0,
@@ -78,12 +83,14 @@ class BusinessStore {
     addProductCateogry(categories) {
         this.business.newProductCategories = categories
     }
+    updateAmountDueInCrypto(amount) {
+        this.business.amountDueInCrypto = amount;
+    }
     updateCheckoutItems(index, item) {
         // Uh, not super sure why this works but it does
         this.business.checkoutItems.concat().splice(index, 1, item);
     }
     updateSearchProductList(updatedList) {
-        console.log("Updated List", updatedList);
         this.business.searchProductList = updatedList;
     }
     addNewProductName(name) {
@@ -108,7 +115,7 @@ class BusinessStore {
     }
 
     itemToCheckoutQue(item) {
-        console.log("Item from Mobx Store", item);
+        // console.log("Item from Mobx Store", item);
         const { image, name, price, quantity } = item;
         const product = { image, name, price, quantity: 1 };
         this.business.checkoutItems = this.business.checkoutItems.concat(product);
@@ -118,8 +125,10 @@ class BusinessStore {
         item.splice(index, 1);
         this.business.checkoutItems = item;
     }
-    setSelectedCoin(coin) {
-        this.business.selectedCoin = coin;
+    setSelectedCoin(coin, address) {
+        this.business.selectedCoin = coin.name;
+        this.business.activeWalletAddress = address;
+        
     }
     addSaleDiscount(discount) {
         this.sale.discount = discount;
@@ -141,15 +150,18 @@ class BusinessStore {
                 tax: this.sale.tax,
                 discount: this.sale.discount ? this.sale.discount : 0,
                 items: this.business.checkoutItems,
+                payment_method: this.business.selectedCoin,
                 UserId: UserStore.user.userId,
             }).then(txs => {
                 this.addCompletedTransaction(txs.data);
             }).catch(err => console.log(err));
-        }, 6000);
-
+        }, 10000);
         setTimeout(() => {
             this.business.checkout = '';
             this.business.selectedCoin = '';
+            // Clear Payment Details
+            this.business.amountDueInCrypto = null,
+            this.business.activeWalletAddress = '',
             // Add Items to Store and clear the checkout items 
             this.sale.soldItems = this.sale.soldItems.concat(this.business.checkoutItems);
             this.business.checkoutItems = [];
@@ -195,7 +207,6 @@ class BusinessStore {
             case "Year": 
                 result = yearData
         }
-        console.log("Result", result);
         return result ? result : allData;
     }
 }
