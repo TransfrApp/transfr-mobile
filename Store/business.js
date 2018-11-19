@@ -140,8 +140,6 @@ class BusinessStore {
 
     updateCheckoutFlow(phase) {
         this.business.checkout = phase;
-        console.log("Before First Time Out")
-        console.log(this.business.checkout);
         setTimeout(() => {
             this.business.checkout = 'complete';
             // Add Axios to update the sold items in DB
@@ -158,8 +156,6 @@ class BusinessStore {
                 this.addCompletedTransaction(txs.data);
             }).catch(err => console.log(err));
         }, 10000);
-        console.log("Before Second Time Out but after first one");
-        console.log(this.business.checkout, this.business.checkoutItems);
         setTimeout(() => {
             this.business.checkout = '';
             this.business.selectedCoin = '';
@@ -169,7 +165,6 @@ class BusinessStore {
             // Add Items to Store and clear the checkout items 
             this.sale.soldItems = this.sale.soldItems.concat(this.business.checkoutItems);
             this.business.checkoutItems = [];
-            console.log("Business Store", this.business);
         }, 10000);
 
     }

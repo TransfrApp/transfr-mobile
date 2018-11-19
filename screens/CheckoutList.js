@@ -252,10 +252,7 @@ class CheckoutList extends Component {
         const business = this.props.store.BusinessStore.business;
         const BusinessStore = this.props.store.BusinessStore;
         const { bitcoinWallet, etheriumWallet } = this.props.store.UserStore.user;
-        console.log(bitcoinWallet, etheriumWallet);
         return business.paymentMethods.map((coin, index) => {
-            console.log("Coin in Select Payment Modal", coin);
-            console.log("Dynamic Prop Deal", this.props.store.UserStore[coin.walletAddress]);
             if (!this.props.store.UserStore[coin.walletAddress]) return;
             return (
                 <TouchableOpacity

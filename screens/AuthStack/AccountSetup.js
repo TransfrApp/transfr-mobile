@@ -34,7 +34,6 @@ class AccountSetup extends Component {
     componentDidMount() {
         // console.log(this.props.store);
         const user = this.props.store.UserStore;
-        console.log("User in Store", user);
     }
 
     handleSubmit = () => {

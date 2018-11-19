@@ -73,7 +73,6 @@ class CheckoutList extends Component {
     }
     // Calculates the exhange from crypto to fiat 
     calculateExchange = async (usd, coin) => {
-        console.log(coin.toLowerCase(), usd);
         const price = await axios.get(`https://api.cryptonator.com/api/ticker/${coin.toLowerCase()}-usd`)
               .then((res) => {
                 const price =  res.data.ticker.price;
@@ -160,8 +159,6 @@ class CheckoutList extends Component {
 
     handleShowQRCode = () => {
         const businessStore = this.props.store.BusinessStore;
-        console.log("Rate in State", this.state.cryptoRate);
-
         businessStore.updateAmountDueInCrypto(this.state.cryptoRate);
         businessStore.updateCheckoutFlow('QR');
         this.setState({ displayPaymentModal: false })

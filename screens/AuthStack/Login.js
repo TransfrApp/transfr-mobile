@@ -48,12 +48,10 @@ class LoginScreen extends Component {
 
     componentDidMount = async () => {
         const token = await this.getToken();
-        console.log("Token", token);
         if (token !== null) {
             axios.post(`${baseUrl}/user/login`, { token })
                 .then(res => {
                     const { token, user } = res.data;
-                    console.log("User", user);
                     const { email, name, password } = user;
                     const camelCase = { businessName: user.business_name, email, password, name, userId: user.id }
                     this.props.store.UserStore.createAccount(camelCase);

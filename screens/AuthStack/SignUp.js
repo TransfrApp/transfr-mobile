@@ -51,7 +51,6 @@ class CreateAccount extends Component {
                 "name": this.state.name,
                 "business_name": this.state.businessName,
             }).then((response) => {
-                console.log("Response From DB", response);
                 const user = this.props.store.UserStore;
                 // How would we pattern match this shit to make it less fugly?
                 const obj = {
