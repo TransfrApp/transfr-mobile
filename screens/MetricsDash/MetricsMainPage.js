@@ -104,9 +104,10 @@ class MetricsMainPage extends React.Component {
   };
 
   handleRefresh = () => {
+    const store = this.props.store.UserStore.user;
     this.setState({ refreshing: true })
-    Scan.BitcoinTransactions();
-    Scan.EthTransactions();
+    Scan.BitcoinTransactions(store.bitcoinWallet);
+    Scan.EthTransactions(store.etheriumWallet);
     this.setState({ refreshing: false });
   }
 
