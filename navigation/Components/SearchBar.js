@@ -65,29 +65,35 @@ class SearchBar extends Component {
 
     render() {
         const sortBy = this.props.store.BusinessStore.business.productCategories;
-        return (
-            <View style={styles.container}>
-                <View style={styles.button}>
-                    <Dropdown
-                        containerStyle={{ width: 110, height: 36, marginBottom: height * .05 }}
-                        dropdownPosition={0}
-                        value="Category"
-                        textColor={'black'}
-                        onChangeText={(item) => this.searchByCategory(item) }
-                        data={sortBy}/>
+        const { navigation } = this.props;
+        const index = navigation.state.index;
+        if (!index){
+            return (
+                <View style={styles.container}>
+                    <View style={styles.button}>
+                        <Dropdown
+                            containerStyle={{ width: 110, height: 36, marginBottom: height * .05 }}
+                            dropdownPosition={0}
+                            value="Category"
+                            textColor={'black'}
+                            onChangeText={(item) => this.searchByCategory(item) }
+                            data={sortBy}/>
+                    </View>
+                    <View style={[styles.input, { flexDirection: 'row', alignItems: 'center' }]}>
+                        <TextInput
+                            style={{ width: width * .25 }}
+                            underlineColorAndroid={'transparent'}
+                            placeholder={"Search Products"}
+                            onChangeText={(searchValue) => this.fuzzySearch(searchValue)} />
+                        <TouchableOpacity onPress={() => this.handleSearch()}>
+                            <FontAwesome name="search" size={20} color="grey" />
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                <View style={[styles.input, { flexDirection: 'row', alignItems: 'center' }]}>
-                    <TextInput
-                        style={{ width: width * .25 }}
-                        underlineColorAndroid={'transparent'}
-                        placeholder={"Search Products"}
-                        onChangeText={(searchValue) => this.fuzzySearch(searchValue)} />
-                    <TouchableOpacity onPress={() => this.handleSearch()}>
-                        <FontAwesome name="search" size={20} color="grey" />
-                    </TouchableOpacity>
-                </View>
-            </View>
-        )
+            )
+        } 
+        else if(index === 1) return <Text style={styles.title}>Metrics Dashboard</Text>
+        else if(index === 2) return <Text style={styles.title}>Order History</Text>
     }
 }
 
@@ -129,6 +135,13 @@ const styles = StyleSheet.create({
         marginRight: 20,
         marginTop: 20
     },
+    title: {
+        fontSize: 25,
+        color: 'white',
+        paddingBottom: 10,
+        textAlign: 'center',
+        fontWeight: '700'
+    }
 })
 
 export default inject("store")(observer(SearchBar));
