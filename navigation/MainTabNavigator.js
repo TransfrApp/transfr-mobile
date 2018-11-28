@@ -51,10 +51,9 @@ const mainNavigation = createStackNavigator({
       headerTitle: <SearchBar navigation={navigation} />,
       headerRight: !navigation.state.index ? <AddProductButton /> : <View/>, 
       headerLeft: (
-        <TouchableOpacity onPress={() => {
-          console.log("Navigation", navigation);
-          navigation.toggleDrawer()
-        }} style={{ marginLeft: 15 }}>
+        <TouchableOpacity 
+          onPress={() => navigation.toggleDrawer()}
+          style={{ marginLeft: 15 }}>
           <Image style={{ height: 22, width: 32 }} source={images.headerLeft} />
         </TouchableOpacity>
       ),
