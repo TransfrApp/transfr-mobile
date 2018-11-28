@@ -78,6 +78,11 @@ class HomeScreen extends React.Component {
             bgColor={'#693CB7'}
             fgColor={"white"}/>
           <Text style={[styles.mainText, { marginTop: 60, paddingLeft: 10, paddingRight: 10, textAlign: 'center' }]}>Show the customer the QR code so they can complete the payment</Text>
+          <TouchableOpacity 
+            onPress={() => this.props.store.BusinessStore.completeTransaction()} 
+            style={styles.button}>
+            <Text style={{ justifyContent: 'center', alignItems: 'center', color: 'white', fontSize: 16}}>Complete Payment</Text>
+          </TouchableOpacity>
           <TouchableOpacity onPress={() => this.props.store.BusinessStore.updateCheckoutFlow('')}>
             <Text style={{ fontSize: 20, fontWeight: '500', color: '#693CB7', justifyContent: 'center', alignItems: 'center', marginTop: 30 }}>Cancel</Text>
           </TouchableOpacity>
@@ -178,6 +183,17 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5F9FB',
+  },
+  button: {
+    marginTop: width * .05,
+    width: width * .28,
+    height: 52,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#6532BD',
+    backgroundColor: '#6532BD',
+    borderRadius: 15,
   },
   products: {
     width: width * .65,

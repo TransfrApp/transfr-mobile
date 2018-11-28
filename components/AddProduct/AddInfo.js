@@ -89,6 +89,11 @@ class AddProductInfo extends Component {
           <TouchableOpacity onPress={() => this.handleNext()} style={[authStyles.login, { marginTop: 20, marginBottom: 20 }]}>
             <Text style={[authStyles.buttonText]}>Next</Text>
           </TouchableOpacity>
+          <TouchableOpacity 
+            onPress={() => this.props.store.BusinessStore.changeAddingProductWindow(0)}
+            style={{ paddingTop: 20, paddingBottom: 20, justifyContent: 'center', alignContent: 'center'}}>
+            <Text style={{ fontSize: 20, color: 'grey' }}>Cancel</Text>
+          </TouchableOpacity>
         </View>
         <Modal style={{ justifyContent: 'center', alignItems: 'center' }} isVisible={this.state.modalDisplay}>
           <View style={styles.modal}>

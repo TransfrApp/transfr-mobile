@@ -153,7 +153,7 @@ class CheckoutList extends Component {
     }
 
     cancelPaymentModal() {
-        this.props.store.BusinessStore.setSelectedCoin("");
+        this.props.store.BusinessStore.updateCheckoutFlow('');
         this.setState({ displayPaymentModal: false })
     }
 
@@ -168,9 +168,16 @@ class CheckoutList extends Component {
         const business = this.props.store.BusinessStore.business;
         if (business.checkout === 'complete') {
             return (
-                <TouchableOpacity style={styles.checkoutButton}>
-                    <Text style={{ fontSize: 16, color: 'white' }}>Cancel Payment</Text>
-                </TouchableOpacity>
+                <View style={{ paddingTop: 10 }}>
+                    <TouchableOpacity 
+                        onPress={() => this.props.store.BusinessStore.updateCheckoutFlow('')} 
+                        style={styles.fullButton}>
+                        <Text style={{fontSize: 16, color:'white'}}>Start New Transaction</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{ paddingTop: 20, justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 16, color: '#6532BD' }}>Cancel Payment</Text>
+                    </TouchableOpacity>
+                </View>
             )
         } else {
             return (
@@ -178,7 +185,7 @@ class CheckoutList extends Component {
                     <TouchableOpacity onPress={() => this.setState({ displayModal: true })} style={styles.discountButton}>
                         <Text style={{ fontSize: 16, color: '#6532BD' }}>Discount</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.setState({ displayPaymentModal: true })} style={[styles.checkoutButton, { marginBottom: 10 }]}>
+                    <TouchableOpacity onPress={() => this.setState({ displayPaymentModal: true })} style={[styles.fullButton, { marginBottom: 10 }]}>
                         <Text style={{ fontSize: 16, color: 'white' }}>Select Payment Method</Text>
                     </TouchableOpacity>
                 </View>
@@ -215,12 +222,23 @@ class CheckoutList extends Component {
                     {this.handleButtonUISwap()}
                 </View>
                 {this.discountModal()}
+                {/* 
+                Select Payment Modal
+                */}
                 <Modal style={{ justifyContent: 'center', alignItems: 'center' }} isVisible={this.state.displayPaymentModal}>
                     <View style={styles.modal}>
-                        <Text style={{ fontSize: 20, paddingTop: 10, paddingBottom: 30 }}>Select Payment Method</Text>
-                        {this.selectPaymentModal()}
+                        <Text style={{ fontSize: 20, paddingTop: 15, paddingBottom: 30 }}>Select Payment Method</Text>
+                        <View style={{ paddingTop: width * .025}}>
+                            {this.selectPaymentModal()}
+                        </View>
                         <View style={styles.center}>
-                            <TouchableOpacity onPress={() => this.handleShowQRCode()} style={[styles.checkoutButton, { marginBottom: 10 }]}>
+                            <TouchableOpacity 
+                                onPress={() => {
+                                    this.props.store.BusinessStore.business.selectedCoin 
+                                    ? this.handleShowQRCode()
+                                    : {}
+                                }} 
+                                style={[styles.fullButton, { marginBottom: 10 }]}>
                                 <Text style={{ fontSize: 16, color: 'white' }}>Show QR Code</Text>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => this.cancelPaymentModal()} style={{ paddingBottom: 20 }}>
@@ -245,7 +263,7 @@ class CheckoutList extends Component {
                         placeholder="$15.00"
                         style={authStyles.textInput} />
                     <View style={{ height: 100, justifyContent: 'flex-end', alignItems: 'center' }}>
-                        <TouchableOpacity onPress={() => this.addDiscount()} style={styles.checkoutButton}>
+                        <TouchableOpacity onPress={() => this.addDiscount()} style={styles.fullButton}>
                             <Text style={{ color: 'white', fontSize: 16 }}>Add Discount</Text>
                         </TouchableOpacity>
                     </View>
@@ -293,6 +311,7 @@ const styles = StyleSheet.create({
         minHeight: height * .8,
     },
     center: {
+        paddingTop: width * .025,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -344,7 +363,7 @@ const styles = StyleSheet.create({
         borderColor: '#6532BD',
         borderRadius: 10
     },
-    checkoutButton: {
+    fullButton: {
         width: width * .28,
         height: 52,
         justifyContent: 'center',
@@ -353,8 +372,9 @@ const styles = StyleSheet.create({
         borderColor: '#6532BD',
         borderRadius: 10,
         backgroundColor: '#6532BD',
-        marginTop: 10
+        marginTop: 20
     },
+
     modal: {
         minHeight: 400,
         width: width * .4,

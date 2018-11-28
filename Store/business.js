@@ -79,7 +79,7 @@ class BusinessStore {
         total: 0,
         soldItems: []
     });
-
+    
     addProductCateogry(categories) {
         this.business.newProductCategories = categories
     }
@@ -138,25 +138,28 @@ class BusinessStore {
         this.business.completedTransactions = this.business.completedTransactions.concat(transaction);
     }
 
+    completeTransaction() {
+        this.business.checkout = 'complete';
+        // Add Axios to update the sold items in DB
+        axios.post(`${baseUrl}/transaction`, {
+            to: UserStore.user.businessName,
+            from: this.business.checkoutClient,
+            amount: this.sale.total,
+            tax: this.sale.tax,
+            discount: this.sale.discount ? this.sale.discount : 0,
+            items: this.business.checkoutItems,
+            payment_method: this.business.selectedCoin,
+            UserId: UserStore.user.userId,
+        }).then(txs => {
+            this.addCompletedTransaction(txs.data);
+        }).catch(err => console.log(err));
+    }
+
     updateCheckoutFlow(phase) {
         this.business.checkout = phase;
-        setTimeout(() => {
-            this.business.checkout = 'complete';
-            // Add Axios to update the sold items in DB
-            axios.post(`${baseUrl}/transaction`, {
-                to: UserStore.user.businessName,
-                from: this.business.checkoutClient,
-                amount: this.sale.total,
-                tax: this.sale.tax,
-                discount: this.sale.discount ? this.sale.discount : 0,
-                items: this.business.checkoutItems,
-                payment_method: this.business.selectedCoin,
-                UserId: UserStore.user.userId,
-            }).then(txs => {
-                this.addCompletedTransaction(txs.data);
-            }).catch(err => console.log(err));
-        }, 10000);
-        setTimeout(() => {
+        // This is a fucking terrible way to handle this...
+        // gonna rework it later with enums or something.
+        if (phase === ''){ // '' being the default postition
             this.business.checkout = '';
             this.business.selectedCoin = '';
             // Clear Payment Details
@@ -165,8 +168,7 @@ class BusinessStore {
             // Add Items to Store and clear the checkout items 
             this.sale.soldItems = this.sale.soldItems.concat(this.business.checkoutItems);
             this.business.checkoutItems = [];
-        }, 10000);
-
+        }
     }
 
     total() {
